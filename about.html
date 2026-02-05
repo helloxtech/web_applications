@@ -7,15 +7,15 @@
   <title>About | HelloAI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container nav-row">
-      <a class="brand" href="/index.html" aria-label="HelloAI home">
-        <img class="brand-mark" src="/media/HelloAI_mark.png" alt="HelloAI logo">
-        <span class="brand-wordmark">HelloAI</span>
+      <a class="brand-title" href="/index.html" aria-label="HelloAI Web App Hub home">
+        <span class="brand-main">HelloAI</span>
+        <span class="brand-sub">Web App Hub</span>
       </a>
 
       <nav class="site-nav" aria-label="Main navigation">
@@ -29,33 +29,39 @@
 
   <main>
     <div class="container">
-      <section class="page-hero reveal">
-        <h1>About HelloAI</h1>
-        <p>HelloAI builds practical web apps that keep workflows simple, fast, and predictable.</p>
+      <section class="about-intro reveal">
+        <div class="page-hero">
+          <h1>About HelloAI</h1>
+          <p>HelloAI builds practical web applications with a clear goal: less friction, faster completion.</p>
+        </div>
+
+        <div class="video-shell" aria-label="HelloAI brand animation">
+          <video src="/media/HelloAI_Video.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </div>
       </section>
 
-      <section class="about-grid reveal delay-1">
+      <section class="info-grid reveal delay-1">
         <article class="info-card">
-          <h2>What we optimize for</h2>
+          <h2>Design principles</h2>
           <ul class="info-list">
+            <li>One app, one purpose</li>
             <li>Simple interface</li>
-            <li>Fast task completion</li>
             <li>Reliable output</li>
           </ul>
         </article>
 
         <article class="info-card">
-          <h2>How we design</h2>
+          <h2>User goals</h2>
           <ul class="info-list">
-            <li>One app, one clear purpose</li>
-            <li>Low cognitive load</li>
-            <li>User-first decision making</li>
+            <li>Fast task completion</li>
+            <li>Low learning cost</li>
+            <li>Consistent daily use</li>
           </ul>
         </article>
       </section>
 
       <section class="hellox-row reveal delay-2">
-        <div class="hellox-copy">
+        <div>
           <h2>HelloX Tech</h2>
           <p>HelloAI web applications are developed by HelloX Tech.</p>
         </div>
@@ -68,7 +74,7 @@
   <footer class="site-footer">
     <div class="container footer-row">
       <span>© 2026 HelloAI</span>
-      <span>Focused tools for daily work</span>
+      <span>Built with a user-first mindset</span>
     </div>
   </footer>
 </body>

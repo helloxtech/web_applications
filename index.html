@@ -4,18 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="HelloAI provides useful and simple web applications.">
-  <title>HelloAI | Useful Web Applications</title>
+  <title>HelloAI | Web App Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container nav-row">
-      <a class="brand" href="/index.html" aria-label="HelloAI home">
-        <img class="brand-mark" src="/media/HelloAI_mark.png" alt="HelloAI logo">
-        <span class="brand-wordmark">HelloAI</span>
+      <a class="brand-title" href="/index.html" aria-label="HelloAI Web App Hub home">
+        <span class="brand-main">HelloAI</span>
+        <span class="brand-sub">Web App Hub</span>
       </a>
 
       <nav class="site-nav" aria-label="Main navigation">
@@ -30,39 +30,25 @@
   <main>
     <div class="container">
       <section class="hero reveal">
-        <div>
-          <p class="eyebrow">HelloAI</p>
-          <h1>Useful apps. Zero clutter.</h1>
-          <p>Built for people who want to finish work fast.</p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="/MarkdownSync.html">Open Markdown Sync</a>
-            <a class="button button-secondary" href="/contact.html">Request an app</a>
-          </div>
-        </div>
-
-        <div class="hero-media reveal delay-1" aria-label="HelloAI brand animation">
-          <video src="/media/HelloAI_Video.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        <p class="hero-kicker">HelloAI</p>
+        <h1>Useful apps. Zero clutter.</h1>
+        <p>Simple tools for people who want to finish work fast.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#apps">View apps</a>
+          <a class="button button-secondary" href="/contact.html">Request an app</a>
         </div>
       </section>
 
       <section class="section reveal delay-1" id="apps">
         <h2>Available now</h2>
-        <p class="section-sub">One focused tool, ready to use.</p>
+        <p class="section-sub">Tap to open.</p>
 
-        <div class="app-grid">
-          <article class="app-card">
-            <span class="status status-live">Live</span>
-            <img class="app-logo" src="/assets/markdownsync-logo.svg" alt="Markdown Sync logo">
-            <p>Bidirectional converter for markdown and rich text.</p>
-            <a class="text-link" href="/MarkdownSync.html">Open Markdown Sync</a>
-          </article>
-
-          <article class="app-card">
-            <span class="status status-next">Next</span>
-            <h3>Need another tool?</h3>
-            <p>Tell us what should be built next.</p>
-            <a class="text-link" href="/contact.html">Send your idea</a>
-          </article>
+        <div class="app-list">
+          <a class="app-tile app-tile-single" href="/MarkdownSync.html" aria-label="Open Markdown Sync">
+            <span class="app-tile-tag">Live</span>
+            <img class="app-tile-logo" src="/assets/markdownsync-logo.svg" alt="Markdown Sync logo">
+            <h3 class="app-tile-title">Markdown Sync</h3>
+          </a>
         </div>
       </section>
     </div>
@@ -71,7 +57,7 @@
   <footer class="site-footer">
     <div class="container footer-row">
       <span>© 2026 HelloAI</span>
-      <span>Designed for clarity and speed</span>
+      <span>Focused tools for daily work</span>
     </div>
   </footer>
 </body>

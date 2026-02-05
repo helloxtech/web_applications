@@ -1,18 +1,17 @@
 :root {
-  --bg: #f5f5f7;
+  --bg: #eff1f2;
   --surface: #ffffff;
-  --surface-soft: #fafafc;
-  --text: #1d1d1f;
-  --muted: #6e6e73;
-  --border: #d2d2d7;
-  --line: #e5e5ea;
-  --accent: #0071e3;
-  --accent-soft: #e8f2ff;
-  --radius-lg: 24px;
+  --surface-soft: #f7f8fb;
+  --text: #0f172a;
+  --muted: #5e6f86;
+  --line: #d8dee8;
+  --accent: #2f5bff;
+  --accent-dark: #143fd6;
+  --radius-lg: 22px;
   --radius-md: 16px;
   --radius-sm: 12px;
-  --shadow-sm: 0 10px 24px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 18px 36px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 10px 24px rgba(16, 24, 40, 0.07);
+  --shadow-md: 0 20px 40px rgba(16, 24, 40, 0.1);
 }
 
 * {
@@ -27,9 +26,9 @@ body {
 
 body {
   min-height: 100vh;
-  background: linear-gradient(180deg, #f5f5f7 0%, #ffffff 100%);
+  background: var(--bg);
   color: var(--text);
-  font-family: "Manrope", "Avenir Next", "Segoe UI", sans-serif;
+  font-family: "Manrope", "Segoe UI", sans-serif;
   line-height: 1.55;
 }
 
@@ -47,37 +46,48 @@ a {
   position: sticky;
   top: 0;
   z-index: 30;
-  background: rgba(245, 245, 247, 0.88);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(210, 210, 215, 0.88);
+  border-bottom: 1px solid rgba(216, 222, 232, 0.85);
+  background: rgba(239, 241, 242, 0.9);
+  backdrop-filter: blur(8px);
 }
 
 .nav-row {
-  min-height: 72px;
+  min-height: 74px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 18px;
 }
 
-.brand {
+.brand-title {
   display: inline-flex;
   align-items: center;
   gap: 10px;
 }
 
-.brand-mark {
-  width: 46px;
-  height: auto;
-  display: block;
+.brand-main {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 29px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1;
+  background: linear-gradient(130deg, #153fbc 0%, #2a63ff 55%, #32bcff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-.brand-wordmark {
-  margin: 0;
-  font-family: "Sora", "Avenir Next", sans-serif;
-  font-size: 22px;
-  letter-spacing: -0.35px;
+.brand-sub {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  color: #415473;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #d6deea;
+  background: #f7f9fc;
 }
 
 .site-nav {
@@ -87,9 +97,9 @@ a {
 }
 
 .site-nav a {
-  padding: 8px 13px;
+  padding: 8px 12px;
   border-radius: 999px;
-  color: var(--muted);
+  color: #5a6d88;
   font-size: 14px;
   font-weight: 600;
   transition: background 0.2s ease, color 0.2s ease;
@@ -98,48 +108,44 @@ a {
 .site-nav a:hover,
 .site-nav a.active {
   color: var(--text);
-  background: #ffffff;
+  background: var(--surface);
 }
 
 main {
-  padding: 54px 0 70px;
+  padding: 60px 0 70px;
 }
 
 .hero {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 34px;
-  align-items: center;
+  max-width: 740px;
 }
 
-.eyebrow {
-  margin: 0 0 12px;
+.hero-kicker {
+  margin: 0;
   color: var(--muted);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.4px;
+  font-weight: 600;
 }
 
 .hero h1 {
-  margin: 0;
-  font-family: "Sora", "Avenir Next", sans-serif;
-  font-size: clamp(36px, 6vw, 62px);
-  letter-spacing: -1px;
-  line-height: 1.03;
+  margin: 12px 0 0;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: clamp(44px, 8vw, 82px);
+  letter-spacing: -1.3px;
+  line-height: 0.98;
 }
 
 .hero p {
-  margin: 16px 0 0;
+  margin: 18px 0 0;
   color: var(--muted);
   font-size: 18px;
-  max-width: 32ch;
+  max-width: 34ch;
 }
 
 .hero-actions {
   margin-top: 28px;
   display: flex;
-  align-items: center;
   gap: 12px;
   flex-wrap: wrap;
 }
@@ -149,11 +155,11 @@ main {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 12px 20px;
   font-size: 14px;
   font-weight: 700;
-  padding: 11px 18px;
-  border: 1px solid transparent;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .button:hover {
@@ -161,30 +167,15 @@ main {
 }
 
 .button-primary {
-  background: var(--accent);
   color: #ffffff;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  box-shadow: 0 12px 28px rgba(47, 91, 255, 0.3);
 }
 
 .button-secondary {
-  border-color: var(--border);
-  background: #ffffff;
   color: var(--text);
-}
-
-.hero-media {
-  justify-self: center;
-  width: min(286px, 76vw);
-  background: #0e1118;
-  border-radius: 28px;
-  padding: 7px;
-  box-shadow: var(--shadow-md);
-}
-
-.hero-media video {
-  width: 100%;
-  display: block;
-  border-radius: 21px;
-  object-fit: cover;
+  background: var(--surface);
+  border-color: var(--line);
 }
 
 .section {
@@ -193,88 +184,83 @@ main {
 
 .section h2 {
   margin: 0;
-  font-family: "Sora", "Avenir Next", sans-serif;
-  font-size: 30px;
-  letter-spacing: -0.45px;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 34px;
+  letter-spacing: -0.5px;
 }
 
-.section .section-sub {
+.section-sub {
   margin: 10px 0 0;
   color: var(--muted);
   font-size: 16px;
 }
 
-.app-grid {
+.app-list {
   margin-top: 20px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  gap: 14px;
 }
 
-.app-card {
+.app-tile {
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--surface);
-  padding: 22px;
   box-shadow: var(--shadow-sm);
+  min-height: 154px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: space-between;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
-.status {
-  width: fit-content;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 4px 9px;
-  border-radius: 999px;
+.app-tile-single {
+  grid-column: 1 / -1;
+  max-width: 560px;
 }
 
-.status-live {
-  background: #e6f3e0;
-  color: #2e6d16;
+.app-tile:hover {
+  transform: translateY(-2px);
+  border-color: #b9c8ea;
 }
 
-.status-next {
-  background: var(--accent-soft);
-  color: #2456c7;
-}
-
-.app-logo {
+.app-tile-logo {
+  max-width: 250px;
   width: 100%;
-  max-width: 235px;
   height: auto;
 }
 
-.app-card h3 {
-  margin: 0;
-  font-family: "Sora", "Avenir Next", sans-serif;
-  font-size: 24px;
+.app-tile-title {
+  margin: 10px 0 0;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 22px;
   letter-spacing: -0.3px;
 }
 
-.app-card p {
-  margin: 0;
-  color: var(--muted);
+.app-tile-next {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 22px;
+  letter-spacing: -0.3px;
+  color: #445678;
 }
 
-.text-link {
-  margin-top: auto;
-  color: var(--accent);
+.app-tile-tag {
+  font-size: 13px;
   font-weight: 700;
-  font-size: 14px;
+  color: #5e6f86;
 }
 
 .page-hero {
-  max-width: 64ch;
+  max-width: 66ch;
 }
 
 .page-hero h1 {
   margin: 0;
-  font-family: "Sora", "Avenir Next", sans-serif;
-  font-size: clamp(34px, 5vw, 50px);
-  letter-spacing: -0.7px;
-  line-height: 1.1;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: clamp(36px, 5vw, 52px);
+  letter-spacing: -0.8px;
+  line-height: 1.08;
 }
 
 .page-hero p {
@@ -283,82 +269,110 @@ main {
   font-size: 17px;
 }
 
-.about-grid,
-.contact-grid {
+.about-intro {
   margin-top: 24px;
   display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  align-items: center;
+}
+
+.video-shell {
+  background: #0f1219;
+  border-radius: 24px;
+  padding: 6px;
+  box-shadow: var(--shadow-md);
+}
+
+.video-shell video {
+  width: 100%;
+  display: block;
+  border-radius: 18px;
+  object-fit: cover;
+}
+
+.info-grid,
+.contact-grid {
+  margin-top: 22px;
+  display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  gap: 14px;
 }
 
 .info-card {
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--surface);
-  padding: 24px;
   box-shadow: var(--shadow-sm);
+  padding: 20px;
 }
 
 .info-card h2 {
   margin: 0;
-  font-family: "Sora", "Avenir Next", sans-serif;
-  font-size: 24px;
-  letter-spacing: -0.3px;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 23px;
 }
 
 .info-card p {
-  margin: 10px 0 0;
+  margin: 8px 0 0;
   color: var(--muted);
 }
 
 .info-list {
-  margin: 14px 0 0;
-  padding: 0;
   list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
   display: grid;
-  gap: 10px;
+  gap: 9px;
 }
 
 .info-list li {
   background: var(--surface-soft);
-  border: 1px solid #ececf1;
+  border: 1px solid #e9edf4;
   border-radius: var(--radius-sm);
   padding: 10px 12px;
-  color: #30303a;
+  color: #35465f;
   font-size: 14px;
 }
 
 .hellox-row {
-  margin-top: 22px;
+  margin-top: 20px;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background: #ffffff;
-  padding: 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  padding: 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
-.hellox-copy h2 {
+.hellox-row h2 {
   margin: 0;
-  font-family: "Sora", "Avenir Next", sans-serif;
-  font-size: 24px;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 25px;
+  letter-spacing: -0.3px;
 }
 
-.hellox-copy p {
-  margin: 6px 0 0;
+.hellox-row p {
+  margin: 7px 0 0;
   color: var(--muted);
 }
 
 .hellox-logo {
-  width: 180px;
+  width: 168px;
   height: auto;
 }
 
+.text-link {
+  color: var(--accent);
+  font-weight: 700;
+}
+
 .contact-row {
-  margin-top: 24px;
+  margin-top: 22px;
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
@@ -386,7 +400,7 @@ main {
 }
 
 .delay-1 {
-  animation-delay: 0.08s;
+  animation-delay: 0.09s;
 }
 
 .delay-2 {
@@ -401,12 +415,12 @@ main {
 }
 
 @media (max-width: 980px) {
-  .hero {
+  .about-intro {
     grid-template-columns: 1fr;
   }
 
-  .hero-media {
-    justify-self: start;
+  .video-shell {
+    width: min(290px, 78vw);
   }
 }
 
@@ -416,9 +430,9 @@ main {
   }
 
   .nav-row {
-    flex-wrap: wrap;
-    align-items: flex-start;
     min-height: 0;
+    align-items: flex-start;
+    flex-wrap: wrap;
     padding: 12px 0;
   }
 
@@ -428,26 +442,27 @@ main {
     padding-bottom: 2px;
   }
 
-  .brand-mark {
-    width: 40px;
+  .brand-main {
+    font-size: 25px;
   }
 
-  .brand-wordmark {
-    font-size: 20px;
+  .brand-sub {
+    font-size: 11px;
+    padding: 5px 8px;
   }
 
   main {
-    padding-top: 34px;
+    padding-top: 38px;
   }
 
-  .app-grid,
-  .about-grid,
+  .hero h1 {
+    font-size: clamp(38px, 12vw, 62px);
+  }
+
+  .app-list,
+  .info-grid,
   .contact-grid {
     grid-template-columns: 1fr;
-  }
-
-  .section h2 {
-    font-size: 27px;
   }
 }
 
@@ -458,7 +473,8 @@ main {
     transform: none;
   }
 
-  .button:hover {
+  .button:hover,
+  .app-tile:hover {
     transform: none;
   }
 }
