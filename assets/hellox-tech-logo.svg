@@ -1,0 +1,9 @@
+<svg width="640" height="160" viewBox="0 0 640 160" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="HelloX Tech logo">
+  <rect width="640" height="160" fill="transparent"/>
+  <text x="8" y="106" font-family="Arial, Helvetica, sans-serif" font-size="108" font-weight="700" letter-spacing="-2" fill="#86BD3A">Hello</text>
+  <g transform="translate(450,18)">
+    <rect x="42" y="0" width="34" height="126" rx="17" transform="rotate(28 42 0)" fill="#3F4147"/>
+    <rect x="0" y="110" width="34" height="126" rx="17" transform="rotate(-28 0 110)" fill="#3F4147"/>
+  </g>
+  <text x="488" y="140" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="600" letter-spacing="2" fill="#3F4147">TECH</text>
+</svg>
