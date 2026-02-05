@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="HelloAI Web App Hub. Useful apps with a clean, focused interface.">
-  <title>HelloAI | Web App Hub</title>
+  <meta name="description" content="HelloAI apps. Browse available tools.">
+  <title>Apps | HelloAI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Manrope:wght@500;600;700&family=Space+Grotesk:wght@600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
@@ -18,8 +18,8 @@
         <span class="brand-word">HelloAI</span>
       </a>
       <nav class="site-nav" aria-label="Main navigation">
-        <a class="active" href="/index.html">Home</a>
-        <a href="/apps.html">Apps</a>
+        <a href="/index.html">Home</a>
+        <a class="active" href="/apps.html">Apps</a>
         <a href="/about.html">About</a>
         <a href="/contact.html">Contact</a>
       </nav>
@@ -28,31 +28,27 @@
 
   <main>
     <div class="container">
-      <section class="hero fade">
-        <p class="hero-tag">Web App Hub</p>
-        <h1>Useful apps.<br><span class="accent">Zero clutter.</span></h1>
-        <p>Open the tool you need and finish in minutes.</p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="/apps.html">Browse Apps</a>
-          <a class="button button-secondary" href="/contact.html">Request an App</a>
-        </div>
+      <section class="hero fade" style="text-align:left; max-width: 760px; margin: 0;">
+        <p class="hero-tag">Apps</p>
+        <h1>Find the tool that fits.</h1>
+        <p>Short descriptions. Fast access.</p>
       </section>
 
       <section class="section fade delay-1">
-        <div class="section-head">
-          <h2>Featured</h2>
-          <p>Currently available.</p>
-        </div>
-
-        <a class="app-spotlight app-spotlight-link" href="/MarkdownSync.html">
-          <div class="app-meta">
+        <div class="hub-grid">
+          <a class="hub-card hub-card-link" href="/MarkdownSync.html">
             <img class="app-logo" src="/assets/markdownsync-logo.svg" alt="Markdown Sync logo">
-            <div>
-              <h3 class="app-title">Markdown <span class="sync-accent">Sync</span></h3>
-              <p class="app-sub">Bidirectional converter for Markdown and rich text.</p>
-            </div>
-          </div>
-        </a>
+            <h3>Markdown Sync</h3>
+            <p>Bidirectional converter for Markdown and rich text.</p>
+            <span class="text-link">Open →</span>
+          </a>
+
+          <a class="hub-card hub-card-link" href="/contact.html">
+            <h3>Next app</h3>
+            <p>Tell us what you want built next.</p>
+            <span class="text-link">Request →</span>
+          </a>
+        </div>
       </section>
     </div>
   </main>
@@ -60,7 +56,7 @@
   <footer class="site-footer">
     <div class="container footer-row">
       <span>© 2026 HelloAI</span>
-      <span>Developed by HelloX Tech</span>
+      <span>Focused tools for daily work</span>
     </div>
   </footer>
 </body>
