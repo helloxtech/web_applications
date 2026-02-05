@@ -3,21 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="HelloAI provides useful and simple web applications.">
+  <meta name="description" content="HelloAI Web App Hub. Useful apps with a clean, focused interface.">
   <title>HelloAI | Web App Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container nav-row">
-      <a class="brand-title" href="/index.html" aria-label="HelloAI Web App Hub home">
+      <a class="brand" href="/index.html" aria-label="HelloAI home">
         <span class="brand-main">HelloAI</span>
         <span class="brand-sub">Web App Hub</span>
       </a>
-
       <nav class="site-nav" aria-label="Main navigation">
         <a class="active" href="/index.html">Home</a>
         <a href="/about.html">About</a>
@@ -29,25 +28,42 @@
 
   <main>
     <div class="container">
-      <section class="hero reveal">
-        <p class="hero-kicker">HelloAI</p>
-        <h1>Useful apps. Zero clutter.</h1>
-        <p>Simple tools for people who want to finish work fast.</p>
+      <section class="hero fade">
+        <p class="hero-eyebrow">HelloAI</p>
+        <h1>Useful apps.<br>Zero clutter.</h1>
+        <p>Open the tool you need and finish in minutes.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="#apps">View apps</a>
-          <a class="button button-secondary" href="/contact.html">Request an app</a>
+          <a class="button button-primary" href="#apps">Explore Apps</a>
+          <a class="button button-secondary" href="/contact.html">Request an App</a>
         </div>
       </section>
 
-      <section class="section reveal delay-1" id="apps">
-        <h2>Available now</h2>
-        <p class="section-sub">Tap to open.</p>
+      <section class="section fade delay-1" id="apps">
+        <div class="section-head">
+          <h2>Apps</h2>
+          <p>Simple list. Tap to open.</p>
+        </div>
 
-        <div class="app-list">
-          <a class="app-tile app-tile-single" href="/MarkdownSync.html" aria-label="Open Markdown Sync">
-            <span class="app-tile-tag">Live</span>
-            <img class="app-tile-logo" src="/assets/markdownsync-logo.svg" alt="Markdown Sync logo">
-            <h3 class="app-tile-title">Markdown Sync</h3>
+        <div class="apps-grid">
+          <a class="app-card" href="/MarkdownSync.html" aria-label="Open Markdown Sync">
+            <div class="app-meta">
+              <img class="app-logo" src="/assets/markdownsync-logo.svg" alt="Markdown Sync logo">
+              <div>
+                <h3 class="app-name">Markdown Sync</h3>
+                <span class="app-chip">Live</span>
+              </div>
+            </div>
+            <span class="chevron">Open →</span>
+          </a>
+
+          <a class="app-card placeholder" href="/contact.html" aria-label="Request next app">
+            <div class="app-meta">
+              <div>
+                <h3 class="app-name">Your next app</h3>
+                <span class="app-chip">Tell us what to build</span>
+              </div>
+            </div>
+            <span class="chevron">Request →</span>
           </a>
         </div>
       </section>
@@ -57,7 +73,7 @@
   <footer class="site-footer">
     <div class="container footer-row">
       <span>© 2026 HelloAI</span>
-      <span>Focused tools for daily work</span>
+      <span>Developed by HelloX Tech</span>
     </div>
   </footer>
 </body>
