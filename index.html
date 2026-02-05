@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="helloai.ca offers useful, focused web applications built by HelloX Tech.">
-  <title>helloai.ca | Useful Web Applications</title>
+  <meta name="description" content="HelloAI provides useful and simple web applications.">
+  <title>HelloAI | Useful Web Applications</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
@@ -13,13 +13,16 @@
 <body>
   <header class="site-header">
     <div class="container nav-row">
-      <a class="brand" href="/index.html" aria-label="helloai.ca home">
-        <img class="brand-logo" src="/assets/hellox-tech-logo.svg" alt="HelloX Tech">
+      <a class="brand" href="/index.html" aria-label="HelloAI home">
+        <span class="brand-logo-shell">
+          <img class="brand-logo" src="/media/HelloAI_logo.jpg" alt="HelloAI logo">
+        </span>
         <span class="brand-text">
-          <strong>helloai.ca</strong>
-          <span>Useful apps by HelloX Tech</span>
+          <strong>HelloAI</strong>
+          <span>Useful web applications</span>
         </span>
       </a>
+
       <nav class="site-nav" aria-label="Main navigation">
         <a class="active" href="/index.html">Home</a>
         <a href="/about.html">About</a>
@@ -33,83 +36,37 @@
     <div class="container">
       <section class="hero reveal">
         <div>
-          <h1>Simple web tools that solve real work problems fast.</h1>
-          <p>
-            helloai.ca is a focused app hub: no clutter, no learning curve, and no unnecessary steps.
-            Open a tool, finish your task, move on.
-          </p>
-          <div class="hero-ctas">
+          <p class="eyebrow">HelloAI App Hub</p>
+          <h1>Simple tools. Clear results.</h1>
+          <p>Practical web apps that help you finish work faster.</p>
+          <div class="hero-actions">
             <a class="button button-primary" href="/MarkdownSync.html">Open Markdown Sync</a>
-            <a class="button button-secondary" href="/about.html">Why HelloX Tech</a>
+            <a class="button button-secondary" href="/contact.html">Request a new app</a>
           </div>
         </div>
-        <aside class="panel hero-aside reveal delay-1">
-          <h2>Built for users first</h2>
-          <p>Every app is designed around practical daily workflows.</p>
-          <ul>
-            <li>Clear interface and obvious actions</li>
-            <li>Fast load and fast completion</li>
-            <li>Reliable behavior for repeat use</li>
-          </ul>
-        </aside>
-      </section>
 
-      <section class="section">
-        <h2 class="reveal">Featured applications</h2>
-        <p class="lead reveal delay-1">
-          Start with the current production app, then watch this page for new utilities as they launch.
-        </p>
-
-        <div class="apps-grid">
-          <article class="app-card reveal delay-1">
-            <span class="badge badge-live">Live now</span>
-            <img class="app-logo" src="/assets/markdownsync-logo.svg" alt="Markdown Sync logo">
-            <p>Convert and sync markdown content in both directions with a cleaner editing workflow.</p>
-            <div class="app-meta">
-              <span>Bidirectional converter</span>
-              <a class="app-link" href="/MarkdownSync.html">Use app</a>
-            </div>
-          </article>
-
-          <article class="app-card reveal delay-2">
-            <span class="badge badge-soon">Coming soon</span>
-            <h3>Prompt Library</h3>
-            <p>Store, tag, and quickly retrieve high-performing prompts for repeated tasks.</p>
-            <div class="app-meta">
-              <span>Prompt management</span>
-              <span class="app-link">Soon</span>
-            </div>
-          </article>
-
-          <article class="app-card reveal delay-2">
-            <span class="badge badge-soon">Coming soon</span>
-            <h3>Data Cleaner</h3>
-            <p>Normalize copy-pasted table data into consistent, ready-to-use output in seconds.</p>
-            <div class="app-meta">
-              <span>Data utility</span>
-              <span class="app-link">Soon</span>
-            </div>
-          </article>
+        <div class="hero-media reveal delay-1" aria-label="HelloAI brand animation">
+          <video src="/media/HelloAI_Video.mp4" autoplay muted loop playsinline preload="metadata"></video>
         </div>
       </section>
 
-      <section class="section">
-        <h2 class="reveal">How this site works</h2>
-        <p class="lead reveal delay-1">
-          You are always one or two clicks away from the tool you need.
-        </p>
-        <div class="quick-grid">
-          <article class="quick-item reveal delay-1">
-            <h3>1. Pick your task</h3>
-            <p>Each app is clearly named and scoped to one problem.</p>
+      <section class="section reveal delay-1" id="apps">
+        <h2>Available now</h2>
+        <p class="section-sub">Focused apps you can use right away.</p>
+
+        <div class="app-grid">
+          <article class="app-card">
+            <span class="status status-live">Live</span>
+            <img class="app-logo" src="/assets/markdownsync-logo.svg" alt="Markdown Sync logo">
+            <p>Bidirectional converter for quick markdown conversion and sync.</p>
+            <a class="text-link" href="/MarkdownSync.html">Open Markdown Sync</a>
           </article>
-          <article class="quick-item reveal delay-2">
-            <h3>2. Use it immediately</h3>
-            <p>No signup requirement for core functionality.</p>
-          </article>
-          <article class="quick-item reveal delay-2">
-            <h3>3. Finish with confidence</h3>
-            <p>Output is predictable and easy to reuse elsewhere.</p>
+
+          <article class="app-card">
+            <span class="status status-next">Next</span>
+            <h3>More apps coming</h3>
+            <p>More productivity utilities are being prepared for HelloAI.</p>
+            <a class="text-link" href="/contact.html">Share your idea</a>
           </article>
         </div>
       </section>
@@ -118,8 +75,8 @@
 
   <footer class="site-footer">
     <div class="container footer-row">
-      <span>© 2026 helloai.ca</span>
-      <span>Developed by HelloX Tech</span>
+      <span>© 2026 HelloAI</span>
+      <span>Designed for clarity and speed</span>
     </div>
   </footer>
 </body>
