@@ -2,7 +2,7 @@
   --bg: #f4f6fb;
   --bg-soft: #f9faff;
   --surface: #ffffff;
-  --text: #2b2f3a;
+  --text: #2f3338;
   --muted: #5d6b7b;
   --line: #d6dde6;
   --accent: #2f6fe3;
@@ -32,6 +32,8 @@ body {
     var(--bg);
   font-family: "Manrope", "Inter", "Segoe UI", system-ui, sans-serif;
   line-height: 1.5;
+  display: flex;
+  flex-direction: column;
 }
 
 a {
@@ -79,7 +81,7 @@ a {
   font-size: 28px;
   font-weight: 700;
   letter-spacing: -0.7px;
-  color: #2a3442;
+  color: var(--text);
 }
 
 .site-nav {
@@ -89,7 +91,7 @@ a {
 }
 
 .site-nav a {
-  color: #3f526b;
+  color: var(--muted);
   border-radius: 999px;
   padding: 8px 12px;
   font-size: 14px;
@@ -105,6 +107,7 @@ a {
 
 main {
   padding: 56px 0 96px;
+  flex: 1;
 }
 
 .hero {
@@ -363,7 +366,7 @@ main {
 
 .page-hero .lead {
   font-weight: 500;
-  color: #47586f;
+  color: var(--muted);
 }
 
 .about-hero {
@@ -385,13 +388,13 @@ main {
   border-radius: 999px;
   border: 1px solid #dbe3ee;
   background: linear-gradient(135deg, rgba(47, 111, 227, 0.12), rgba(68, 168, 255, 0.12));
-  color: #31445c;
+  color: var(--text);
   font-size: 12px;
   font-weight: 600;
 }
 
 .video-frame {
-  background: #1a212c;
+  background: #2b3138;
   border-radius: 28px;
   padding: 10px;
   box-shadow: var(--shadow-deep);
@@ -452,7 +455,7 @@ main {
   border: 1px solid #e1e8f2;
   border-radius: 20px;
   padding: 14px 18px;
-  color: #2e3a4b;
+  color: var(--text);
   font-size: 15px;
   font-weight: 600;
   box-shadow: inset 0 0 0 1px rgba(225, 232, 242, 0.5);
