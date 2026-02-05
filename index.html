@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="helloai.ca — useful, clean web applications." />
+  <title>helloai.ca — Useful Web Applications</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --bg-soft: #0f1720;
+      --surface: #111a24;
+      --surface-2: #152234;
+      --border: #253246;
+      --text: #e8f0f7;
+      --text-dim: #b9c6d6;
+      --accent: #39d0ff;
+      --accent-2: #59ffb1;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+    }
+
+    body {
+      background-image:
+        radial-gradient(1200px 600px at 80% -10%, rgba(57, 208, 255, 0.12), transparent 60%),
+        radial-gradient(1000px 600px at -10% 10%, rgba(89, 255, 177, 0.10), transparent 55%),
+        linear-gradient(180deg, #0b0f14 0%, #0c1117 60%, #0b0f14 100%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(1100px, 92vw);
+      margin: 0 auto;
+      padding: 28px 0 80px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0 8px;
+    }
+
+    .logo {
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      font-size: 20px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 18px;
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+
+    .nav a:hover { color: var(--text); }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 32px;
+      align-items: center;
+      margin-top: 40px;
+      background: linear-gradient(135deg, rgba(17, 26, 36, 0.9), rgba(15, 23, 32, 0.6));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 34px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: -40% -20% auto auto;
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(57, 208, 255, 0.22), transparent 60%);
+      filter: blur(4px);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .hero h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.1;
+      margin: 0 0 14px;
+    }
+
+    .hero p {
+      color: var(--text-dim);
+      margin: 0 0 22px;
+      font-size: 16px;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform 0.2s ease, background 0.2s ease, border 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: #071319;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .hero-card {
+      background: linear-gradient(160deg, #0f1720, #0b121a);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      position: relative;
+    }
+
+    .hero-card h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      font-family: "Space Grotesk", sans-serif;
+    }
+
+    .hero-card p {
+      margin: 0;
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    .section {
+      margin-top: 52px;
+    }
+
+    .section h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 22px;
+      margin: 0 0 10px;
+    }
+
+    .section p {
+      margin: 0 0 22px;
+      color: var(--text-dim);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      min-height: 170px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(57, 208, 255, 0.5);
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 17px;
+      font-family: "Space Grotesk", sans-serif;
+    }
+
+    .card p {
+      margin: 0 0 14px;
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(57, 208, 255, 0.12);
+      border: 1px solid rgba(57, 208, 255, 0.3);
+      color: #c8f5ff;
+      width: fit-content;
+    }
+
+    .card .link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .card.coming {
+      background: var(--surface-2);
+      border-style: dashed;
+      opacity: 0.85;
+    }
+
+    .footer {
+      margin-top: 70px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.25s; }
+    .delay-3 { animation-delay: 0.4s; }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      header { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .nav { flex-wrap: wrap; }
+      .grid { grid-template-columns: 1fr; }
+      .hero { padding: 26px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-up { animation: none; opacity: 1; transform: none; }
+      .btn:hover { transform: none; }
+      .card:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="fade-up">
+      <div class="logo">helloai.ca</div>
+      <nav class="nav">
+        <a href="#apps">Apps</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero fade-up delay-1">
+      <div>
+        <h1>Useful web apps, built to feel effortless.</h1>
+        <p>helloai.ca is a small collection of focused tools that do one job well. Simple, fast, and designed for daily use.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#apps">Explore apps</a>
+          <a class="btn btn-secondary" href="/MarkdownSync.html">Open Markdown Sync</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h3>What you can expect</h3>
+        <p>Clean interfaces, quick results, no distractions. Each app is built around a single purpose so you can get in and out fast.</p>
+      </div>
+    </section>
+
+    <section class="section" id="apps">
+      <h2 class="fade-up">Featured apps</h2>
+      <p class="fade-up delay-1">Start with what is available today and keep an eye on the upcoming tools.</p>
+      <div class="grid">
+        <article class="card fade-up delay-2">
+          <div>
+            <span class="tag">Live</span>
+            <h3>Markdown Sync</h3>
+            <p>Cleanly compare and sync markdown text with quick copy, clear diffs, and a focused layout.</p>
+          </div>
+          <a class="link" href="/MarkdownSync.html">Open app →</a>
+        </article>
+
+        <article class="card coming fade-up delay-3">
+          <div>
+            <span class="tag">Coming soon</span>
+            <h3>Prompt Organizer</h3>
+            <p>Save, tag, and reuse prompts with a lightweight manager that stays out of your way.</p>
+          </div>
+          <span class="link" aria-hidden="true">Launching soon</span>
+        </article>
+
+        <article class="card coming fade-up delay-3">
+          <div>
+            <span class="tag">Coming soon</span>
+            <h3>Quick Export</h3>
+            <p>Turn raw notes into clean exports with templates for web, docs, and slides.</p>
+          </div>
+          <span class="link" aria-hidden="true">Launching soon</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <h2 class="fade-up">About helloai.ca</h2>
+      <p class="fade-up delay-1">Built for people who want simple tools without the clutter. The goal is to deliver small, high-quality utilities that solve real tasks and feel good to use.</p>
+    </section>
+
+    <section class="section" id="contact">
+      <h2 class="fade-up">Want a tool on the site?</h2>
+      <p class="fade-up delay-1">Send your idea and I will consider it for the next release.</p>
+      <div class="cta-row fade-up delay-2">
+        <a class="btn btn-secondary" href="mailto:hello@helloai.ca">hello@helloai.ca</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>© 2026 helloai.ca</span>
+      <span>Designed for speed, clarity, and focus.</span>
+    </footer>
+  </div>
+</body>
+</html>
