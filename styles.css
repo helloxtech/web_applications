@@ -1,12 +1,12 @@
 :root {
-  --bg: #f5f5f7;
-  --bg-soft: #fafafc;
+  --bg: #f4f6fb;
+  --bg-soft: #f9faff;
   --surface: #ffffff;
-  --text: #1d1d1f;
-  --muted: #6e6e73;
-  --line: #d2d2d7;
-  --accent: #0071e3;
-  --accent-dark: #0062c8;
+  --text: #2b2f3a;
+  --muted: #5d6b7b;
+  --line: #d6dde6;
+  --accent: #2f6fe3;
+  --accent-dark: #2459c7;
   --radius-lg: 24px;
   --radius-md: 16px;
   --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.06);
@@ -27,10 +27,10 @@ body {
   min-height: 100vh;
   color: var(--text);
   background:
-    radial-gradient(1200px 600px at 15% -20%, rgba(0, 113, 227, 0.08), transparent 60%),
-    radial-gradient(1000px 520px at 100% 0%, rgba(88, 86, 214, 0.06), transparent 60%),
+    radial-gradient(1200px 600px at 15% -20%, rgba(47, 111, 227, 0.12), transparent 60%),
+    radial-gradient(1000px 520px at 100% 0%, rgba(80, 193, 255, 0.12), transparent 60%),
     var(--bg);
-  font-family: "SF Pro Text", "SF Pro Display", "Inter", "Segoe UI", system-ui, sans-serif;
+  font-family: "Manrope", "Inter", "Segoe UI", system-ui, sans-serif;
   line-height: 1.5;
 }
 
@@ -68,16 +68,16 @@ a {
 }
 
 .brand-logo {
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   display: block;
 }
 
 .brand-word {
-  font-family: "Sora", "SF Pro Display", "Inter", sans-serif;
-  font-size: 22px;
+  font-family: "Space Grotesk", "Sora", "Inter", sans-serif;
+  font-size: 24px;
   font-weight: 700;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.6px;
 }
 
 .site-nav {
@@ -87,7 +87,7 @@ a {
 }
 
 .site-nav a {
-  color: #425673;
+  color: #3f526b;
   border-radius: 999px;
   padding: 8px 12px;
   font-size: 14px;
@@ -113,11 +113,19 @@ main {
 
 .hero-tag {
   margin: 0;
-  color: #4f6382;
+  color: #42536b;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.8px;
   text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #dbe3ee;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 24px rgba(47, 111, 227, 0.08);
 }
 
 .hero h1 {
@@ -129,11 +137,18 @@ main {
   text-wrap: balance;
 }
 
+.accent {
+  background: linear-gradient(135deg, var(--accent), #4aa6ff);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
 .hero p {
   margin: 18px auto 0;
   max-width: 34ch;
-  color: var(--muted);
+  color: #4f5f73;
   font-size: clamp(18px, 3vw, 24px);
+  font-weight: 500;
   text-wrap: balance;
 }
 
@@ -165,7 +180,7 @@ main {
 .button-primary {
   color: #ffffff;
   background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-  box-shadow: 0 14px 36px rgba(0, 113, 227, 0.3);
+  box-shadow: 0 14px 36px rgba(47, 111, 227, 0.32);
 }
 
 .button-secondary {
@@ -193,9 +208,9 @@ main {
 
 .app-spotlight {
   margin-top: 24px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(47, 111, 227, 0.18);
   border-radius: var(--radius-lg);
-  background: var(--surface);
+  background: linear-gradient(120deg, rgba(47, 111, 227, 0.06), rgba(255, 255, 255, 0.9));
   box-shadow: var(--shadow-soft);
   padding: 18px 20px;
   display: flex;
@@ -211,7 +226,7 @@ main {
 }
 
 .app-logo {
-  width: 160px;
+  width: 120px;
   height: auto;
   display: block;
 }
@@ -221,12 +236,23 @@ main {
   font-family: "SF Pro Display", "Sora", "Inter", sans-serif;
   font-size: 26px;
   letter-spacing: -0.5px;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  line-height: 1.05;
+}
+
+.app-title .sync-accent {
+  color: var(--accent);
+  font-weight: 800;
 }
 
 .app-sub {
   margin: 6px 0 0;
   color: var(--muted);
   font-size: 14px;
+  max-width: 36ch;
+  text-wrap: balance;
 }
 
 .app-actions {
@@ -301,11 +327,16 @@ main {
   font-size: 19px;
 }
 
+.page-hero .lead {
+  font-weight: 500;
+  color: #47586f;
+}
+
 .about-hero {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
-  gap: 24px;
-  align-items: center;
+  gap: 32px;
+  align-items: start;
 }
 
 .pill-row {
@@ -318,24 +349,28 @@ main {
 .pill {
   padding: 6px 10px;
   border-radius: 999px;
-  border: 1px solid #e1e5ec;
-  background: var(--bg-soft);
-  color: #3b4a63;
+  border: 1px solid #dbe3ee;
+  background: linear-gradient(135deg, rgba(47, 111, 227, 0.12), rgba(68, 168, 255, 0.12));
+  color: #31445c;
   font-size: 12px;
   font-weight: 600;
 }
 
 .video-frame {
-  background: #0f1118;
+  background: #1a212c;
   border-radius: 28px;
-  padding: 8px;
+  padding: 10px;
   box-shadow: var(--shadow-deep);
-  width: min(320px, 80vw);
+  width: min(280px, 80vw);
   justify-self: end;
+  aspect-ratio: 9 / 16;
+  display: flex;
+  align-items: center;
 }
 
 .video-frame video {
   width: 100%;
+  height: 100%;
   display: block;
   border-radius: 22px;
   object-fit: cover;
