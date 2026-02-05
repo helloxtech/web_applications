@@ -27,8 +27,8 @@ body {
   min-height: 100vh;
   color: var(--text);
   background:
-    radial-gradient(1200px 600px at 20% -20%, rgba(0, 113, 227, 0.08), transparent 60%),
-    radial-gradient(1000px 500px at 95% 0%, rgba(88, 86, 214, 0.06), transparent 60%),
+    radial-gradient(1200px 600px at 15% -20%, rgba(0, 113, 227, 0.08), transparent 60%),
+    radial-gradient(1000px 520px at 100% 0%, rgba(88, 86, 214, 0.06), transparent 60%),
     var(--bg);
   font-family: "SF Pro Text", "SF Pro Display", "Inter", "Segoe UI", system-ui, sans-serif;
   line-height: 1.5;
@@ -67,24 +67,17 @@ a {
   gap: 10px;
 }
 
-.brand-main {
-  font-family: "SF Pro Display", "Sora", "Inter", sans-serif;
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -0.6px;
-  line-height: 1;
+.brand-logo {
+  width: 30px;
+  height: 30px;
+  display: block;
 }
 
-.brand-sub {
-  color: #3a4a61;
-  background: #f0f5fb;
-  border: 1px solid #d6e2f2;
-  border-radius: 999px;
-  padding: 5px 10px;
-  font-size: 11px;
+.brand-word {
+  font-family: "Sora", "SF Pro Display", "Inter", sans-serif;
+  font-size: 22px;
   font-weight: 700;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
+  letter-spacing: -0.4px;
 }
 
 .site-nav {
@@ -118,12 +111,13 @@ main {
   text-align: center;
 }
 
-.hero-eyebrow {
+.hero-tag {
   margin: 0;
   color: #4f6382;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
 }
 
 .hero h1 {
@@ -139,12 +133,12 @@ main {
   margin: 18px auto 0;
   max-width: 34ch;
   color: var(--muted);
-  font-size: clamp(18px, 3vw, 25px);
+  font-size: clamp(18px, 3vw, 24px);
   text-wrap: balance;
 }
 
 .hero-actions {
-  margin-top: 34px;
+  margin-top: 32px;
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -197,74 +191,95 @@ main {
   font-size: 18px;
 }
 
-.apps-grid {
+.app-spotlight {
+  margin-top: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.app-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.app-logo {
+  width: 160px;
+  height: auto;
+  display: block;
+}
+
+.app-title {
+  margin: 0;
+  font-family: "SF Pro Display", "Sora", "Inter", sans-serif;
+  font-size: 26px;
+  letter-spacing: -0.5px;
+}
+
+.app-sub {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.app-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.text-link {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.hub-grid {
   margin-top: 24px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
 }
 
-.app-card {
+.hub-card {
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--surface);
   box-shadow: var(--shadow-soft);
-  min-height: 156px;
   padding: 18px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 190px;
 }
 
-.app-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.1);
-  border-color: #bec6d6;
+.hub-card .app-logo {
+  width: 140px;
+  max-width: 60%;
 }
 
-.app-meta {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.app-logo {
-  width: 186px;
-  max-width: 56%;
-  height: auto;
-  display: block;
-}
-
-.app-name {
+.hub-card h3 {
   margin: 0;
   font-family: "SF Pro Display", "Sora", "Inter", sans-serif;
-  font-size: 27px;
-  letter-spacing: -0.5px;
+  font-size: 24px;
+  letter-spacing: -0.4px;
 }
 
-.app-chip {
-  display: inline-block;
-  margin-top: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #50607c;
-}
-
-.app-card .chevron {
+.hub-card p {
+  margin: 0;
+  color: var(--muted);
   font-size: 14px;
-  font-weight: 700;
-  color: #4e5f7a;
-  white-space: nowrap;
 }
 
-.app-card.placeholder {
-  background: linear-gradient(150deg, #ffffff 0%, #f4f7fb 100%);
-}
-
-.app-card.placeholder .app-name {
-  color: #45556f;
+.hub-card .text-link {
+  margin-top: auto;
 }
 
 .page-hero {
@@ -288,9 +303,26 @@ main {
 
 .about-hero {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns: 1.1fr 0.9fr;
   gap: 24px;
   align-items: center;
+}
+
+.pill-row {
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #e1e5ec;
+  background: var(--bg-soft);
+  color: #3b4a63;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .video-frame {
@@ -328,14 +360,14 @@ main {
 .info-card h2 {
   margin: 0;
   font-family: "SF Pro Display", "Sora", "Inter", sans-serif;
-  font-size: 27px;
-  letter-spacing: -0.5px;
+  font-size: 24px;
+  letter-spacing: -0.4px;
 }
 
 .info-card p {
   margin: 9px 0 0;
   color: var(--muted);
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .info-list {
@@ -372,7 +404,7 @@ main {
 .hellox-panel h2 {
   margin: 0;
   font-family: "SF Pro Display", "Sora", "Inter", sans-serif;
-  font-size: 27px;
+  font-size: 25px;
   letter-spacing: -0.5px;
 }
 
@@ -384,11 +416,6 @@ main {
 .hellox-logo {
   width: 170px;
   height: auto;
-}
-
-.text-link {
-  color: var(--accent);
-  font-weight: 700;
 }
 
 .contact-actions {
@@ -466,34 +493,19 @@ main {
     padding-top: 40px;
   }
 
-  .brand-main {
-    font-size: 25px;
-  }
-
   .hero h1 {
     font-size: clamp(44px, 14vw, 74px);
   }
 
-  .hero-actions {
-    display: flex;
+  .app-spotlight {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .apps-grid,
+  .hub-grid,
   .info-grid,
   .contact-grid {
     grid-template-columns: 1fr;
-  }
-
-  .app-card {
-    min-height: 138px;
-  }
-
-  .app-name {
-    font-size: 24px;
-  }
-
-  .section {
-    margin-top: 68px;
   }
 }
 
@@ -504,8 +516,7 @@ main {
     transform: none;
   }
 
-  .button:hover,
-  .app-card:hover {
+  .button:hover {
     transform: none;
   }
 }
