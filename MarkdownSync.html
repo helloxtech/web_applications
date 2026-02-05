@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bidirectional Markdown Converter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .mono-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Placeholder for contenteditable */
+        [contenteditable]:empty:before {
+            content: attr(data-placeholder);
+            color: #94a3b8;
+            cursor: text;
+        }
+
+        /* Force list styling in editor */
+        #rich-input ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+        #rich-input ul ul {
+            list-style-type: circle;
+        }
+
+        #rich-input ul ul ul {
+            list-style-type: square;
+        }
+        
+        #rich-input ol {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+        #rich-input li {
+            display: list-item;
+        }
+        
+        #rich-input blockquote {
+            border-left: 4px solid #e2e8f0;
+            padding-left: 1rem;
+            color: #64748b;
+            font-style: italic;
+        }
+        
+        #rich-input pre {
+            background-color: #f1f5f9;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+        }
+
+        /* Focus styles for panels */
+        .panel-focus {
+            ring: 2px;
+            ring-color: #6366f1; /* Indigo-500 */
+            border-color: #6366f1 !important;
+        }
+        
+        /* Toolbar button active state */
+        .tool-btn:hover {
+            background-color: #e0e7ff;
+            color: #4f46e5;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 h-screen flex flex-col overflow-hidden text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between shrink-0 shadow-sm z-20">
+        <div class="flex items-center gap-3">
+            <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-lg shadow-indigo-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12H3"/><path d="m15 6 6 6-6 6"/><path d="m9 18-6-6 6-6"/></svg>
+            </div>
+            <div>
+                <h1 class="font-bold text-xl leading-tight text-slate-900 tracking-tight">Markdown<span class="text-indigo-600">Sync</span></h1>
+                <p class="text-xs text-slate-500 font-medium">Bidirectional Converter</p>
+            </div>
+        </div>
+        
+        <button onclick="resetAll()" class="text-slate-500 hover:text-red-600 text-sm font-medium transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-slate-50">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+            Reset All
+        </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col md:flex-row min-h-0 p-4 gap-6 max-w-[1600px] mx-auto w-full">
+        
+        <!-- Left Panel: Rich Text -->
+        <section id="panel-rich" class="flex-1 flex flex-col bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden transition-all duration-200 hover:shadow-md">
+            <!-- Header -->
+            <div class="px-5 py-3 bg-white border-b border-slate-100 flex justify-between items-center shrink-0">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
+                    <h2 class="text-sm font-bold text-slate-700">Rich Text</h2>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="copyToClipboard('rich-input', 'html')" class="text-xs font-medium text-slate-500 hover:text-indigo-600 px-2 py-1 rounded hover:bg-indigo-50 transition-colors">Copy HTML</button>
+                </div>
+            </div>
+
+            <!-- Format Toolbar -->
+            <div class="px-4 py-2 bg-slate-50 border-b border-slate-100 flex flex-wrap gap-1 items-center">
+                
+                <!-- History -->
+                <button onclick="format('undo')" class="tool-btn p-1.5 rounded text-slate-600 hover:bg-white transition-colors" title="Undo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 7"/></svg>
+                </button>
+                <button onclick="format('redo')" class="tool-btn p-1.5 rounded text-slate-600 hover:bg-white transition-colors" title="Redo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 7"/></svg>
+                </button>
+
+                <div class="w-px h-5 bg-slate-300 mx-1"></div>
+
+                <!-- Text Style -->
+                <button onclick="format('bold')" class="tool-btn p-1.5 rounded text-slate-600 hover:bg-white transition-colors" title="Bold">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"/></svg>
+                </button>
+                <button onclick="format('italic')" class="tool-btn p-1.5 rounded text-slate-600 hover:bg-white transition-colors" title="Italic">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="10" y1="4" y2="4"/><line x1="14" x2="5" y1="20" y2="20"/><line x1="15" x2="9" y1="4" y2="20"/></svg>
+                </button>
+                <button onclick="format('strikeThrough')" class="tool-btn p-1.5 rounded text-slate-600 hover:bg-white transition-colors" title="Strikethrough">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4H9a3 3 0 0 0-2.83 4"/><path d="M14 12a4 4 0 0 1 0 8H6"/><line x1="4" x2="20" y1="12" y2="12"/></svg>
+                </button>
+
+                <div class="w-px h-5 bg-slate-300 mx-1"></div>
+
+                <!-- Headings -->
+                <button onclick="format('formatBlock', 'H1')" class="tool-btn p-1.5 rounded text-slate-600 hover:bg-white transition-colors font-bold text-sm" title="Heading 1">H1</button>
+                <button onclick="format('formatBlock', 'H2')" class="tool-btn p-1.5 rounded text-slate-600 hover:bg-white transition-colors font-bold text-sm" title="Heading 2">H2</button>
+
+                <div class="w-px h-5 bg-slate-300 mx-1"></div>
+
+                <!-- Lists -->
+                <button onclick="format('insertUnorderedList')" class="tool-btn p-1.5 rounded text-slate-600 hover:bg-white transition-colors" title="Bullet List">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></svg>
+                </button>
+                <button onclick="format('insertOrderedList')" class="tool-btn p-1.5 rounded text-slate-600 hover:bg-white transition-colors" title="Numbered List">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="21" y1="6" y2="6"/><line x1="10" x2="21" y1="12" y2="12"/><line x1="10" x2="21" y1="18" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/></svg>
+                </button>
+
+                <div class="w-px h-5 bg-slate-300 mx-1"></div>
+
+                <!-- Indentation -->
+                <button onclick="format('outdent')" class="tool-btn p-1.5 rounded text-slate-600 hover:bg-white transition-colors" title="Decrease Indent">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 8 3 12 7 16"/><line x1="21" x2="11" y1="12" y2="12"/><line x1="21" x2="11" y1="6" y2="6"/><line x1="21" x2="11" y1="18" y2="18"/></svg>
+                </button>
+                <button onclick="format('indent')" class="tool-btn p-1.5 rounded text-slate-600 hover:bg-white transition-colors" title="Increase Indent">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 8 21 12 17 16"/><line x1="3" x2="13" y1="12" y2="12"/><line x1="3" x2="13" y1="6" y2="6"/><line x1="3" x2="13" y1="18" y2="18"/></svg>
+                </button>
+
+                <div class="w-px h-5 bg-slate-300 mx-1"></div>
+
+                <!-- Special -->
+                <button onclick="format('formatBlock', 'blockquote')" class="tool-btn p-1.5 rounded text-slate-600 hover:bg-white transition-colors" title="Quote">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/></svg>
+                </button>
+                <button onclick="format('createLink')" class="tool-btn p-1.5 rounded text-slate-600 hover:bg-white transition-colors" title="Link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                </button>
+            </div>
+            
+            <!-- Editor -->
+            <div 
+                id="rich-input" 
+                contenteditable="true" 
+                data-placeholder="Type here to convert to Markdown..."
+                class="flex-1 p-6 outline-none overflow-y-auto prose prose-slate prose-sm max-w-none prose-p:my-2 prose-headings:my-3 prose-ul:my-2 prose-li:my-0.5 selection:bg-indigo-100 selection:text-indigo-900"
+            >
+                <h1>Markdown Capability Test</h1>
+                <p>Welcome to the <b>Bidirectional Converter</b>! Try editing this text.</p>
+
+                <h2>1. Text Styles</h2>
+                <p>We support <b>bold (strong)</b>, <i>italic (emphasis)</i>, and <s>strikethrough</s>.</p>
+                <p>You can also use <code>inline code</code> for technical terms.</p>
+
+                <h2>2. Nested Lists</h2>
+                <ul>
+                    <li>Main Item 1
+                        <ul>
+                            <li>Sub Item A</li>
+                            <li>Sub Item B
+                                <ul>
+                                    <li>Deep Item 1</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Main Item 2</li>
+                </ul>
+                <ol>
+                    <li>First Step</li>
+                    <li>Second Step
+                        <ol>
+                            <li>Sub-process X</li>
+                            <li>Sub-process Y</li>
+                        </ol>
+                    </li>
+                </ol>
+
+                <h2>3. Blockquotes</h2>
+                <blockquote>
+                    <p>Markdown is a lightweight markup language with plain text formatting syntax.</p>
+                </blockquote>
+
+                <h2>4. Code Blocks</h2>
+                <pre><code>// A simple JavaScript function
+function greet(name) {
+  return `Hello, ${name}!`;
+}</code></pre>
+
+                <h2>5. Links & Dividers</h2>
+                <p>Visit <a href="https://commonmark.org">CommonMark</a> for specs.</p>
+                <hr>
+                <p><small>End of sample.</small></p>
+            </div>
+        </section>
+
+        <!-- Right Panel: Markdown -->
+        <section id="panel-markdown" class="flex-1 flex flex-col bg-slate-900 rounded-2xl shadow-lg border border-slate-800 overflow-hidden transition-all duration-200">
+             <!-- Toolbar -->
+             <div class="px-5 py-3 bg-slate-800 border-b border-slate-700 flex justify-between items-center shrink-0">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+                    <h2 class="text-sm font-bold text-slate-200">Markdown</h2>
+                </div>
+                <div class="flex gap-2 items-center">
+                    <span id="copy-toast" class="text-emerald-400 text-xs font-medium opacity-0 transition-opacity duration-300">Copied!</span>
+                    <button onclick="copyToClipboard('markdown-input', 'text')" class="text-xs font-medium text-slate-400 hover:text-white px-2 py-1 rounded hover:bg-slate-700 transition-colors">Copy MD</button>
+                </div>
+            </div>
+
+            <!-- Editor -->
+            <textarea 
+                id="markdown-input" 
+                class="flex-1 p-6 bg-slate-900 text-slate-300 mono-font text-sm leading-relaxed outline-none resize-none border-none focus:ring-0 w-full selection:bg-slate-700"
+                placeholder="...or type Markdown here"
+            ></textarea>
+        </section>
+
+    </main>
+
+    <script>
+        /**
+         * Configuration & Initialization
+         */
+        const turndownService = new TurndownService({
+            headingStyle: 'atx',
+            codeBlockStyle: 'fenced',
+            bulletListMarker: '-',
+            emDelimiter: '*' 
+        });
+
+        // Add strikethrough support to Turndown
+        turndownService.addRule('strikethrough', {
+            filter: ['del', 's', 'strike'],
+            replacement: content => '~' + content + '~'
+        });
+
+        // Configure Marked (Markdown to HTML)
+        marked.use({
+            breaks: true, // Convert \n to <br>
+            gfm: true     // GitHub Flavored Markdown
+        });
+
+        const richInput = document.getElementById('rich-input');
+        const markdownInput = document.getElementById('markdown-input');
+        const panelRich = document.getElementById('panel-rich');
+        const panelMarkdown = document.getElementById('panel-markdown');
+        
+        let isUpdating = false; // Flag to prevent infinite loops
+
+        /**
+         * Core Logic
+         */
+        
+        // 1. Rich Text -> Markdown
+        function syncToMarkdown() {
+            if (isUpdating) return;
+            isUpdating = true;
+
+            const html = richInput.innerHTML;
+            
+            // Handle empty state gracefully
+            if (!richInput.innerText.trim() && !html.includes('<img')) {
+                markdownInput.value = '';
+            } else {
+                try {
+                    const md = turndownService.turndown(html);
+                    markdownInput.value = md;
+                } catch (e) {
+                    console.error("RichText conversion error", e);
+                }
+            }
+
+            isUpdating = false;
+        }
+
+        // 2. Markdown -> Rich Text
+        function syncToRichText() {
+            if (isUpdating) return;
+            isUpdating = true;
+
+            const md = markdownInput.value;
+            
+            try {
+                // Parse markdown to HTML
+                const html = marked.parse(md);
+                richInput.innerHTML = html;
+            } catch (e) {
+                console.error("Markdown conversion error", e);
+            }
+
+            isUpdating = false;
+        }
+
+        // 3. Formatting Logic
+        function format(command, value = null) {
+            if (command === 'createLink') {
+                const url = prompt('Enter the link URL:', 'https://');
+                if (url) {
+                    document.execCommand(command, false, url);
+                }
+            } else {
+                document.execCommand(command, false, value);
+            }
+            
+            // Keep focus on editor
+            richInput.focus();
+            
+            // Trigger sync immediately so markdown updates
+            syncToMarkdown();
+        }
+
+        /**
+         * Visual Feedback (Focus handling)
+         */
+        
+        richInput.addEventListener('focus', () => {
+            panelRich.classList.add('ring-2', 'ring-indigo-500', 'border-transparent');
+            panelMarkdown.classList.remove('ring-2', 'ring-indigo-500', 'border-transparent');
+            panelMarkdown.classList.add('opacity-80'); // Dim the other side slightly
+            panelRich.classList.remove('opacity-80');
+        });
+
+        richInput.addEventListener('blur', () => {
+            panelRich.classList.remove('ring-2', 'ring-indigo-500', 'border-transparent');
+            panelMarkdown.classList.remove('opacity-80');
+        });
+
+        markdownInput.addEventListener('focus', () => {
+            panelMarkdown.classList.add('ring-2', 'ring-indigo-500', 'border-slate-800'); // border hack
+            panelRich.classList.remove('ring-2', 'ring-indigo-500', 'border-transparent');
+            panelRich.classList.add('opacity-80');
+            panelMarkdown.classList.remove('opacity-80');
+        });
+
+        markdownInput.addEventListener('blur', () => {
+            panelMarkdown.classList.remove('ring-2', 'ring-indigo-500', 'border-slate-800');
+            panelRich.classList.remove('opacity-80');
+        });
+
+        /**
+         * Event Listeners
+         */
+        
+        // Input events
+        richInput.addEventListener('input', syncToMarkdown);
+        markdownInput.addEventListener('input', syncToRichText);
+
+        // Paste handling (Clean HTML for Rich Text)
+        richInput.addEventListener('paste', (e) => {
+            // Allow default paste, but trigger sync immediately after
+            setTimeout(syncToMarkdown, 0);
+        });
+
+        /**
+         * Utilities
+         */
+
+        function resetAll() {
+            richInput.innerHTML = '';
+            markdownInput.value = '';
+            richInput.focus();
+        }
+
+        function copyToClipboard(elementId, type) {
+            let textToCopy = '';
+            
+            if (type === 'html') {
+                // Get the HTML source code, not the rendered text
+                textToCopy = document.getElementById(elementId).innerHTML;
+            } else {
+                // Get the value of textarea
+                const el = document.getElementById(elementId);
+                textToCopy = el.value || el.innerText;
+            }
+
+            // Copy API
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showToast();
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+
+        function showToast() {
+            const toast = document.getElementById('copy-toast');
+            toast.classList.remove('opacity-0');
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 2000);
+        }
+
+        // Initialize
+        syncToMarkdown();
+
+    </script>
+</body>
+</html>
