@@ -77,10 +77,10 @@ a {
 }
 
 .brand-word {
-  font-family: "Space Grotesk", "Sora", "Manrope", "Inter", sans-serif;
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 28px;
   font-weight: 700;
-  letter-spacing: -0.7px;
+  letter-spacing: -0.6px;
   color: var(--text);
 }
 
