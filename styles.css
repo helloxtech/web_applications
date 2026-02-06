@@ -148,6 +148,10 @@ main {
   color: transparent;
 }
 
+.hero-highlight {
+  color: #2f6fe3;
+}
+
 .hero p {
   margin: 18px auto 0;
   max-width: 34ch;
@@ -294,7 +298,7 @@ main {
 .hub-grid {
   margin-top: 24px;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
 
@@ -303,11 +307,11 @@ main {
   border-radius: var(--radius-lg);
   background: var(--surface);
   box-shadow: var(--shadow-soft);
-  padding: 18px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-height: 190px;
+  min-height: 160px;
 }
 
 .hub-card-link {
@@ -324,21 +328,40 @@ main {
 }
 
 .hub-card .app-logo {
-  width: 140px;
-  max-width: 60%;
+  width: 110px;
+  max-width: 70%;
+}
+
+.hub-card .app-mark {
+  width: 56px;
+  height: 56px;
+  display: block;
+}
+
+.home-hub-card h3 {
+  margin: 0;
+  font-family: "SF Pro Display", "Sora", "Inter", sans-serif;
+  font-size: 20px;
+  letter-spacing: -0.4px;
+}
+
+.home-hub-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .hub-card h3 {
   margin: 0;
   font-family: "SF Pro Display", "Sora", "Inter", sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   letter-spacing: -0.4px;
 }
 
 .hub-card p {
   margin: 0;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .hub-card .text-link {
