@@ -103,7 +103,9 @@
   display: flex;
   gap: 6px;
   padding: 6px 8px 8px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  align-items: stretch;
 }
 
 .ribbon-group {
@@ -126,6 +128,12 @@
   flex-wrap: wrap;
 }
 
+.ribbon-row--palette {
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
 .ribbon-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -133,7 +141,7 @@
 }
 
 .ribbon-tools .ribbon-grid {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .shapes-grid {
@@ -164,6 +172,45 @@
   padding: 6px 10px;
   font-size: 12px;
   height: 30px;
+}
+
+.ribbon-btn--primary {
+  background: #4b86d6;
+  border-color: #3c73bf;
+  color: #ffffff;
+}
+
+.ribbon-btn--primary:hover {
+  background: #3c73bf;
+}
+
+.ribbon-btn--primary:active {
+  background: #2f5fa1;
+}
+
+.ribbon-btn--icon {
+  min-width: 34px;
+  width: 34px;
+  height: 30px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ribbon-icon {
+  width: 18px;
+  height: 18px;
+  stroke: #1f2937;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  pointer-events: none;
+}
+
+.ribbon-btn--icon:hover .ribbon-icon {
+  stroke: #0f172a;
 }
 
 .ribbon-btn:disabled,
@@ -239,6 +286,14 @@
   background: #ffffff;
 }
 
+.ribbon-input--compact {
+  width: 54px;
+}
+
+.ribbon-select--compact {
+  width: 68px;
+}
+
 .ribbon-range {
   width: 110px;
   accent-color: #4b86d6;
@@ -292,13 +347,16 @@
 .color-stack {
   display: flex;
   gap: 10px;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 68px;
 }
 
 .color-box {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 4px;
 }
 
@@ -306,20 +364,37 @@
   font-size: 10px;
   color: #4b5563;
   font-weight: 600;
+  line-height: 1;
 }
 
 .color-sample {
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   border: 1px solid #7b7b7b;
   background: #ffffff;
   cursor: pointer;
+}
+
+.ribbon-btn--compact {
+  min-width: 86px;
+  height: 26px;
+  padding: 4px 8px;
+}
+
+.ribbon-row--palette > .ribbon-btn--compact {
+  align-self: center;
 }
 
 .palette-grid {
   display: grid;
   grid-template-columns: repeat(10, 16px);
   gap: 4px;
+}
+
+.palette-column {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .color-chip {
@@ -395,6 +470,33 @@
   box-shadow: 0 2px 4px rgba(31, 41, 55, 0.2);
   pointer-events: auto;
   z-index: 2;
+}
+
+.selection-rotate {
+  position: absolute;
+  left: 50%;
+  top: -26px;
+  width: 14px;
+  height: 14px;
+  background: #ffffff;
+  border: 1px solid #4b86d6;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 4px rgba(31, 41, 55, 0.2);
+  pointer-events: auto;
+  cursor: grab;
+  z-index: 3;
+}
+
+.selection-rotate::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  width: 1px;
+  height: 10px;
+  background: #4b86d6;
+  transform: translateX(-50%);
 }
 
 .image-layer {
@@ -501,7 +603,7 @@
   }
 
   .ribbon-tools .ribbon-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -516,10 +618,10 @@
   }
 
   .ribbon-group {
-    min-width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #d0d4da;
-    padding-bottom: 8px;
+    min-width: 120px;
+    border-right: 1px solid #d0d4da;
+    border-bottom: none;
+    padding-bottom: 2px;
   }
 
   .ribbon-grid {

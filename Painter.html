@@ -35,21 +35,20 @@
       <div class="paint-ribbon" aria-label="Paint ribbon">
         <div class="ribbon-group ribbon-clipboard">
           <div class="ribbon-row">
-            <button class="ribbon-btn ribbon-btn--quick" id="save-png" type="button">Save</button>
-            <button class="ribbon-btn ribbon-btn--quick" id="undo" type="button">Undo</button>
-            <button class="ribbon-btn ribbon-btn--quick" id="redo" type="button">Redo</button>
+            <button class="ribbon-btn ribbon-btn--quick ribbon-btn--primary" id="save-png" type="button">Save</button>
+            <button class="ribbon-btn ribbon-btn--quick ribbon-btn--icon" id="undo" type="button" aria-label="Undo" title="Undo">
+              <svg class="ribbon-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 7H4V2"></path>
+                <path d="M4 7c3-3 8-3 11 0 3 3 3 8 0 11"></path>
+              </svg>
+            </button>
+            <button class="ribbon-btn ribbon-btn--quick ribbon-btn--icon" id="redo" type="button" aria-label="Redo" title="Redo">
+              <svg class="ribbon-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15 7h5V2"></path>
+                <path d="M20 7c-3-3-8-3-11 0-3 3-3 8 0 11"></path>
+              </svg>
+            </button>
           </div>
-          <div class="ribbon-row">
-            <button class="ribbon-btn ribbon-btn--big" id="paste-btn" type="button">Paste</button>
-          </div>
-          <div class="ribbon-row">
-            <button class="ribbon-btn" id="cut-btn" type="button">Cut</button>
-            <button class="ribbon-btn" id="copy-btn" type="button">Copy</button>
-          </div>
-          <div class="ribbon-title">Clipboard</div>
-        </div>
-
-        <div class="ribbon-group ribbon-image">
           <div class="ribbon-row">
             <button class="ribbon-btn tool-button tool-icon-btn" data-tool="select" type="button" aria-label="Select" title="Select">
               <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -63,6 +62,10 @@
               </svg>
             </button>
           </div>
+          <div class="ribbon-title">Clipboard</div>
+        </div>
+
+        <div class="ribbon-group ribbon-image">
           <div class="ribbon-row">
             <label class="ribbon-label" for="canvas-width">Resize</label>
             <input class="ribbon-input" id="canvas-width" type="number" min="200" value="1200">
@@ -71,16 +74,32 @@
           </div>
           <div class="ribbon-row">
             <label class="ribbon-label">Rotate</label>
-            <button class="ribbon-btn" id="rotate-left" type="button">Left</button>
-            <button class="ribbon-btn" id="rotate-right" type="button">Right</button>
-            <button class="ribbon-btn" id="flip-h" type="button">Flip H</button>
-            <button class="ribbon-btn" id="flip-v" type="button">Flip V</button>
-          </div>
-          <div class="ribbon-row">
-            <label class="ribbon-label" for="image-scale">Image scale</label>
-            <input class="ribbon-range" id="image-scale" type="range" min="10" max="200" value="100" disabled>
-            <button class="ribbon-btn" id="apply-image" type="button" disabled>Commit</button>
-            <button class="ribbon-btn" id="cancel-image" type="button" disabled>Cancel</button>
+            <button class="ribbon-btn ribbon-btn--icon" id="rotate-left" type="button" aria-label="Rotate left" title="Rotate left">
+              <svg class="ribbon-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 7H3V3"></path>
+                <path d="M3 7a9 9 0 1 0 3-3"></path>
+              </svg>
+            </button>
+            <button class="ribbon-btn ribbon-btn--icon" id="rotate-right" type="button" aria-label="Rotate right" title="Rotate right">
+              <svg class="ribbon-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M17 7h4V3"></path>
+                <path d="M21 7a9 9 0 1 1-3-3"></path>
+              </svg>
+            </button>
+            <button class="ribbon-btn ribbon-btn--icon" id="flip-h" type="button" aria-label="Flip horizontal" title="Flip horizontal">
+              <svg class="ribbon-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 4v16"></path>
+                <path d="M8 8l-4 4 4 4"></path>
+                <path d="M16 8l4 4-4 4"></path>
+              </svg>
+            </button>
+            <button class="ribbon-btn ribbon-btn--icon" id="flip-v" type="button" aria-label="Flip vertical" title="Flip vertical">
+              <svg class="ribbon-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12h16"></path>
+                <path d="M8 8l4-4 4 4"></path>
+                <path d="M8 16l4 4 4-4"></path>
+              </svg>
+            </button>
           </div>
           <div class="ribbon-title">Image</div>
         </div>
@@ -147,9 +166,6 @@
             <button class="ribbon-btn tool-button tool-icon-btn" data-tool="ellipse" type="button" aria-label="Ellipse" title="Ellipse">
               <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="12" rx="7" ry="6"></ellipse></svg>
             </button>
-            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="triangle" type="button" aria-label="Triangle" title="Triangle">
-              <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6l7 12H5z"></path></svg>
-            </button>
             <button class="ribbon-btn tool-button tool-icon-btn" data-tool="righttriangle" type="button" aria-label="Right Triangle" title="Right Triangle">
               <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6v12h12z"></path></svg>
             </button>
@@ -168,8 +184,10 @@
             <button class="ribbon-btn tool-button tool-icon-btn" data-tool="double-arrow" type="button" aria-label="Double Arrow" title="Double Arrow">
               <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16"></path><path d="M9 7l-5 5 5 5"></path><path d="M15 7l5 5-5 5"></path></svg>
             </button>
-            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="filled-arrow" type="button" aria-label="Filled Arrow" title="Filled Arrow">
-              <svg class="tool-icon tool-icon--filled" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h9V6l7 6-7 6v-4H4z"></path></svg>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="filled-arrow" type="button" aria-label="Block Arrow" title="Block Arrow">
+              <svg class="tool-icon tool-icon--filled" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 7h9V4l7 8-7 8v-3H4z"></path>
+              </svg>
             </button>
             <button class="ribbon-btn tool-button tool-icon-btn" data-tool="star" type="button" aria-label="Star" title="Star">
               <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l2.3 5 5.4.4-4.2 3.6 1.3 5.4L12 15.6 7.2 18.4l1.3-5.4L4.3 9.4l5.4-.4z"></path></svg>
@@ -193,8 +211,6 @@
               <option value="dotted">Dotted</option>
               <option value="dashdot">Dash dot</option>
             </select>
-          </div>
-          <div class="ribbon-row">
             <label class="ribbon-label" for="arrow-head">Arrow head</label>
             <select class="ribbon-select" id="arrow-head">
               <option value="open">Open</option>
@@ -221,54 +237,82 @@
             <input class="ribbon-range" id="opacity-range" type="range" min="10" max="100" value="100">
           </div>
           <div class="ribbon-row">
-            <label class="ribbon-label" for="text-size">Text size</label>
-            <input class="ribbon-range" id="text-size" type="range" min="12" max="72" value="28">
+            <label class="ribbon-label" for="text-size-select">Text size</label>
+            <select class="ribbon-select ribbon-select--compact" id="text-size-select">
+              <option value="12">12</option>
+              <option value="14">14</option>
+              <option value="16">16</option>
+              <option value="18">18</option>
+              <option value="20">20</option>
+              <option value="24">24</option>
+              <option value="28" selected>28</option>
+              <option value="32">32</option>
+              <option value="36">36</option>
+              <option value="48">48</option>
+              <option value="60">60</option>
+              <option value="72">72</option>
+              <option value="custom">Custom</option>
+            </select>
+            <input class="ribbon-input ribbon-input--compact" id="text-size-input" type="number" min="6" max="200" value="28">
             <select class="ribbon-select" id="text-font">
               <option value="Segoe UI">Segoe UI</option>
+              <option value="Inter">Inter</option>
+              <option value="Manrope">Manrope</option>
               <option value="Space Grotesk">Space Grotesk</option>
               <option value="Sora">Sora</option>
-              <option value="Manrope">Manrope</option>
+              <option value="Arial">Arial</option>
+              <option value="Helvetica">Helvetica</option>
+              <option value="Verdana">Verdana</option>
+              <option value="Tahoma">Tahoma</option>
+              <option value="Trebuchet MS">Trebuchet MS</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Times New Roman">Times New Roman</option>
+              <option value="Courier New">Courier New</option>
             </select>
           </div>
           <div class="ribbon-title">Size</div>
         </div>
 
         <div class="ribbon-group ribbon-colors">
-          <div class="color-stack">
-            <div class="color-box">
-              <span class="color-label">Color 1</span>
-              <button class="color-sample" id="color1-btn" type="button"></button>
-              <input id="color1-input" type="color" value="#1f2937" hidden>
+          <div class="ribbon-row ribbon-row--palette">
+            <div class="color-stack">
+              <div class="color-box">
+                <span class="color-label">Color 1</span>
+                <button class="color-sample" id="color1-btn" type="button"></button>
+                <input id="color1-input" type="color" value="#1f2937" hidden>
+              </div>
+              <div class="color-box">
+                <span class="color-label">Color 2</span>
+                <button class="color-sample" id="color2-btn" type="button"></button>
+                <input id="color2-input" type="color" value="#f97316" hidden>
+              </div>
             </div>
-            <div class="color-box">
-              <span class="color-label">Color 2</span>
-              <button class="color-sample" id="color2-btn" type="button"></button>
-              <input id="color2-input" type="color" value="#f97316" hidden>
+            <div class="palette-column">
+              <div class="palette-grid" id="palette-grid">
+              <button class="color-chip" style="background:#000000" data-color="#000000" aria-label="Black"></button>
+              <button class="color-chip" style="background:#7f7f7f" data-color="#7f7f7f" aria-label="Gray"></button>
+              <button class="color-chip" style="background:#880015" data-color="#880015" aria-label="Dark red"></button>
+              <button class="color-chip" style="background:#ed1c24" data-color="#ed1c24" aria-label="Red"></button>
+              <button class="color-chip" style="background:#ff7f27" data-color="#ff7f27" aria-label="Orange"></button>
+              <button class="color-chip" style="background:#fff200" data-color="#fff200" aria-label="Yellow"></button>
+              <button class="color-chip" style="background:#22b14c" data-color="#22b14c" aria-label="Green"></button>
+              <button class="color-chip" style="background:#00a2e8" data-color="#00a2e8" aria-label="Sky"></button>
+              <button class="color-chip" style="background:#3f48cc" data-color="#3f48cc" aria-label="Blue"></button>
+              <button class="color-chip" style="background:#a349a4" data-color="#a349a4" aria-label="Purple"></button>
+              <button class="color-chip" style="background:#ffffff" data-color="#ffffff" aria-label="White"></button>
+              <button class="color-chip" style="background:#c3c3c3" data-color="#c3c3c3" aria-label="Light gray"></button>
+              <button class="color-chip" style="background:#b97a57" data-color="#b97a57" aria-label="Brown"></button>
+              <button class="color-chip" style="background:#ffaec9" data-color="#ffaec9" aria-label="Pink"></button>
+              <button class="color-chip" style="background:#ffc90e" data-color="#ffc90e" aria-label="Gold"></button>
+              <button class="color-chip" style="background:#efe4b0" data-color="#efe4b0" aria-label="Beige"></button>
+              <button class="color-chip" style="background:#b5e61d" data-color="#b5e61d" aria-label="Lime"></button>
+              <button class="color-chip" style="background:#99d9ea" data-color="#99d9ea" aria-label="Light blue"></button>
+              <button class="color-chip" style="background:#7092be" data-color="#7092be" aria-label="Steel"></button>
+              <button class="color-chip" style="background:#c8bfe7" data-color="#c8bfe7" aria-label="Lavender"></button>
+              </div>
+              <button class="ribbon-btn ribbon-btn--compact" id="edit-colors" type="button">Edit colors</button>
             </div>
           </div>
-          <div class="palette-grid" id="palette-grid">
-            <button class="color-chip" style="background:#000000" data-color="#000000" aria-label="Black"></button>
-            <button class="color-chip" style="background:#7f7f7f" data-color="#7f7f7f" aria-label="Gray"></button>
-            <button class="color-chip" style="background:#880015" data-color="#880015" aria-label="Dark red"></button>
-            <button class="color-chip" style="background:#ed1c24" data-color="#ed1c24" aria-label="Red"></button>
-            <button class="color-chip" style="background:#ff7f27" data-color="#ff7f27" aria-label="Orange"></button>
-            <button class="color-chip" style="background:#fff200" data-color="#fff200" aria-label="Yellow"></button>
-            <button class="color-chip" style="background:#22b14c" data-color="#22b14c" aria-label="Green"></button>
-            <button class="color-chip" style="background:#00a2e8" data-color="#00a2e8" aria-label="Sky"></button>
-            <button class="color-chip" style="background:#3f48cc" data-color="#3f48cc" aria-label="Blue"></button>
-            <button class="color-chip" style="background:#a349a4" data-color="#a349a4" aria-label="Purple"></button>
-            <button class="color-chip" style="background:#ffffff" data-color="#ffffff" aria-label="White"></button>
-            <button class="color-chip" style="background:#c3c3c3" data-color="#c3c3c3" aria-label="Light gray"></button>
-            <button class="color-chip" style="background:#b97a57" data-color="#b97a57" aria-label="Brown"></button>
-            <button class="color-chip" style="background:#ffaec9" data-color="#ffaec9" aria-label="Pink"></button>
-            <button class="color-chip" style="background:#ffc90e" data-color="#ffc90e" aria-label="Gold"></button>
-            <button class="color-chip" style="background:#efe4b0" data-color="#efe4b0" aria-label="Beige"></button>
-            <button class="color-chip" style="background:#b5e61d" data-color="#b5e61d" aria-label="Lime"></button>
-            <button class="color-chip" style="background:#99d9ea" data-color="#99d9ea" aria-label="Light blue"></button>
-            <button class="color-chip" style="background:#7092be" data-color="#7092be" aria-label="Steel"></button>
-            <button class="color-chip" style="background:#c8bfe7" data-color="#c8bfe7" aria-label="Lavender"></button>
-          </div>
-          <button class="ribbon-btn" id="edit-colors" type="button">Edit colors</button>
           <div class="ribbon-title">Colors</div>
         </div>
       </div>
@@ -281,6 +325,7 @@
               <div class="selection-box" id="selection-box"></div>
               <div class="selection-layer" id="selection-layer">
                 <canvas id="selection-canvas"></canvas>
+                <div class="selection-rotate" id="selection-rotate" title="Rotate"></div>
                 <div class="selection-handle handle-nw" data-handle="nw"></div>
                 <div class="selection-handle handle-n" data-handle="n"></div>
                 <div class="selection-handle handle-ne" data-handle="ne"></div>
@@ -336,6 +381,7 @@
       var selectionCanvas = document.getElementById("selection-canvas");
       var selectionCtx = selectionCanvas.getContext("2d");
       var selectionHandles = Array.prototype.slice.call(document.querySelectorAll(".selection-handle"));
+      var selectionRotateHandle = document.getElementById("selection-rotate");
       var imageLayer = document.getElementById("image-layer");
       var imageLayerImg = document.getElementById("image-layer-img");
       var imageHandles = Array.prototype.slice.call(document.querySelectorAll(".image-handle"));
@@ -354,7 +400,8 @@
       var color2Input = document.getElementById("color2-input");
       var paletteGrid = document.getElementById("palette-grid");
       var editColorsBtn = document.getElementById("edit-colors");
-      var textSize = document.getElementById("text-size");
+      var textSizeSelect = document.getElementById("text-size-select");
+      var textSizeInput = document.getElementById("text-size-input");
       var textFont = document.getElementById("text-font");
       var imageScale = document.getElementById("image-scale");
       var applyImage = document.getElementById("apply-image");
@@ -394,6 +441,8 @@
         zoom: 1,
         width: 1200,
         height: 720,
+        fillTolerance: 40,
+        pixelRatio: window.devicePixelRatio || 1,
         bg: "#ffffff",
         isDrawing: false,
         startX: 0,
@@ -406,19 +455,40 @@
         imageResize: null,
         selection: null,
         selectionResize: null,
+        selectionRotate: null,
         clipboardImage: null,
         cropMode: false,
         textFocusToken: 0
       };
 
+      function getDevicePixelRatio() {
+        return window.devicePixelRatio || 1;
+      }
+
+      function resizeCanvasBackingStore(width, height) {
+        var dpr = getDevicePixelRatio();
+        state.pixelRatio = dpr;
+        canvas.width = Math.max(1, Math.round(width * dpr));
+        canvas.height = Math.max(1, Math.round(height * dpr));
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function resizeSelectionCanvas(width, height) {
+        var dpr = state.pixelRatio || 1;
+        selectionCanvas.width = Math.max(1, Math.round(width * dpr));
+        selectionCanvas.height = Math.max(1, Math.round(height * dpr));
+      }
+
       function setCanvasSize(width, height, shouldScale, skipHistory) {
+        var prevWidth = state.width;
+        var prevHeight = state.height;
+        var prevDpr = state.width ? canvas.width / state.width : (state.pixelRatio || 1);
         var temp = document.createElement("canvas");
-        temp.width = canvas.width;
-        temp.height = canvas.height;
+        temp.width = Math.max(1, Math.round(prevWidth * prevDpr));
+        temp.height = Math.max(1, Math.round(prevHeight * prevDpr));
         temp.getContext("2d").drawImage(canvas, 0, 0);
 
-        canvas.width = width;
-        canvas.height = height;
+        resizeCanvasBackingStore(width, height);
         state.width = width;
         state.height = height;
 
@@ -427,9 +497,9 @@
 
         if (temp.width && temp.height) {
           if (shouldScale) {
-            ctx.drawImage(temp, 0, 0, width, height);
+            ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, width, height);
           } else {
-            ctx.drawImage(temp, 0, 0);
+            ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, prevWidth, prevHeight);
           }
         }
 
@@ -463,9 +533,35 @@
         }
       }
 
+      function syncTextEntrySize() {
+        if (textEntry.style.display === "block") {
+          var cssScale = getCssScale();
+          textEntry.style.fontSize = state.textSize * cssScale + "px";
+        }
+      }
+
+      function setTextSize(value, source) {
+        var size = parseInt(value, 10);
+        if (!size || size < 6) {
+          size = 6;
+        }
+        if (size > 200) {
+          size = 200;
+        }
+        state.textSize = size;
+        if (source !== "input") {
+          textSizeInput.value = size;
+        }
+        if (source !== "select") {
+          var option = textSizeSelect.querySelector("option[value='" + size + "']");
+          textSizeSelect.value = option ? String(size) : "custom";
+        }
+        syncTextEntrySize();
+      }
+
       function getCssScale() {
         var rect = canvas.getBoundingClientRect();
-        return rect.width / canvas.width;
+        return rect.width / state.width;
       }
 
       function updateStatus() {
@@ -519,10 +615,10 @@
         }
         var img = new Image();
         img.onload = function () {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.clearRect(0, 0, state.width, state.height);
           ctx.fillStyle = state.bg;
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          ctx.fillRect(0, 0, state.width, state.height);
+          ctx.drawImage(img, 0, 0, state.width, state.height);
           state.historyIndex = index;
           updateUndoRedo();
         };
@@ -536,8 +632,8 @@
 
       function getPoint(evt) {
         var rect = canvas.getBoundingClientRect();
-        var scaleX = canvas.width / rect.width;
-        var scaleY = canvas.height / rect.height;
+        var scaleX = state.width / rect.width;
+        var scaleY = state.height / rect.height;
         return {
           x: (evt.clientX - rect.left) * scaleX,
           y: (evt.clientY - rect.top) * scaleY
@@ -750,6 +846,45 @@
         drawOpenArrowHead(tipX, tipY, dirX, dirY, headLength, headWidth);
       }
 
+      function drawBlockArrow(startX, startY, endX, endY) {
+        var dx = endX - startX;
+        var dy = endY - startY;
+        var len = Math.sqrt(dx * dx + dy * dy);
+        if (len < 1) {
+          return;
+        }
+        var dirX = dx / len;
+        var dirY = dy / len;
+        var shaftWidth = Math.max(2, state.lineWidth * 1.8);
+        var headWidth = Math.max(6, shaftWidth * 2.1);
+        var headLength = Math.min(Math.max(10, shaftWidth * 2.8), len * 0.55);
+        if (len < headLength + 2) {
+          headLength = len * 0.5;
+        }
+        var baseX = endX - dirX * headLength;
+        var baseY = endY - dirY * headLength;
+        var perpX = -dirY;
+        var perpY = dirX;
+        var shaftHalf = shaftWidth / 2;
+        var headHalf = headWidth / 2;
+
+        ctx.beginPath();
+        ctx.moveTo(startX + perpX * shaftHalf, startY + perpY * shaftHalf);
+        ctx.lineTo(baseX + perpX * shaftHalf, baseY + perpY * shaftHalf);
+        ctx.lineTo(baseX + perpX * headHalf, baseY + perpY * headHalf);
+        ctx.lineTo(endX, endY);
+        ctx.lineTo(baseX - perpX * headHalf, baseY - perpY * headHalf);
+        ctx.lineTo(baseX - perpX * shaftHalf, baseY - perpY * shaftHalf);
+        ctx.lineTo(startX - perpX * shaftHalf, startY - perpY * shaftHalf);
+        ctx.closePath();
+        if (state.fillMode === "solid") {
+          ctx.fill();
+        }
+        if (state.outlineMode !== "none") {
+          strokePathWithStyle();
+        }
+      }
+
       function drawDirectionalArrow(startX, startY, endX, endY, doubleHead) {
         var dx = endX - startX;
         var dy = endY - startY;
@@ -921,8 +1056,8 @@
         }
 
         if (state.tool === "filled-arrow") {
-          if (state.outlineMode !== "none") {
-            drawDirectionalArrow(state.startX, state.startY, point.x, point.y, false);
+          if (state.outlineMode !== "none" || state.fillMode === "solid") {
+            drawBlockArrow(state.startX, state.startY, point.x, point.y);
           }
           return;
         }
@@ -939,15 +1074,20 @@
       }
 
       function floodFill(point) {
-        var x = Math.floor(point.x);
-        var y = Math.floor(point.y);
+        var dpr = state.pixelRatio || 1;
+        var x = Math.floor(point.x * dpr);
+        var y = Math.floor(point.y * dpr);
         var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         var data = imageData.data;
         var width = canvas.width;
         var height = canvas.height;
+        if (x < 0 || y < 0 || x >= width || y >= height) {
+          return;
+        }
         var index = (y * width + x) * 4;
         var target = [data[index], data[index + 1], data[index + 2], data[index + 3]];
         var fill = hexToRgbaArray(state.fill, state.opacity);
+        var tolerance = state.fillTolerance || 32;
         if (colorsMatch(target, fill, 0)) {
           return;
         }
@@ -961,7 +1101,7 @@
           }
           var i = (ny * width + nx) * 4;
           var current = [data[i], data[i + 1], data[i + 2], data[i + 3]];
-          if (!colorsMatch(current, target, 20)) {
+          if (!colorsMatch(current, target, tolerance)) {
             continue;
           }
           data[i] = fill[0];
@@ -988,12 +1128,13 @@
       }
 
       function colorsMatch(a, b, tolerance) {
-        return (
-          Math.abs(a[0] - b[0]) <= tolerance &&
-          Math.abs(a[1] - b[1]) <= tolerance &&
-          Math.abs(a[2] - b[2]) <= tolerance &&
-          Math.abs(a[3] - b[3]) <= tolerance
-        );
+        var dr = Math.abs(a[0] - b[0]);
+        var dg = Math.abs(a[1] - b[1]);
+        var db = Math.abs(a[2] - b[2]);
+        var da = Math.abs(a[3] - b[3]);
+        var rgbMatch = (dr + dg + db) / 3 <= tolerance;
+        var alphaMatch = da <= Math.max(40, tolerance * 2);
+        return rgbMatch && alphaMatch;
       }
 
       function applyCropToSelection() {
@@ -1006,15 +1147,14 @@
           return;
         }
         var temp = document.createElement("canvas");
-        temp.width = w;
-        temp.height = h;
+        temp.width = selectionCanvas.width;
+        temp.height = selectionCanvas.height;
         temp.getContext("2d").drawImage(selectionCanvas, 0, 0);
-        canvas.width = w;
-        canvas.height = h;
+        resizeCanvasBackingStore(w, h);
         state.width = w;
         state.height = h;
         ctx.clearRect(0, 0, w, h);
-        ctx.drawImage(temp, 0, 0);
+        ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, w, h);
         selectionLayer.style.display = "none";
         state.selection = null;
         canvasWidthInput.value = w;
@@ -1102,6 +1242,7 @@
         selectionLayer.style.display = "none";
         state.selection = null;
         state.selectionResize = null;
+        state.selectionRotate = null;
       }
 
       function finalizeImagePlacementIfNeeded() {
@@ -1121,6 +1262,7 @@
           y: point.y,
           w: 0,
           h: 0,
+          rotation: 0,
           moved: false,
           dragging: false
         };
@@ -1151,10 +1293,17 @@
         state.selection.y = rect.y;
         state.selection.w = rect.w;
         state.selection.h = rect.h;
-        selectionCanvas.width = rect.w;
-        selectionCanvas.height = rect.h;
-        selectionCtx.clearRect(0, 0, rect.w, rect.h);
-        var imageData = ctx.getImageData(rect.x, rect.y, rect.w, rect.h);
+        state.selection.rotation = 0;
+        resizeSelectionCanvas(rect.w, rect.h);
+        selectionCtx.setTransform(1, 0, 0, 1, 0, 0);
+        selectionCtx.clearRect(0, 0, selectionCanvas.width, selectionCanvas.height);
+        var dpr = state.pixelRatio || 1;
+        var imageData = ctx.getImageData(
+          Math.round(rect.x * dpr),
+          Math.round(rect.y * dpr),
+          selectionCanvas.width,
+          selectionCanvas.height
+        );
         selectionCtx.putImageData(imageData, 0, 0);
         selectionLayer.style.display = "block";
         selectionBox.style.display = "none";
@@ -1210,7 +1359,70 @@
         ctx.fillRect(state.selection.x, state.selection.y, state.selection.w, state.selection.h);
       }
 
-      function setupImagePlacement(img) {
+      function deleteSelection() {
+        if (!state.selection || selectionLayer.style.display !== "block") {
+          return;
+        }
+        if (!state.selection.moved) {
+          clearSelectionArea();
+        }
+        dismissSelectionOverlay();
+        saveState();
+      }
+
+      function rotateSelectionFromSnapshot(delta, rotateState) {
+        var baseWpx = rotateState.baseWpx;
+        var baseHpx = rotateState.baseHpx;
+        var cos = Math.cos(delta);
+        var sin = Math.sin(delta);
+        var newWpx = Math.max(1, Math.round(Math.abs(baseWpx * cos) + Math.abs(baseHpx * sin)));
+        var newHpx = Math.max(1, Math.round(Math.abs(baseWpx * sin) + Math.abs(baseHpx * cos)));
+        selectionCanvas.width = newWpx;
+        selectionCanvas.height = newHpx;
+        selectionCtx.setTransform(1, 0, 0, 1, 0, 0);
+        selectionCtx.clearRect(0, 0, newWpx, newHpx);
+        selectionCtx.translate(newWpx / 2, newHpx / 2);
+        selectionCtx.rotate(delta);
+        selectionCtx.drawImage(rotateState.snapshot, -baseWpx / 2, -baseHpx / 2);
+        selectionCtx.setTransform(1, 0, 0, 1, 0, 0);
+
+        var dpr = state.pixelRatio || 1;
+        var newW = newWpx / dpr;
+        var newH = newHpx / dpr;
+        state.selection.w = newW;
+        state.selection.h = newH;
+        state.selection.x = rotateState.centerX - newW / 2;
+        state.selection.y = rotateState.centerY - newH / 2;
+        state.selection.rotation = rotateState.baseRotation + delta;
+        updateSelectionLayer();
+      }
+
+      function rotateSelectionBy(delta) {
+        if (!state.selection || selectionLayer.style.display !== "block") {
+          return false;
+        }
+        if (!state.selection.moved) {
+          clearSelectionArea();
+          state.selection.moved = true;
+        }
+        var centerX = state.selection.x + state.selection.w / 2;
+        var centerY = state.selection.y + state.selection.h / 2;
+        var snapshot = document.createElement("canvas");
+        snapshot.width = selectionCanvas.width;
+        snapshot.height = selectionCanvas.height;
+        snapshot.getContext("2d").drawImage(selectionCanvas, 0, 0);
+        rotateSelectionFromSnapshot(delta, {
+          baseWpx: selectionCanvas.width,
+          baseHpx: selectionCanvas.height,
+          snapshot: snapshot,
+          centerX: centerX,
+          centerY: centerY,
+          baseRotation: state.selection.rotation || 0
+        });
+        return true;
+      }
+
+      function setupImagePlacement(img, options) {
         if (state.selection) {
           if (selectionLayer.style.display === "block") {
             commitSelection();
@@ -1219,6 +1431,13 @@
           }
         }
         finalizeImagePlacementIfNeeded();
+        if (options && options.preserveSize) {
+          var nextWidth = Math.max(state.width, img.width);
+          var nextHeight = Math.max(state.height, img.height);
+          if (nextWidth !== state.width || nextHeight !== state.height) {
+            setCanvasSize(nextWidth, nextHeight, false, false);
+          }
+        }
         state.imagePlacement = {
           img: img,
           baseWidth: img.width,
@@ -1226,15 +1445,21 @@
           width: img.width,
           height: img.height,
           scale: 1,
-          x: Math.max(0, (canvas.width - img.width) / 2),
-          y: Math.max(0, (canvas.height - img.height) / 2)
+          x: Math.max(0, (state.width - img.width) / 2),
+          y: Math.max(0, (state.height - img.height) / 2)
         };
         imageLayerImg.src = img.src;
         imageLayer.style.display = "block";
-        imageScale.disabled = false;
-        imageScale.value = 100;
-        applyImage.disabled = false;
-        cancelImage.disabled = false;
+        if (imageScale) {
+          imageScale.disabled = false;
+          imageScale.value = 100;
+        }
+        if (applyImage) {
+          applyImage.disabled = false;
+        }
+        if (cancelImage) {
+          cancelImage.disabled = false;
+        }
         updateImageLayer();
       }
 
@@ -1258,32 +1483,44 @@
         ctx.drawImage(placement.img, placement.x, placement.y, placement.width, placement.height);
         state.imagePlacement = null;
         imageLayer.style.display = "none";
-        imageScale.disabled = true;
-        applyImage.disabled = true;
-        cancelImage.disabled = true;
+        if (imageScale) {
+          imageScale.disabled = true;
+        }
+        if (applyImage) {
+          applyImage.disabled = true;
+        }
+        if (cancelImage) {
+          cancelImage.disabled = true;
+        }
         saveState();
       }
 
       function cancelImagePlacement() {
         state.imagePlacement = null;
         imageLayer.style.display = "none";
-        imageScale.disabled = true;
-        applyImage.disabled = true;
-        cancelImage.disabled = true;
+        if (imageScale) {
+          imageScale.disabled = true;
+        }
+        if (applyImage) {
+          applyImage.disabled = true;
+        }
+        if (cancelImage) {
+          cancelImage.disabled = true;
+        }
       }
 
-      function handleImageFile(file) {
+      function handleImageFile(file, options) {
         var reader = new FileReader();
         reader.onload = function (event) {
-          loadImageFromUrl(event.target.result);
+          loadImageFromUrl(event.target.result, options);
         };
         reader.readAsDataURL(file);
       }
 
-      function loadImageFromUrl(url) {
+      function loadImageFromUrl(url, options) {
         var img = new Image();
         img.onload = function () {
-          setupImagePlacement(img);
+          setupImagePlacement(img, options);
         };
         img.src = url;
       }
@@ -1294,8 +1531,9 @@
       }
 
       function pickColor(point, isSecondary) {
-        var x = Math.floor(point.x);
-        var y = Math.floor(point.y);
+        var dpr = state.pixelRatio || 1;
+        var x = Math.floor(point.x * dpr);
+        var y = Math.floor(point.y * dpr);
         if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) {
           return;
         }
@@ -1320,10 +1558,11 @@
         }
         canvas.width = temp.width;
         canvas.height = temp.height;
-        state.width = canvas.width;
-        state.height = canvas.height;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(temp, 0, 0);
+        state.width = Math.round(temp.width / (state.pixelRatio || 1));
+        state.height = Math.round(temp.height / (state.pixelRatio || 1));
+        ctx.setTransform(state.pixelRatio || 1, 0, 0, state.pixelRatio || 1, 0, 0);
+        ctx.clearRect(0, 0, state.width, state.height);
+        ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, state.width, state.height);
         canvasWidthInput.value = state.width;
         canvasHeightInput.value = state.height;
         updateCanvasWrap();
@@ -1344,16 +1583,16 @@
           tctx.scale(1, -1);
         }
         tctx.drawImage(canvas, 0, 0);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(temp, 0, 0);
+        ctx.clearRect(0, 0, state.width, state.height);
+        ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, state.width, state.height);
         saveState();
       }
 
       function getSelectionDataUrl() {
         if (state.selection) {
           var temp = document.createElement("canvas");
-          temp.width = state.selection.w;
-          temp.height = state.selection.h;
+          temp.width = selectionCanvas.width;
+          temp.height = selectionCanvas.height;
           var tctx = temp.getContext("2d");
           tctx.drawImage(selectionCanvas, 0, 0);
           return temp.toDataURL("image/png");
@@ -1379,7 +1618,7 @@
         } else {
           handleCopy();
           ctx.fillStyle = state.bg;
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillRect(0, 0, state.width, state.height);
           saveState();
         }
       }
@@ -1411,27 +1650,27 @@
                   if (item.types[j].indexOf("image") === 0) {
                     return item.getType(item.types[j]).then(function (blob) {
                       var url = URL.createObjectURL(blob);
-                      loadImageFromUrl(url);
+                      loadImageFromUrl(url, { preserveSize: true });
                       return;
                     });
                   }
                 }
               }
               if (state.clipboardImage) {
-                loadImageFromUrl(state.clipboardImage);
+                loadImageFromUrl(state.clipboardImage, { preserveSize: true });
               } else {
                 alert("Paste an image with Cmd+V (Mac) or Ctrl+V (Windows). Clipboard access may be blocked by your browser.");
               }
             })
             .catch(function () {
               if (state.clipboardImage) {
-                loadImageFromUrl(state.clipboardImage);
+                loadImageFromUrl(state.clipboardImage, { preserveSize: true });
               } else {
                 alert("Paste an image with Cmd+V (Mac) or Ctrl+V (Windows). Clipboard access may be blocked by your browser.");
               }
             });
         } else if (state.clipboardImage) {
-          loadImageFromUrl(state.clipboardImage);
+          loadImageFromUrl(state.clipboardImage, { preserveSize: true });
         } else {
           alert("Paste an image with Cmd+V (Mac) or Ctrl+V (Windows). Clipboard access may be blocked by your browser.");
         }
@@ -1509,26 +1748,51 @@
         color1Input.click();
       });
 
-      textSize.addEventListener("input", function () {
-        state.textSize = parseInt(textSize.value, 10);
+      textSizeSelect.addEventListener("change", function () {
+        if (textSizeSelect.value === "custom") {
+          textSizeInput.focus();
+          textSizeInput.select();
+          return;
+        }
+        setTextSize(textSizeSelect.value, "select");
+      });
+
+      textSizeInput.addEventListener("input", function () {
+        if (!textSizeInput.value) {
+          return;
+        }
+        setTextSize(textSizeInput.value, "input");
+      });
+
+      textSizeInput.addEventListener("change", function () {
+        if (!textSizeInput.value) {
+          return;
+        }
+        setTextSize(textSizeInput.value, "input");
       });
 
       textFont.addEventListener("change", function () {
         state.textFont = textFont.value;
       });
 
-      imageScale.addEventListener("input", function () {
-        if (!state.imagePlacement) {
-          return;
-        }
-        state.imagePlacement.scale = parseInt(imageScale.value, 10) / 100;
-        state.imagePlacement.width = state.imagePlacement.baseWidth * state.imagePlacement.scale;
-        state.imagePlacement.height = state.imagePlacement.baseHeight * state.imagePlacement.scale;
-        updateImageLayer();
-      });
+      if (imageScale) {
+        imageScale.addEventListener("input", function () {
+          if (!state.imagePlacement) {
+            return;
+          }
+          state.imagePlacement.scale = parseInt(imageScale.value, 10) / 100;
+          state.imagePlacement.width = state.imagePlacement.baseWidth * state.imagePlacement.scale;
+          state.imagePlacement.height = state.imagePlacement.baseHeight * state.imagePlacement.scale;
+          updateImageLayer();
+        });
+      }
 
-      applyImage.addEventListener("click", applyImagePlacement);
-      cancelImage.addEventListener("click", cancelImagePlacement);
+      if (applyImage) {
+        applyImage.addEventListener("click", applyImagePlacement);
+      }
+      if (cancelImage) {
+        cancelImage.addEventListener("click", cancelImagePlacement);
+      }
 
       resizeCanvasBtn.addEventListener("click", function () {
         finalizeImagePlacementIfNeeded();
@@ -1561,12 +1825,16 @@
 
       rotateLeftBtn.addEventListener("click", function () {
         finalizeImagePlacementIfNeeded();
-        rotateCanvas("left");
+        if (!rotateSelectionBy(-Math.PI / 2)) {
+          rotateCanvas("left");
+        }
       });
 
       rotateRightBtn.addEventListener("click", function () {
         finalizeImagePlacementIfNeeded();
-        rotateCanvas("right");
+        if (!rotateSelectionBy(Math.PI / 2)) {
+          rotateCanvas("right");
+        }
       });
 
       flipHBtn.addEventListener("click", function () {
@@ -1579,9 +1847,15 @@
         flipCanvas("vertical");
       });
 
-      pasteBtn.addEventListener("click", handlePasteButton);
-      copyBtn.addEventListener("click", handleCopy);
-      cutBtn.addEventListener("click", handleCut);
+      if (pasteBtn) {
+        pasteBtn.addEventListener("click", handlePasteButton);
+      }
+      if (copyBtn) {
+        copyBtn.addEventListener("click", handleCopy);
+      }
+      if (cutBtn) {
+        cutBtn.addEventListener("click", handleCut);
+      }
 
       undoBtn.addEventListener("click", function () {
         finalizeImagePlacementIfNeeded();
@@ -1696,6 +1970,9 @@
         if (!state.selection) {
           return;
         }
+        if (evt.button !== 0) {
+          return;
+        }
         evt.preventDefault();
         var point = getPoint(evt);
         state.selection.dragging = true;
@@ -1729,12 +2006,15 @@
           if (!state.selection) {
             return;
           }
+          if (evt.button !== 0) {
+            return;
+          }
           evt.preventDefault();
           evt.stopPropagation();
           var point = getPoint(evt);
           var snapshot = document.createElement("canvas");
-          snapshot.width = state.selection.w;
-          snapshot.height = state.selection.h;
+          snapshot.width = selectionCanvas.width;
+          snapshot.height = selectionCanvas.height;
           snapshot.getContext("2d").drawImage(selectionCanvas, 0, 0);
           state.selectionResize = {
             handle: handle.dataset.handle,
@@ -1841,15 +2121,15 @@
           state.selection.w = newW;
           state.selection.h = newH;
 
-          selectionCanvas.width = Math.max(1, Math.round(newW));
-          selectionCanvas.height = Math.max(1, Math.round(newH));
+          resizeSelectionCanvas(newW, newH);
+          selectionCtx.setTransform(1, 0, 0, 1, 0, 0);
           selectionCtx.clearRect(0, 0, selectionCanvas.width, selectionCanvas.height);
           selectionCtx.drawImage(
             resize.snapshot,
             0,
             0,
-            resize.originW,
-            resize.originH,
+            resize.snapshot.width,
+            resize.snapshot.height,
             0,
             0,
             selectionCanvas.width,
@@ -1864,6 +2144,55 @@
           }
         });
       });
+
+      if (selectionRotateHandle) {
+        selectionRotateHandle.addEventListener("pointerdown", function (evt) {
+          if (!state.selection) {
+            return;
+          }
+          if (evt.button !== 0) {
+            return;
+          }
+          evt.preventDefault();
+          evt.stopPropagation();
+          if (!state.selection.moved) {
+            clearSelectionArea();
+            state.selection.moved = true;
+          }
+          var point = getPoint(evt);
+          var centerX = state.selection.x + state.selection.w / 2;
+          var centerY = state.selection.y + state.selection.h / 2;
+          var snapshot = document.createElement("canvas");
+          snapshot.width = selectionCanvas.width;
+          snapshot.height = selectionCanvas.height;
+          snapshot.getContext("2d").drawImage(selectionCanvas, 0, 0);
+          state.selectionRotate = {
+            startAngle: Math.atan2(point.y - centerY, point.x - centerX),
+            centerX: centerX,
+            centerY: centerY,
+            snapshot: snapshot,
+            baseWpx: selectionCanvas.width,
+            baseHpx: selectionCanvas.height,
+            baseRotation: state.selection.rotation || 0
+          };
+          selectionRotateHandle.setPointerCapture(evt.pointerId);
+        });
+
+        selectionRotateHandle.addEventListener("pointermove", function (evt) {
+          if (!state.selectionRotate || !state.selection) {
+            return;
+          }
+          evt.preventDefault();
+          var point = getPoint(evt);
+          var angle = Math.atan2(point.y - state.selectionRotate.centerY, point.x - state.selectionRotate.centerX);
+          var delta = angle - state.selectionRotate.startAngle;
+          rotateSelectionFromSnapshot(delta, state.selectionRotate);
+        });
+
+        selectionRotateHandle.addEventListener("pointerup", function () {
+          state.selectionRotate = null;
+        });
+      }
 
       imageLayer.addEventListener("pointerdown", function (evt) {
         if (!state.imagePlacement || (evt.target && evt.target.classList.contains("image-handle"))) {
@@ -2003,11 +2332,13 @@
           state.imagePlacement.width = newW;
           state.imagePlacement.height = newH;
           state.imagePlacement.scale = newW / state.imagePlacement.baseWidth;
-          var sliderValue = Math.round(state.imagePlacement.scale * 100);
-          var sliderMin = parseInt(imageScale.min, 10);
-          var sliderMax = parseInt(imageScale.max, 10);
-          sliderValue = Math.max(sliderMin, Math.min(sliderMax, sliderValue));
-          imageScale.value = sliderValue;
+          if (imageScale) {
+            var sliderValue = Math.round(state.imagePlacement.scale * 100);
+            var sliderMin = parseInt(imageScale.min, 10);
+            var sliderMax = parseInt(imageScale.max, 10);
+            sliderValue = Math.max(sliderMin, Math.min(sliderMax, sliderValue));
+            imageScale.value = sliderValue;
+          }
           updateImageLayer();
         });
 
@@ -2043,6 +2374,13 @@
       });
 
       document.addEventListener("keydown", function (evt) {
+        var target = evt.target;
+        var tag = target && target.tagName ? target.tagName.toLowerCase() : "";
+        var isEditable =
+          tag === "input" ||
+          tag === "textarea" ||
+          tag === "select" ||
+          (target && target.isContentEditable);
         var isModifier = evt.metaKey || evt.ctrlKey;
         if (isModifier && evt.key.toLowerCase() === "z") {
           evt.preventDefault();
@@ -2050,6 +2388,13 @@
             restoreState(state.historyIndex + 1);
           } else {
             restoreState(state.historyIndex - 1);
+          }
+          return;
+        }
+        if (!isEditable && textEntry.style.display !== "block" && (evt.key === "Delete" || evt.key === "Backspace")) {
+          if (state.selection && selectionLayer.style.display === "block") {
+            evt.preventDefault();
+            deleteSelection();
           }
         }
       });
@@ -2065,7 +2410,7 @@
           if (item.type.indexOf("image") === 0) {
             var file = item.getAsFile();
             if (file) {
-              handleImageFile(file);
+              handleImageFile(file, { preserveSize: true });
               evt.preventDefault();
               return;
             }
@@ -2086,6 +2431,7 @@
 
       setColor1(state.stroke);
       setColor2(state.fill);
+      setTextSize(state.textSize, "init");
       sizePicker.querySelector(".size-btn[data-size='2']").classList.add("active");
 
       window.setTimeout(function () {
@@ -2097,6 +2443,13 @@
         updateStatus();
         updateCanvasWrap();
       }, 0);
+
+      window.addEventListener("resize", function () {
+        var next = getDevicePixelRatio();
+        if (next !== state.pixelRatio) {
+          setCanvasSize(state.width, state.height, false, true);
+        }
+      });
     })();
   </script>
 </body>
