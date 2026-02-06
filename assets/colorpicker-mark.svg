@@ -1,0 +1,12 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Color Picker mark">
+  <defs>
+    <linearGradient id="cp-mark" x1="8" y1="8" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff6b6b"/>
+      <stop offset="0.35" stop-color="#f7b733"/>
+      <stop offset="0.7" stop-color="#48dbfb"/>
+      <stop offset="1" stop-color="#1dd1a1"/>
+    </linearGradient>
+  </defs>
+  <rect width="96" height="96" rx="24" fill="url(#cp-mark)"/>
+  <circle cx="48" cy="48" r="18" fill="rgba(255, 255, 255, 0.7)" stroke="#ffffff" stroke-width="3"/>
+</svg>

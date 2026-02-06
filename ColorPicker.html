@@ -1,0 +1,1003 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pick a color and copy HEX, RGB, HSL, HSV, and CMYK values.">
+  <title>Color Picker | HelloAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Manrope:wght@500;600;700&family=Space+Grotesk:wght@600;700&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/color-picker.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-row">
+      <a class="brand" href="/index.html" aria-label="HelloAI home">
+        <img class="brand-logo" src="/media/HelloAI_logo_trim.png" alt="HelloAI logo">
+        <span class="brand-word">HelloAI</span>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="/index.html">Home</a>
+        <a class="active" href="/apps.html">Apps</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container color-page">
+      <section class="page-hero fade">
+        <p class="hero-tag">App</p>
+        <h1>Color Picker</h1>
+        <p>Paste screenshots directly, pick any pixel, and copy values ready for code.</p>
+      </section>
+
+      <section class="picker-grid fade delay-1">
+        <div class="picker-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Picker</h2>
+              <p>Drag inside the square or adjust the hue slider.</p>
+            </div>
+            <div class="swatch-stack">
+              <div class="color-swatch" id="color-swatch" aria-label="Color preview"></div>
+              <button class="copy-btn copy-swatch" id="copy-swatch" data-copy="hex" type="button">Copy hex</button>
+            </div>
+          </div>
+
+          <div class="compare-row">
+            <div class="compare-item">
+              <span>Current</span>
+              <div class="compare-swatch" id="current-swatch"></div>
+            </div>
+            <div class="compare-item">
+              <span>Locked</span>
+              <div class="compare-swatch is-muted" id="locked-swatch"></div>
+            </div>
+            <div class="compare-actions">
+              <button class="copy-btn" id="lock-btn" type="button">Lock current</button>
+              <button class="copy-btn" id="swap-btn" type="button">Swap</button>
+              <button class="copy-btn" id="clear-lock" type="button">Clear</button>
+            </div>
+          </div>
+
+          <div class="sv-wrap" id="sv-wrap" aria-label="Saturation and value picker">
+            <canvas id="sv-canvas"></canvas>
+            <div class="sv-cursor" id="sv-cursor"></div>
+          </div>
+
+          <div class="hue-row">
+            <input class="hue-range" id="hue-range" type="range" min="0" max="360" value="136" aria-label="Hue slider">
+            <span class="hue-value" id="hue-value">136 deg</span>
+          </div>
+
+          <div class="alpha-row">
+            <input class="alpha-range" id="alpha-range" type="range" min="0" max="100" value="100" aria-label="Alpha slider">
+            <span class="alpha-value" id="alpha-value">100%</span>
+          </div>
+
+          <div class="value-grid">
+            <div class="value-field value-field--wide">
+              <label>HEX</label>
+              <div class="value-line">
+                <span id="hex-value">#32A852</span>
+                <button class="copy-btn" data-copy="hex" type="button">Copy</button>
+              </div>
+            </div>
+            <div class="value-field">
+              <label>RGB</label>
+              <div class="value-line">
+                <span id="rgb-value">50, 168, 82</span>
+                <button class="copy-btn" data-copy="rgb" type="button">Copy</button>
+              </div>
+            </div>
+            <div class="value-field">
+              <label>RGBA</label>
+              <div class="value-line">
+                <span id="rgba-value">50, 168, 82, 1</span>
+                <button class="copy-btn" data-copy="rgba" type="button">Copy</button>
+              </div>
+            </div>
+            <div class="value-field">
+              <label>CMYK</label>
+              <div class="value-line">
+                <span id="cmyk-value">70%, 0%, 51%, 34%</span>
+                <button class="copy-btn" data-copy="cmyk" type="button">Copy</button>
+              </div>
+            </div>
+            <div class="value-field">
+              <label>HSV</label>
+              <div class="value-line">
+                <span id="hsv-value">136, 70%, 66%</span>
+                <button class="copy-btn" data-copy="hsv" type="button">Copy</button>
+              </div>
+            </div>
+            <div class="value-field">
+              <label>HSL</label>
+              <div class="value-line">
+                <span id="hsl-value">136, 54%, 43%</span>
+                <button class="copy-btn" data-copy="hsl" type="button">Copy</button>
+              </div>
+            </div>
+            <div class="value-field value-field--wide">
+              <label>CSS</label>
+              <div class="value-line">
+                <code id="css-value">background: #32A852;</code>
+                <button class="copy-btn" data-copy="css" type="button">Copy</button>
+              </div>
+            </div>
+            <div class="value-field value-field--wide">
+              <label>Tailwind</label>
+              <div class="value-line">
+                <code id="tw-value">bg-[#32A852]</code>
+                <button class="copy-btn" data-copy="tailwind" type="button">Copy</button>
+              </div>
+            </div>
+            <div class="value-field value-field--wide">
+              <label>Sass</label>
+              <div class="value-line">
+                <code id="sass-value">$color-primary: #32A852;</code>
+                <button class="copy-btn" data-copy="sass" type="button">Copy</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="history-row">
+            <div class="history-head">
+              <span>Recent picks</span>
+              <button class="copy-btn" id="clear-history" type="button">Clear</button>
+            </div>
+            <div class="history-swatches" id="history-swatches"></div>
+          </div>
+        </div>
+
+        <div class="picker-panel image-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Image Picker</h2>
+              <p>Paste screenshots instantly (no upload), or drop an image and sample any pixel.</p>
+            </div>
+          </div>
+
+          <div class="image-drop" id="image-drop">
+            <p>Paste from clipboard or drop a file here.</p>
+            <div class="drop-actions">
+              <label class="button button-secondary button-small" for="image-input">Upload image</label>
+              <input id="image-input" type="file" accept="image/*" hidden>
+              <button class="button button-secondary button-small" id="clear-image" type="button">Clear</button>
+            </div>
+          </div>
+
+          <div class="image-canvas-wrap" id="image-canvas-wrap">
+            <canvas id="image-canvas"></canvas>
+            <div class="image-cursor" id="image-cursor"></div>
+            <div class="lens" id="lens">
+              <canvas id="lens-canvas"></canvas>
+            </div>
+            <div class="image-placeholder" id="image-placeholder">No image loaded.</div>
+          </div>
+
+          <div class="palette-block">
+            <div class="palette-head">Palette from image</div>
+            <div class="palette-row" id="palette-row"></div>
+          </div>
+          <p class="image-hint">Tip: press Ctrl+V or Cmd+V to paste a screenshot.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <span>© 2026 HelloAI</span>
+      <span>Built for fast color decisions</span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var state = {
+        h: 136,
+        s: 0.7,
+        v: 0.66,
+        a: 1
+      };
+
+      var svCanvas = document.getElementById("sv-canvas");
+      var svCursor = document.getElementById("sv-cursor");
+      var hueRange = document.getElementById("hue-range");
+      var hueValue = document.getElementById("hue-value");
+      var alphaRange = document.getElementById("alpha-range");
+      var alphaValue = document.getElementById("alpha-value");
+      var swatch = document.getElementById("color-swatch");
+      var hexValue = document.getElementById("hex-value");
+      var rgbValue = document.getElementById("rgb-value");
+      var rgbaValue = document.getElementById("rgba-value");
+      var hslValue = document.getElementById("hsl-value");
+      var hsvValue = document.getElementById("hsv-value");
+      var cmykValue = document.getElementById("cmyk-value");
+      var cssValue = document.getElementById("css-value");
+      var twValue = document.getElementById("tw-value");
+      var sassValue = document.getElementById("sass-value");
+
+      var currentSwatch = document.getElementById("current-swatch");
+      var lockedSwatch = document.getElementById("locked-swatch");
+      var lockButton = document.getElementById("lock-btn");
+      var swapButton = document.getElementById("swap-btn");
+      var clearLockButton = document.getElementById("clear-lock");
+      var historySwatches = document.getElementById("history-swatches");
+      var clearHistoryButton = document.getElementById("clear-history");
+
+      var imageDrop = document.getElementById("image-drop");
+      var imageInput = document.getElementById("image-input");
+      var imageCanvas = document.getElementById("image-canvas");
+      var imageCursor = document.getElementById("image-cursor");
+      var imagePlaceholder = document.getElementById("image-placeholder");
+      var clearButton = document.getElementById("clear-image");
+      var paletteRow = document.getElementById("palette-row");
+      var lens = document.getElementById("lens");
+      var lensCanvas = document.getElementById("lens-canvas");
+
+      var svCtx = svCanvas.getContext("2d");
+      var imageCtx = imageCanvas.getContext("2d");
+      var lensCtx = lensCanvas.getContext("2d");
+      var svDpr = 1;
+      var imageDpr = 1;
+      var lensDpr = 1;
+      var isSvDragging = false;
+      var isImageDragging = false;
+      var lockedColor = null;
+      var history = [];
+      var maxHistory = 8;
+      var imageState = {
+        hasImage: false,
+        image: null,
+        drawRect: null
+      };
+
+      function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+      }
+
+      function toHex(value) {
+        var hex = value.toString(16).toUpperCase();
+        return hex.length === 1 ? "0" + hex : hex;
+      }
+
+      function formatAlpha(value) {
+        return parseFloat(value.toFixed(2)).toString();
+      }
+
+      function rgbToHex(r, g, b) {
+        return "#" + toHex(r) + toHex(g) + toHex(b);
+      }
+
+      function hsvToRgb(h, s, v) {
+        var c = v * s;
+        var x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+        var m = v - c;
+        var r1 = 0;
+        var g1 = 0;
+        var b1 = 0;
+
+        if (h >= 0 && h < 60) {
+          r1 = c;
+          g1 = x;
+          b1 = 0;
+        } else if (h >= 60 && h < 120) {
+          r1 = x;
+          g1 = c;
+          b1 = 0;
+        } else if (h >= 120 && h < 180) {
+          r1 = 0;
+          g1 = c;
+          b1 = x;
+        } else if (h >= 180 && h < 240) {
+          r1 = 0;
+          g1 = x;
+          b1 = c;
+        } else if (h >= 240 && h < 300) {
+          r1 = x;
+          g1 = 0;
+          b1 = c;
+        } else {
+          r1 = c;
+          g1 = 0;
+          b1 = x;
+        }
+
+        return {
+          r: Math.round((r1 + m) * 255),
+          g: Math.round((g1 + m) * 255),
+          b: Math.round((b1 + m) * 255)
+        };
+      }
+
+      function rgbToHsv(r, g, b) {
+        var r1 = r / 255;
+        var g1 = g / 255;
+        var b1 = b / 255;
+        var max = Math.max(r1, g1, b1);
+        var min = Math.min(r1, g1, b1);
+        var delta = max - min;
+        var h = 0;
+
+        if (delta !== 0) {
+          if (max === r1) {
+            h = 60 * (((g1 - b1) / delta) % 6);
+          } else if (max === g1) {
+            h = 60 * ((b1 - r1) / delta + 2);
+          } else {
+            h = 60 * ((r1 - g1) / delta + 4);
+          }
+        }
+
+        if (h < 0) {
+          h += 360;
+        }
+
+        var s = max === 0 ? 0 : delta / max;
+
+        return {
+          h: h,
+          s: s,
+          v: max
+        };
+      }
+
+      function rgbToHsl(r, g, b) {
+        var r1 = r / 255;
+        var g1 = g / 255;
+        var b1 = b / 255;
+        var max = Math.max(r1, g1, b1);
+        var min = Math.min(r1, g1, b1);
+        var delta = max - min;
+        var h = 0;
+        var l = (max + min) / 2;
+        var s = 0;
+
+        if (delta !== 0) {
+          s = delta / (1 - Math.abs(2 * l - 1));
+
+          if (max === r1) {
+            h = 60 * (((g1 - b1) / delta) % 6);
+          } else if (max === g1) {
+            h = 60 * ((b1 - r1) / delta + 2);
+          } else {
+            h = 60 * ((r1 - g1) / delta + 4);
+          }
+        }
+
+        if (h < 0) {
+          h += 360;
+        }
+
+        return {
+          h: h,
+          s: s,
+          l: l
+        };
+      }
+
+      function rgbToCmyk(r, g, b) {
+        var r1 = r / 255;
+        var g1 = g / 255;
+        var b1 = b / 255;
+        var k = 1 - Math.max(r1, g1, b1);
+        var c = 0;
+        var m = 0;
+        var y = 0;
+
+        if (k < 1) {
+          c = (1 - r1 - k) / (1 - k);
+          m = (1 - g1 - k) / (1 - k);
+          y = (1 - b1 - k) / (1 - k);
+        }
+
+        return {
+          c: c,
+          m: m,
+          y: y,
+          k: k
+        };
+      }
+
+      function resizeCanvas(canvas, context) {
+        var rect = canvas.getBoundingClientRect();
+        var dpr = window.devicePixelRatio || 1;
+        canvas.width = Math.round(rect.width * dpr);
+        canvas.height = Math.round(rect.height * dpr);
+        context.setTransform(dpr, 0, 0, dpr, 0, 0);
+        return dpr;
+      }
+
+      function getCurrentRgb() {
+        return hsvToRgb(state.h, state.s, state.v);
+      }
+
+      function getCurrentColor() {
+        var rgb = getCurrentRgb();
+        var hex = rgbToHex(rgb.r, rgb.g, rgb.b);
+        return {
+          r: rgb.r,
+          g: rgb.g,
+          b: rgb.b,
+          a: state.a,
+          hex: hex
+        };
+      }
+
+      function drawSv() {
+        var rect = svCanvas.getBoundingClientRect();
+        svCtx.clearRect(0, 0, rect.width, rect.height);
+        svCtx.fillStyle = "hsl(" + state.h + ", 100%, 50%)";
+        svCtx.fillRect(0, 0, rect.width, rect.height);
+
+        var whiteGrad = svCtx.createLinearGradient(0, 0, rect.width, 0);
+        whiteGrad.addColorStop(0, "rgba(255, 255, 255, 1)");
+        whiteGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
+        svCtx.fillStyle = whiteGrad;
+        svCtx.fillRect(0, 0, rect.width, rect.height);
+
+        var blackGrad = svCtx.createLinearGradient(0, 0, 0, rect.height);
+        blackGrad.addColorStop(0, "rgba(0, 0, 0, 0)");
+        blackGrad.addColorStop(1, "rgba(0, 0, 0, 1)");
+        svCtx.fillStyle = blackGrad;
+        svCtx.fillRect(0, 0, rect.width, rect.height);
+      }
+
+      function updateSvCursor() {
+        var rect = svCanvas.getBoundingClientRect();
+        svCursor.style.opacity = "1";
+        svCursor.style.left = state.s * rect.width + "px";
+        svCursor.style.top = (1 - state.v) * rect.height + "px";
+      }
+
+      function updateAlphaGradient(rgb) {
+        alphaRange.style.background = "linear-gradient(90deg, rgba(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ", 0), rgba(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ", 1))";
+      }
+
+      function updateLockedSwatch() {
+        if (lockedColor) {
+          lockedSwatch.style.background = "rgba(" + lockedColor.r + ", " + lockedColor.g + ", " + lockedColor.b + ", " + lockedColor.a + ")";
+          lockedSwatch.classList.remove("is-muted");
+        } else {
+          lockedSwatch.style.background = "";
+          lockedSwatch.classList.add("is-muted");
+        }
+      }
+
+      function updateOutputs() {
+        var rgb = getCurrentRgb();
+        var hex = rgbToHex(rgb.r, rgb.g, rgb.b);
+        var hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+        var hsv = {
+          h: state.h,
+          s: state.s,
+          v: state.v
+        };
+        var cmyk = rgbToCmyk(rgb.r, rgb.g, rgb.b);
+        var alphaText = formatAlpha(state.a);
+        var rgbaText = "rgba(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ", " + alphaText + ")";
+        var cssText = state.a < 1 ? "background: " + rgbaText + ";" : "background: " + hex + ";";
+        var twText = state.a < 1 ? "bg-[rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + alphaText + ")]" : "bg-[" + hex + "]";
+        var sassText = "$color-primary: " + (state.a < 1 ? rgbaText : hex) + ";";
+
+        swatch.style.background = rgbaText;
+        currentSwatch.style.background = rgbaText;
+        hexValue.textContent = hex;
+        rgbValue.textContent = rgb.r + ", " + rgb.g + ", " + rgb.b;
+        rgbaValue.textContent = rgb.r + ", " + rgb.g + ", " + rgb.b + ", " + alphaText;
+        hslValue.textContent = Math.round(hsl.h) + ", " + Math.round(hsl.s * 100) + "%, " + Math.round(hsl.l * 100) + "%";
+        hsvValue.textContent = Math.round(hsv.h) + ", " + Math.round(hsv.s * 100) + "%, " + Math.round(hsv.v * 100) + "%";
+        cmykValue.textContent = Math.round(cmyk.c * 100) + "%, " + Math.round(cmyk.m * 100) + "%, " + Math.round(cmyk.y * 100) + "%, " + Math.round(cmyk.k * 100) + "%";
+        cssValue.textContent = cssText;
+        twValue.textContent = twText;
+        sassValue.textContent = sassText;
+        updateAlphaGradient(rgb);
+        updateLockedSwatch();
+      }
+
+      function setHSV(h, s, v) {
+        state.h = clamp(h, 0, 360);
+        state.s = clamp(s, 0, 1);
+        state.v = clamp(v, 0, 1);
+        hueRange.value = Math.round(state.h);
+        hueValue.textContent = Math.round(state.h) + " deg";
+        drawSv();
+        updateSvCursor();
+        updateOutputs();
+      }
+
+      function setAlpha(value) {
+        state.a = clamp(value, 0, 1);
+        alphaRange.value = Math.round(state.a * 100);
+        alphaValue.textContent = Math.round(state.a * 100) + "%";
+        updateOutputs();
+      }
+
+      function setColorFromRGBA(color) {
+        var hsv = rgbToHsv(color.r, color.g, color.b);
+        state.h = hsv.h;
+        state.s = hsv.s;
+        state.v = hsv.v;
+        state.a = clamp(color.a, 0, 1);
+        hueRange.value = Math.round(state.h);
+        hueValue.textContent = Math.round(state.h) + " deg";
+        alphaRange.value = Math.round(state.a * 100);
+        alphaValue.textContent = Math.round(state.a * 100) + "%";
+        drawSv();
+        updateSvCursor();
+        updateOutputs();
+      }
+
+      function setFromRGB(r, g, b) {
+        var hsv = rgbToHsv(r, g, b);
+        setHSV(hsv.h, hsv.s, hsv.v);
+      }
+
+      function handleSvPointer(event) {
+        var rect = svCanvas.getBoundingClientRect();
+        var x = clamp(event.clientX - rect.left, 0, rect.width);
+        var y = clamp(event.clientY - rect.top, 0, rect.height);
+        var s = x / rect.width;
+        var v = 1 - y / rect.height;
+        setHSV(state.h, s, v);
+      }
+
+      function drawImageToCanvas(image) {
+        imageCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
+        var rect = imageCanvas.getBoundingClientRect();
+        var scale = Math.min(rect.width / image.width, rect.height / image.height);
+        var drawWidth = image.width * scale;
+        var drawHeight = image.height * scale;
+        var dx = (rect.width - drawWidth) / 2;
+        var dy = (rect.height - drawHeight) / 2;
+        imageCtx.drawImage(image, dx, dy, drawWidth, drawHeight);
+        imageState.drawRect = {
+          x: dx,
+          y: dy,
+          width: drawWidth,
+          height: drawHeight
+        };
+        imageState.hasImage = true;
+        imageState.image = image;
+        imagePlaceholder.style.display = "none";
+        generatePalette();
+      }
+
+      function loadImageFromFile(file) {
+        if (!file) {
+          return;
+        }
+        var reader = new FileReader();
+        reader.onload = function (event) {
+          var img = new Image();
+          img.onload = function () {
+            drawImageToCanvas(img);
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function clearImage() {
+        imageCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
+        imagePlaceholder.style.display = "flex";
+        imageState.hasImage = false;
+        imageState.image = null;
+        imageState.drawRect = null;
+        imageCursor.style.opacity = "0";
+        lens.style.opacity = "0";
+        renderPalette([]);
+      }
+
+      function handleImagePointer(event) {
+        if (!imageState.hasImage || !imageState.drawRect) {
+          return;
+        }
+        var rect = imageCanvas.getBoundingClientRect();
+        var x = clamp(event.clientX - rect.left, 0, rect.width);
+        var y = clamp(event.clientY - rect.top, 0, rect.height);
+
+        if (x < imageState.drawRect.x || x > imageState.drawRect.x + imageState.drawRect.width || y < imageState.drawRect.y || y > imageState.drawRect.y + imageState.drawRect.height) {
+          return;
+        }
+
+        var data = imageCtx.getImageData(Math.round(x * imageDpr), Math.round(y * imageDpr), 1, 1).data;
+        imageCursor.style.opacity = "1";
+        imageCursor.style.left = x + "px";
+        imageCursor.style.top = y + "px";
+        setFromRGB(data[0], data[1], data[2]);
+      }
+
+      function updateLens(event) {
+        if (!imageState.hasImage || !imageState.drawRect) {
+          lens.style.opacity = "0";
+          return;
+        }
+        var rect = imageCanvas.getBoundingClientRect();
+        var x = clamp(event.clientX - rect.left, 0, rect.width);
+        var y = clamp(event.clientY - rect.top, 0, rect.height);
+
+        if (x < imageState.drawRect.x || x > imageState.drawRect.x + imageState.drawRect.width || y < imageState.drawRect.y || y > imageState.drawRect.y + imageState.drawRect.height) {
+          lens.style.opacity = "0";
+          return;
+        }
+
+        lens.style.opacity = "1";
+        var lensRect = lensCanvas.getBoundingClientRect();
+        var sampleSize = 18;
+        var sx = clamp(x - sampleSize / 2, 0, rect.width - sampleSize);
+        var sy = clamp(y - sampleSize / 2, 0, rect.height - sampleSize);
+        lensCtx.imageSmoothingEnabled = false;
+        lensCtx.clearRect(0, 0, lensRect.width, lensRect.height);
+        lensCtx.drawImage(
+          imageCanvas,
+          sx * imageDpr,
+          sy * imageDpr,
+          sampleSize * imageDpr,
+          sampleSize * imageDpr,
+          0,
+          0,
+          lensRect.width,
+          lensRect.height
+        );
+        lensCtx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+        lensCtx.lineWidth = 1;
+        lensCtx.beginPath();
+        lensCtx.moveTo(lensRect.width / 2, 0);
+        lensCtx.lineTo(lensRect.width / 2, lensRect.height);
+        lensCtx.moveTo(0, lensRect.height / 2);
+        lensCtx.lineTo(lensRect.width, lensRect.height / 2);
+        lensCtx.stroke();
+      }
+
+      function renderPalette(colors) {
+        paletteRow.innerHTML = "";
+        if (!colors || colors.length === 0) {
+          var empty = document.createElement("span");
+          empty.className = "palette-empty";
+          empty.textContent = "Load an image to generate palette swatches.";
+          paletteRow.appendChild(empty);
+          return;
+        }
+        colors.forEach(function (color) {
+          var swatchEl = document.createElement("button");
+          swatchEl.type = "button";
+          swatchEl.className = "palette-swatch";
+          swatchEl.style.background = color.hex;
+          swatchEl.setAttribute("aria-label", "Use " + color.hex);
+          swatchEl.addEventListener("click", function () {
+            setColorFromRGBA({ r: color.r, g: color.g, b: color.b, a: state.a });
+            pushHistory();
+          });
+          paletteRow.appendChild(swatchEl);
+        });
+      }
+
+      function generatePalette() {
+        if (!imageState.hasImage || !imageState.drawRect) {
+          renderPalette([]);
+          return;
+        }
+
+        var sampleSize = 80;
+        var sampleCanvas = document.createElement("canvas");
+        sampleCanvas.width = sampleSize;
+        sampleCanvas.height = sampleSize;
+        var sampleCtx = sampleCanvas.getContext("2d");
+        var sx = imageState.drawRect.x * imageDpr;
+        var sy = imageState.drawRect.y * imageDpr;
+        var sw = imageState.drawRect.width * imageDpr;
+        var sh = imageState.drawRect.height * imageDpr;
+        sampleCtx.drawImage(imageCanvas, sx, sy, sw, sh, 0, 0, sampleSize, sampleSize);
+        var data = sampleCtx.getImageData(0, 0, sampleSize, sampleSize).data;
+        var buckets = {};
+
+        for (var i = 0; i < data.length; i += 4) {
+          var a = data[i + 3];
+          if (a < 80) {
+            continue;
+          }
+          var r = data[i];
+          var g = data[i + 1];
+          var b = data[i + 2];
+          var key = (r >> 4) + "," + (g >> 4) + "," + (b >> 4);
+          if (!buckets[key]) {
+            buckets[key] = { count: 0, r: 0, g: 0, b: 0 };
+          }
+          buckets[key].count += 1;
+          buckets[key].r += r;
+          buckets[key].g += g;
+          buckets[key].b += b;
+        }
+
+        var entries = Object.keys(buckets).map(function (key) {
+          var bucket = buckets[key];
+          var count = bucket.count || 1;
+          return {
+            count: bucket.count,
+            r: Math.round(bucket.r / count),
+            g: Math.round(bucket.g / count),
+            b: Math.round(bucket.b / count)
+          };
+        });
+
+        entries.sort(function (a, b) {
+          return b.count - a.count;
+        });
+
+        var colors = entries.slice(0, 8).map(function (item) {
+          return {
+            r: item.r,
+            g: item.g,
+            b: item.b,
+            hex: rgbToHex(item.r, item.g, item.b)
+          };
+        });
+
+        renderPalette(colors);
+      }
+
+      function pushHistory() {
+        var current = getCurrentColor();
+        var key = current.hex + "-" + formatAlpha(current.a);
+        history = history.filter(function (item) {
+          return item.key !== key;
+        });
+        history.unshift({
+          key: key,
+          r: current.r,
+          g: current.g,
+          b: current.b,
+          a: current.a,
+          hex: current.hex
+        });
+        history = history.slice(0, maxHistory);
+        renderHistory();
+      }
+
+      function renderHistory() {
+        historySwatches.innerHTML = "";
+        if (history.length === 0) {
+          var empty = document.createElement("span");
+          empty.className = "palette-empty";
+          empty.textContent = "No picks yet.";
+          historySwatches.appendChild(empty);
+          return;
+        }
+        history.forEach(function (item) {
+          var swatchEl = document.createElement("button");
+          swatchEl.type = "button";
+          swatchEl.className = "history-swatch";
+          swatchEl.style.background = "rgba(" + item.r + ", " + item.g + ", " + item.b + ", " + item.a + ")";
+          swatchEl.setAttribute("aria-label", "Use " + item.hex);
+          swatchEl.addEventListener("click", function () {
+            setColorFromRGBA(item);
+          });
+          historySwatches.appendChild(swatchEl);
+        });
+      }
+
+      function attachDragHandlers() {
+        imageDrop.addEventListener("dragover", function (event) {
+          event.preventDefault();
+          imageDrop.classList.add("is-dragging");
+        });
+
+        imageDrop.addEventListener("dragleave", function () {
+          imageDrop.classList.remove("is-dragging");
+        });
+
+        imageDrop.addEventListener("drop", function (event) {
+          event.preventDefault();
+          imageDrop.classList.remove("is-dragging");
+          if (event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0]) {
+            loadImageFromFile(event.dataTransfer.files[0]);
+          }
+        });
+      }
+
+      function attachClipboardHandler() {
+        window.addEventListener("paste", function (event) {
+          if (!event.clipboardData || !event.clipboardData.items) {
+            return;
+          }
+          var items = event.clipboardData.items;
+          for (var i = 0; i < items.length; i += 1) {
+            if (items[i].type.indexOf("image") !== -1) {
+              var file = items[i].getAsFile();
+              loadImageFromFile(file);
+              break;
+            }
+          }
+        });
+      }
+
+      function attachCopyHandlers() {
+        var buttons = document.querySelectorAll("button[data-copy]");
+        buttons.forEach(function (button) {
+          button.addEventListener("click", function () {
+            var target = button.getAttribute("data-copy");
+            var text = "";
+            var original = button.textContent;
+            if (target === "hex") {
+              text = hexValue.textContent;
+            } else if (target === "rgb") {
+              text = "rgb(" + rgbValue.textContent + ")";
+            } else if (target === "rgba") {
+              text = "rgba(" + rgbaValue.textContent + ")";
+            } else if (target === "hsl") {
+              text = "hsl(" + hslValue.textContent + ")";
+            } else if (target === "hsv") {
+              text = "hsv(" + hsvValue.textContent + ")";
+            } else if (target === "cmyk") {
+              text = "cmyk(" + cmykValue.textContent + ")";
+            } else if (target === "css") {
+              text = cssValue.textContent;
+            } else if (target === "tailwind") {
+              text = twValue.textContent;
+            } else if (target === "sass") {
+              text = sassValue.textContent;
+            }
+
+            if (!text) {
+              return;
+            }
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(text).then(function () {
+                button.textContent = "Copied";
+                setTimeout(function () {
+                  button.textContent = original;
+                }, 1200);
+              });
+            } else {
+              var input = document.createElement("textarea");
+              input.value = text;
+              document.body.appendChild(input);
+              input.select();
+              document.execCommand("copy");
+              document.body.removeChild(input);
+              button.textContent = "Copied";
+              setTimeout(function () {
+                button.textContent = original;
+              }, 1200);
+            }
+          });
+        });
+      }
+
+      function attachLockHandlers() {
+        lockButton.addEventListener("click", function () {
+          lockedColor = getCurrentColor();
+          updateLockedSwatch();
+        });
+
+        swapButton.addEventListener("click", function () {
+          if (!lockedColor) {
+            return;
+          }
+          var current = getCurrentColor();
+          setColorFromRGBA(lockedColor);
+          lockedColor = current;
+          updateLockedSwatch();
+          pushHistory();
+        });
+
+        clearLockButton.addEventListener("click", function () {
+          lockedColor = null;
+          updateLockedSwatch();
+        });
+      }
+
+      function initialize() {
+        svDpr = resizeCanvas(svCanvas, svCtx);
+        imageDpr = resizeCanvas(imageCanvas, imageCtx);
+        lensDpr = resizeCanvas(lensCanvas, lensCtx);
+        setHSV(state.h, state.s, state.v);
+        setAlpha(state.a);
+        renderHistory();
+        renderPalette([]);
+        attachDragHandlers();
+        attachClipboardHandler();
+        attachCopyHandlers();
+        attachLockHandlers();
+
+        hueRange.addEventListener("input", function () {
+          setHSV(parseFloat(hueRange.value), state.s, state.v);
+        });
+
+        hueRange.addEventListener("change", function () {
+          pushHistory();
+        });
+
+        alphaRange.addEventListener("input", function () {
+          setAlpha(parseFloat(alphaRange.value) / 100);
+        });
+
+        alphaRange.addEventListener("change", function () {
+          pushHistory();
+        });
+
+        svCanvas.addEventListener("pointerdown", function (event) {
+          svCanvas.setPointerCapture(event.pointerId);
+          isSvDragging = true;
+          handleSvPointer(event);
+        });
+
+        svCanvas.addEventListener("pointermove", function (event) {
+          if (isSvDragging) {
+            handleSvPointer(event);
+          }
+        });
+
+        svCanvas.addEventListener("pointerup", function (event) {
+          isSvDragging = false;
+          svCanvas.releasePointerCapture(event.pointerId);
+          pushHistory();
+        });
+
+        imageCanvas.addEventListener("pointerdown", function (event) {
+          imageCanvas.setPointerCapture(event.pointerId);
+          isImageDragging = true;
+          handleImagePointer(event);
+        });
+
+        imageCanvas.addEventListener("pointermove", function (event) {
+          updateLens(event);
+          if (isImageDragging) {
+            handleImagePointer(event);
+          }
+        });
+
+        imageCanvas.addEventListener("pointerenter", function (event) {
+          updateLens(event);
+        });
+
+        imageCanvas.addEventListener("pointerleave", function () {
+          lens.style.opacity = "0";
+        });
+
+        imageCanvas.addEventListener("pointerup", function (event) {
+          isImageDragging = false;
+          imageCanvas.releasePointerCapture(event.pointerId);
+          pushHistory();
+        });
+
+        imageInput.addEventListener("change", function (event) {
+          if (event.target.files && event.target.files[0]) {
+            loadImageFromFile(event.target.files[0]);
+          }
+        });
+
+        clearButton.addEventListener("click", function () {
+          clearImage();
+        });
+
+        clearHistoryButton.addEventListener("click", function () {
+          history = [];
+          renderHistory();
+        });
+
+        window.addEventListener("resize", function () {
+          svDpr = resizeCanvas(svCanvas, svCtx);
+          drawSv();
+          updateSvCursor();
+          imageDpr = resizeCanvas(imageCanvas, imageCtx);
+          lensDpr = resizeCanvas(lensCanvas, lensCtx);
+          if (imageState.hasImage && imageState.image) {
+            drawImageToCanvas(imageState.image);
+          }
+        });
+      }
+
+      initialize();
+    })();
+  </script>
+</body>
+</html>

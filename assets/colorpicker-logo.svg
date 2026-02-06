@@ -1,0 +1,16 @@
+<svg width="520" height="130" viewBox="0 0 520 130" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Color Picker logo">
+  <rect width="520" height="130" fill="transparent"/>
+  <defs>
+    <linearGradient id="cp-gradient" x1="12" y1="18" x2="98" y2="104" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff6b6b"/>
+      <stop offset="0.35" stop-color="#f7b733"/>
+      <stop offset="0.7" stop-color="#48dbfb"/>
+      <stop offset="1" stop-color="#1dd1a1"/>
+    </linearGradient>
+  </defs>
+  <rect x="12" y="18" width="86" height="86" rx="24" fill="url(#cp-gradient)"/>
+  <circle cx="55" cy="61" r="18" fill="rgba(255, 255, 255, 0.7)" stroke="#ffffff" stroke-width="3"/>
+  <text x="118" y="58" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#2F3338">Color</text>
+  <text x="298" y="58" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#2F6FE3">Picker</text>
+  <text x="118" y="103" font-family="Arial, Helvetica, sans-serif" font-size="41" font-weight="500" fill="#64748B">Image + palette sampler</text>
+</svg>
