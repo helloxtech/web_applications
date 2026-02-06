@@ -40,12 +40,22 @@
   gap: 10px;
 }
 
-.paint-title {
+.paint-title-input {
   flex: 1;
   text-align: center;
   font-size: 12px;
   color: #2f2f2f;
   letter-spacing: 0.2px;
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 2px 6px;
+}
+
+.paint-title-input:focus {
+  outline: none;
+  border-color: #9bb4d8;
+  background: #ffffff;
+  border-radius: 4px;
 }
 
 .paint-quickbar {
@@ -608,7 +618,7 @@
 }
 
 @media (max-width: 760px) {
-  .paint-title {
+  .paint-title-input {
     display: none;
   }
 

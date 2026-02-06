@@ -29,7 +29,7 @@
   <main class="paint-main">
     <div class="paint-window">
       <div class="paint-titlebar">
-        <div class="paint-title">Untitled - Paint</div>
+        <input class="paint-title-input" id="doc-title" type="text" value="Untitled - Paint" aria-label="Document title">
       </div>
 
       <div class="paint-ribbon" aria-label="Paint ribbon">
@@ -425,6 +425,7 @@
       var statusTool = document.getElementById("status-tool");
       var statusCoords = document.getElementById("status-coords");
       var statusSize = document.getElementById("status-size");
+      var docTitle = document.getElementById("doc-title");
 
       var state = {
         tool: "brush",
@@ -567,6 +568,20 @@
       function updateStatus() {
         statusTool.textContent = "Tool: " + state.tool.charAt(0).toUpperCase() + state.tool.slice(1);
         statusSize.textContent = "Canvas: " + state.width + " × " + state.height;
+      }
+
+      function getSaveFilename() {
+        var raw = docTitle ? docTitle.value.trim() : "";
+        if (!raw) {
+          raw = "Untitled";
+        }
+        raw = raw.replace(/\s*-\s*paint$/i, "");
+        raw = raw.replace(/\.png$/i, "");
+        raw = raw.replace(/[\\/:*?"<>|]+/g, "-").trim();
+        if (!raw) {
+          raw = "Untitled";
+        }
+        return raw + ".png";
       }
 
       function getDefaultCanvasSize() {
@@ -1870,8 +1885,8 @@
       savePngBtn.addEventListener("click", function () {
         finalizeImagePlacementIfNeeded();
         var link = document.createElement("a");
-        link.download = "painter.png";
-        link.href = canvas.toDataURL("image/png");
+        link.download = getSaveFilename();
+        link.href = getSelectionDataUrl();
         link.click();
       });
 
@@ -2372,6 +2387,20 @@
       textEntry.addEventListener("click", function (evt) {
         evt.stopPropagation();
       });
+
+      if (docTitle) {
+        docTitle.addEventListener("keydown", function (evt) {
+          if (evt.key === "Enter") {
+            evt.preventDefault();
+            docTitle.blur();
+          }
+        });
+        docTitle.addEventListener("blur", function () {
+          if (!docTitle.value.trim()) {
+            docTitle.value = "Untitled - Paint";
+          }
+        });
+      }
 
       document.addEventListener("keydown", function (evt) {
         var target = evt.target;
