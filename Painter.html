@@ -1,0 +1,1228 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Painter app. Paste images, draw, crop, fill, and export quickly.">
+  <title>Painter | HelloAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Manrope:wght@500;600;700&family=Space+Grotesk:wght@600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/painter.css">
+</head>
+<body class="paint-app">
+  <main class="paint-main">
+    <div class="paint-window">
+      <div class="paint-titlebar">
+        <div class="paint-quickbar">
+          <button class="quick-btn" id="new-canvas" type="button">New</button>
+          <button class="quick-btn" id="undo" type="button">Undo</button>
+          <button class="quick-btn" id="redo" type="button">Redo</button>
+          <button class="quick-btn primary" id="save-png" type="button">Save</button>
+        </div>
+        <div class="paint-title">Untitled - Painter</div>
+      </div>
+
+      <div class="paint-tabs" role="tablist" aria-label="Paint ribbon tabs">
+        <button class="paint-tab" type="button">File</button>
+        <button class="paint-tab active" type="button">Home</button>
+        <button class="paint-tab" type="button">View</button>
+      </div>
+
+      <div class="paint-ribbon" aria-label="Paint ribbon">
+        <div class="ribbon-group ribbon-clipboard">
+          <div class="ribbon-row">
+            <label class="ribbon-btn" for="image-input">Paste</label>
+            <input id="image-input" type="file" accept="image/*" hidden>
+            <button class="ribbon-btn" id="paste-help" type="button">Paste tip</button>
+          </div>
+          <div class="ribbon-title">Clipboard</div>
+        </div>
+
+        <div class="ribbon-group ribbon-image">
+          <div class="ribbon-row">
+            <button class="ribbon-btn" data-tool="crop" type="button">Crop</button>
+            <button class="ribbon-btn" id="apply-crop" type="button" disabled>Apply crop</button>
+            <button class="ribbon-btn" id="cancel-crop" type="button" disabled>Cancel</button>
+          </div>
+          <div class="ribbon-row">
+            <label class="ribbon-label" for="canvas-width">Resize</label>
+            <input class="ribbon-input" id="canvas-width" type="number" min="200" value="1200">
+            <input class="ribbon-input" id="canvas-height" type="number" min="200" value="720">
+            <label class="ribbon-check">
+              <input id="scale-content" type="checkbox" checked>
+              Scale
+            </label>
+            <button class="ribbon-btn" id="resize-canvas" type="button">Apply</button>
+          </div>
+          <div class="ribbon-row">
+            <label class="ribbon-label" for="image-scale">Image scale</label>
+            <input class="ribbon-range" id="image-scale" type="range" min="10" max="200" value="100" disabled>
+            <button class="ribbon-btn" id="apply-image" type="button" disabled>Commit</button>
+            <button class="ribbon-btn" id="cancel-image" type="button" disabled>Cancel</button>
+          </div>
+          <div class="ribbon-title">Image</div>
+        </div>
+
+        <div class="ribbon-group ribbon-tools">
+          <div class="ribbon-grid">
+            <button class="ribbon-btn tool-button active" data-tool="brush" type="button">Brush</button>
+            <button class="ribbon-btn tool-button" data-tool="pencil" type="button">Pencil</button>
+            <button class="ribbon-btn tool-button" data-tool="eraser" type="button">Eraser</button>
+            <button class="ribbon-btn tool-button" data-tool="fill" type="button">Fill</button>
+            <button class="ribbon-btn tool-button" data-tool="text" type="button">Text</button>
+            <button class="ribbon-btn tool-button" data-tool="picker" type="button">Picker</button>
+          </div>
+          <div class="ribbon-title">Tools</div>
+        </div>
+
+        <div class="ribbon-group ribbon-shapes">
+          <div class="ribbon-grid">
+            <button class="ribbon-btn tool-button" data-tool="line" type="button">Line</button>
+            <button class="ribbon-btn tool-button" data-tool="rect" type="button">Rectangle</button>
+            <button class="ribbon-btn tool-button" data-tool="roundrect" type="button">Rounded</button>
+            <button class="ribbon-btn tool-button" data-tool="ellipse" type="button">Ellipse</button>
+            <button class="ribbon-btn tool-button" data-tool="triangle" type="button">Triangle</button>
+          </div>
+          <div class="ribbon-row">
+            <label class="ribbon-label" for="outline-mode">Outline</label>
+            <select class="ribbon-select" id="outline-mode">
+              <option value="solid">Solid</option>
+              <option value="none">None</option>
+            </select>
+            <label class="ribbon-label" for="fill-mode">Fill</label>
+            <select class="ribbon-select" id="fill-mode">
+              <option value="solid">Solid</option>
+              <option value="none">None</option>
+            </select>
+          </div>
+          <div class="ribbon-title">Shapes</div>
+        </div>
+
+        <div class="ribbon-group ribbon-size">
+          <div class="ribbon-row">
+            <label class="ribbon-label" for="size-range">Size</label>
+            <input class="ribbon-range" id="size-range" type="range" min="1" max="60" value="10">
+          </div>
+          <div class="ribbon-row">
+            <label class="ribbon-label" for="opacity-range">Opacity</label>
+            <input class="ribbon-range" id="opacity-range" type="range" min="10" max="100" value="100">
+          </div>
+          <div class="ribbon-row">
+            <label class="ribbon-label" for="text-size">Text size</label>
+            <input class="ribbon-range" id="text-size" type="range" min="12" max="72" value="28">
+            <select class="ribbon-select" id="text-font">
+              <option value="Segoe UI">Segoe UI</option>
+              <option value="Space Grotesk">Space Grotesk</option>
+              <option value="Sora">Sora</option>
+              <option value="Manrope">Manrope</option>
+            </select>
+          </div>
+          <div class="ribbon-title">Size</div>
+        </div>
+
+        <div class="ribbon-group ribbon-colors">
+          <div class="color-stack">
+            <div class="color-box">
+              <span class="color-label">Color 1</span>
+              <button class="color-sample" id="color1-btn" type="button"></button>
+              <input id="color1-input" type="color" value="#1f2937" hidden>
+            </div>
+            <div class="color-box">
+              <span class="color-label">Color 2</span>
+              <button class="color-sample" id="color2-btn" type="button"></button>
+              <input id="color2-input" type="color" value="#f97316" hidden>
+            </div>
+          </div>
+          <div class="palette-grid" id="palette-grid">
+            <button class="color-chip" style="background:#000000" data-color="#000000" aria-label="Black"></button>
+            <button class="color-chip" style="background:#7f7f7f" data-color="#7f7f7f" aria-label="Gray"></button>
+            <button class="color-chip" style="background:#880015" data-color="#880015" aria-label="Dark red"></button>
+            <button class="color-chip" style="background:#ed1c24" data-color="#ed1c24" aria-label="Red"></button>
+            <button class="color-chip" style="background:#ff7f27" data-color="#ff7f27" aria-label="Orange"></button>
+            <button class="color-chip" style="background:#fff200" data-color="#fff200" aria-label="Yellow"></button>
+            <button class="color-chip" style="background:#22b14c" data-color="#22b14c" aria-label="Green"></button>
+            <button class="color-chip" style="background:#00a2e8" data-color="#00a2e8" aria-label="Sky"></button>
+            <button class="color-chip" style="background:#3f48cc" data-color="#3f48cc" aria-label="Blue"></button>
+            <button class="color-chip" style="background:#a349a4" data-color="#a349a4" aria-label="Purple"></button>
+            <button class="color-chip" style="background:#ffffff" data-color="#ffffff" aria-label="White"></button>
+            <button class="color-chip" style="background:#c3c3c3" data-color="#c3c3c3" aria-label="Light gray"></button>
+            <button class="color-chip" style="background:#b97a57" data-color="#b97a57" aria-label="Brown"></button>
+            <button class="color-chip" style="background:#ffaec9" data-color="#ffaec9" aria-label="Pink"></button>
+            <button class="color-chip" style="background:#ffc90e" data-color="#ffc90e" aria-label="Gold"></button>
+            <button class="color-chip" style="background:#efe4b0" data-color="#efe4b0" aria-label="Beige"></button>
+            <button class="color-chip" style="background:#b5e61d" data-color="#b5e61d" aria-label="Lime"></button>
+            <button class="color-chip" style="background:#99d9ea" data-color="#99d9ea" aria-label="Light blue"></button>
+            <button class="color-chip" style="background:#7092be" data-color="#7092be" aria-label="Steel"></button>
+            <button class="color-chip" style="background:#c8bfe7" data-color="#c8bfe7" aria-label="Lavender"></button>
+          </div>
+          <div class="ribbon-title">Colors</div>
+        </div>
+      </div>
+
+      <div class="paint-workspace">
+        <div class="canvas-stage" id="canvas-stage">
+          <div class="canvas-wrap" id="canvas-wrap">
+            <canvas id="paint-canvas" width="1200" height="720"></canvas>
+            <div class="overlay-layer" id="overlay-layer">
+              <div class="crop-box" id="crop-box"></div>
+              <div class="image-layer" id="image-layer">
+                <img id="image-layer-img" alt="Placed image">
+                <div class="image-handle handle-nw" data-handle="nw"></div>
+                <div class="image-handle handle-n" data-handle="n"></div>
+                <div class="image-handle handle-ne" data-handle="ne"></div>
+                <div class="image-handle handle-e" data-handle="e"></div>
+                <div class="image-handle handle-se" data-handle="se"></div>
+                <div class="image-handle handle-s" data-handle="s"></div>
+                <div class="image-handle handle-sw" data-handle="sw"></div>
+                <div class="image-handle handle-w" data-handle="w"></div>
+              </div>
+              <textarea class="text-entry" id="text-entry" rows="2"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="status-bar">
+          <div class="status-left">
+            <span id="status-tool">Tool: Brush</span>
+            <span id="status-coords">x: 0, y: 0</span>
+            <span id="status-size">Canvas: 1200 × 720</span>
+          </div>
+          <div class="status-right">
+            <label class="zoom-control" for="zoom-range">
+              <span>Zoom</span>
+              <input id="zoom-range" type="range" min="50" max="200" value="100">
+              <span class="zoom-pill" id="zoom-value">100%</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var canvas = document.getElementById("paint-canvas");
+      var ctx = canvas.getContext("2d");
+      var canvasWrap = document.getElementById("canvas-wrap");
+      var canvasStage = document.getElementById("canvas-stage");
+      var overlayLayer = document.getElementById("overlay-layer");
+      var cropBox = document.getElementById("crop-box");
+      var imageLayer = document.getElementById("image-layer");
+      var imageLayerImg = document.getElementById("image-layer-img");
+      var imageHandles = Array.prototype.slice.call(document.querySelectorAll(".image-handle"));
+      var textEntry = document.getElementById("text-entry");
+
+      var toolButtons = Array.prototype.slice.call(document.querySelectorAll("[data-tool]"));
+      var sizeRange = document.getElementById("size-range");
+      var opacityRange = document.getElementById("opacity-range");
+      var outlineMode = document.getElementById("outline-mode");
+      var fillMode = document.getElementById("fill-mode");
+      var color1Btn = document.getElementById("color1-btn");
+      var color2Btn = document.getElementById("color2-btn");
+      var color1Input = document.getElementById("color1-input");
+      var color2Input = document.getElementById("color2-input");
+      var paletteGrid = document.getElementById("palette-grid");
+      var textSize = document.getElementById("text-size");
+      var textFont = document.getElementById("text-font");
+      var imageInput = document.getElementById("image-input");
+      var imageScale = document.getElementById("image-scale");
+      var applyImage = document.getElementById("apply-image");
+      var cancelImage = document.getElementById("cancel-image");
+      var pasteHelp = document.getElementById("paste-help");
+      var canvasWidthInput = document.getElementById("canvas-width");
+      var canvasHeightInput = document.getElementById("canvas-height");
+      var scaleContent = document.getElementById("scale-content");
+      var resizeCanvasBtn = document.getElementById("resize-canvas");
+      var applyCropBtn = document.getElementById("apply-crop");
+      var cancelCropBtn = document.getElementById("cancel-crop");
+      var newCanvasBtn = document.getElementById("new-canvas");
+      var undoBtn = document.getElementById("undo");
+      var redoBtn = document.getElementById("redo");
+      var savePngBtn = document.getElementById("save-png");
+      var zoomRange = document.getElementById("zoom-range");
+      var zoomValue = document.getElementById("zoom-value");
+      var statusTool = document.getElementById("status-tool");
+      var statusCoords = document.getElementById("status-coords");
+      var statusSize = document.getElementById("status-size");
+
+      var state = {
+        tool: "brush",
+        lineWidth: 10,
+        opacity: 1,
+        stroke: "#1f2937",
+        fill: "#f97316",
+        outlineMode: "solid",
+        fillMode: "solid",
+        textSize: 28,
+        textFont: "Segoe UI",
+        zoom: 1,
+        width: 1200,
+        height: 720,
+        bg: "#ffffff",
+        isDrawing: false,
+        startX: 0,
+        startY: 0,
+        snapshot: null,
+        crop: null,
+        history: [],
+        historyIndex: -1,
+        imagePlacement: null,
+        imageDrag: null,
+        imageResize: null
+      };
+
+      function setCanvasSize(width, height, shouldScale, skipHistory) {
+        var temp = document.createElement("canvas");
+        temp.width = canvas.width;
+        temp.height = canvas.height;
+        temp.getContext("2d").drawImage(canvas, 0, 0);
+
+        canvas.width = width;
+        canvas.height = height;
+        state.width = width;
+        state.height = height;
+
+        ctx.fillStyle = state.bg;
+        ctx.fillRect(0, 0, width, height);
+
+        if (temp.width && temp.height) {
+          if (shouldScale) {
+            ctx.drawImage(temp, 0, 0, width, height);
+          } else {
+            ctx.drawImage(temp, 0, 0);
+          }
+        }
+
+        updateCanvasWrap();
+        updateStatus();
+        if (!skipHistory) {
+          saveState();
+        }
+      }
+
+      function updateCanvasWrap() {
+        var cssWidth = state.width * state.zoom;
+        var cssHeight = state.height * state.zoom;
+        canvas.style.width = cssWidth + "px";
+        canvas.style.height = cssHeight + "px";
+        canvasWrap.style.width = cssWidth + "px";
+        canvasWrap.style.height = cssHeight + "px";
+        updateOverlayPositions();
+      }
+
+      function updateOverlayPositions() {
+        if (state.crop && state.crop.active) {
+          drawCropBox();
+        }
+        if (state.imagePlacement) {
+          updateImageLayer();
+        }
+        if (textEntry.style.display === "block") {
+          var cssScale = getCssScale();
+          textEntry.style.fontSize = state.textSize * cssScale + "px";
+        }
+      }
+
+      function getCssScale() {
+        var rect = canvas.getBoundingClientRect();
+        return rect.width / canvas.width;
+      }
+
+      function updateStatus() {
+        statusTool.textContent = "Tool: " + state.tool.charAt(0).toUpperCase() + state.tool.slice(1);
+        statusSize.textContent = "Canvas: " + state.width + " × " + state.height;
+      }
+
+      function getDefaultCanvasSize() {
+        var stageRect = canvasStage.getBoundingClientRect();
+        var availableWidth = Math.max(520, Math.floor(stageRect.width - 24));
+        var availableHeight = Math.max(360, Math.floor(stageRect.height - 24));
+        return { width: availableWidth, height: availableHeight };
+      }
+
+      function setTool(tool) {
+        state.tool = tool;
+        toolButtons.forEach(function (btn) {
+          btn.classList.toggle("active", btn.dataset.tool === tool);
+        });
+        canvas.style.cursor = tool === "text" ? "text" : tool === "fill" ? "cell" : tool === "picker" ? "copy" : tool === "crop" ? "crosshair" : "crosshair";
+        updateStatus();
+      }
+
+      function saveState() {
+        var dataUrl = canvas.toDataURL("image/png");
+        if (state.historyIndex < state.history.length - 1) {
+          state.history = state.history.slice(0, state.historyIndex + 1);
+        }
+        state.history.push(dataUrl);
+        if (state.history.length > 40) {
+          state.history.shift();
+        }
+        state.historyIndex = state.history.length - 1;
+        updateUndoRedo();
+      }
+
+      function restoreState(index) {
+        if (index < 0 || index >= state.history.length) {
+          return;
+        }
+        var img = new Image();
+        img.onload = function () {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = state.bg;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          state.historyIndex = index;
+          updateUndoRedo();
+        };
+        img.src = state.history[index];
+      }
+
+      function updateUndoRedo() {
+        undoBtn.disabled = state.historyIndex <= 0;
+        redoBtn.disabled = state.historyIndex >= state.history.length - 1;
+      }
+
+      function getPoint(evt) {
+        var rect = canvas.getBoundingClientRect();
+        var scaleX = canvas.width / rect.width;
+        var scaleY = canvas.height / rect.height;
+        return {
+          x: (evt.clientX - rect.left) * scaleX,
+          y: (evt.clientY - rect.top) * scaleY
+        };
+      }
+
+      function rgbaFromHex(hex, alpha) {
+        var clean = hex.replace("#", "");
+        if (clean.length === 3) {
+          clean = clean[0] + clean[0] + clean[1] + clean[1] + clean[2] + clean[2];
+        }
+        var r = parseInt(clean.slice(0, 2), 16);
+        var g = parseInt(clean.slice(2, 4), 16);
+        var b = parseInt(clean.slice(4, 6), 16);
+        return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+      }
+
+      function rgbToHex(r, g, b) {
+        return (
+          "#" +
+          [r, g, b]
+            .map(function (val) {
+              var hex = val.toString(16);
+              return hex.length === 1 ? "0" + hex : hex;
+            })
+            .join("")
+        );
+      }
+
+      function setColor1(hex) {
+        state.stroke = hex;
+        color1Input.value = hex;
+        color1Btn.style.background = hex;
+      }
+
+      function setColor2(hex) {
+        state.fill = hex;
+        color2Input.value = hex;
+        color2Btn.style.background = hex;
+      }
+
+      function beginStroke(point) {
+        ctx.beginPath();
+        ctx.moveTo(point.x, point.y);
+      }
+
+      function strokeTo(point) {
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.lineWidth = state.tool === "pencil" ? 2 : state.lineWidth;
+        if (state.tool === "eraser") {
+          ctx.strokeStyle = rgbaFromHex(state.bg, 1);
+        } else {
+          ctx.strokeStyle = rgbaFromHex(state.stroke, state.opacity);
+        }
+        ctx.lineTo(point.x, point.y);
+        ctx.stroke();
+      }
+
+      function drawRoundRect(x, y, w, h, radius) {
+        var r = Math.min(radius, w / 2, h / 2);
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        ctx.lineTo(x + r, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+        ctx.lineTo(x, y + r);
+        ctx.quadraticCurveTo(x, y, x + r, y);
+        ctx.closePath();
+      }
+
+      function drawShape(point) {
+        if (!state.snapshot) {
+          return;
+        }
+        ctx.putImageData(state.snapshot, 0, 0);
+        ctx.lineWidth = state.lineWidth;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.strokeStyle = rgbaFromHex(state.stroke, state.opacity);
+        ctx.fillStyle = rgbaFromHex(state.fill, state.opacity);
+
+        if (state.tool === "line") {
+          if (state.outlineMode === "none") {
+            return;
+          }
+          ctx.beginPath();
+          ctx.moveTo(state.startX, state.startY);
+          ctx.lineTo(point.x, point.y);
+          ctx.stroke();
+          return;
+        }
+
+        var x = Math.min(state.startX, point.x);
+        var y = Math.min(state.startY, point.y);
+        var w = Math.abs(point.x - state.startX);
+        var h = Math.abs(point.y - state.startY);
+
+        if (state.tool === "rect") {
+          if (state.fillMode === "solid") {
+            ctx.fillRect(x, y, w, h);
+          }
+          if (state.outlineMode !== "none") {
+            ctx.strokeRect(x, y, w, h);
+          }
+          return;
+        }
+
+        if (state.tool === "roundrect") {
+          drawRoundRect(x, y, w, h, Math.min(18, w / 5, h / 5));
+          if (state.fillMode === "solid") {
+            ctx.fill();
+          }
+          if (state.outlineMode !== "none") {
+            ctx.stroke();
+          }
+          return;
+        }
+
+        if (state.tool === "ellipse") {
+          ctx.beginPath();
+          ctx.ellipse(x + w / 2, y + h / 2, Math.abs(w) / 2, Math.abs(h) / 2, 0, 0, Math.PI * 2);
+          if (state.fillMode === "solid") {
+            ctx.fill();
+          }
+          if (state.outlineMode !== "none") {
+            ctx.stroke();
+          }
+          return;
+        }
+
+        if (state.tool === "triangle") {
+          ctx.beginPath();
+          ctx.moveTo(x + w / 2, y);
+          ctx.lineTo(x + w, y + h);
+          ctx.lineTo(x, y + h);
+          ctx.closePath();
+          if (state.fillMode === "solid") {
+            ctx.fill();
+          }
+          if (state.outlineMode !== "none") {
+            ctx.stroke();
+          }
+        }
+      }
+
+      function floodFill(point) {
+        var x = Math.floor(point.x);
+        var y = Math.floor(point.y);
+        var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        var data = imageData.data;
+        var width = canvas.width;
+        var height = canvas.height;
+        var index = (y * width + x) * 4;
+        var target = [data[index], data[index + 1], data[index + 2], data[index + 3]];
+        var fill = hexToRgbaArray(state.fill, state.opacity);
+        if (colorsMatch(target, fill, 0)) {
+          return;
+        }
+        var stack = [[x, y]];
+        while (stack.length) {
+          var item = stack.pop();
+          var nx = item[0];
+          var ny = item[1];
+          if (nx < 0 || ny < 0 || nx >= width || ny >= height) {
+            continue;
+          }
+          var i = (ny * width + nx) * 4;
+          var current = [data[i], data[i + 1], data[i + 2], data[i + 3]];
+          if (!colorsMatch(current, target, 20)) {
+            continue;
+          }
+          data[i] = fill[0];
+          data[i + 1] = fill[1];
+          data[i + 2] = fill[2];
+          data[i + 3] = fill[3];
+          stack.push([nx + 1, ny]);
+          stack.push([nx - 1, ny]);
+          stack.push([nx, ny + 1]);
+          stack.push([nx, ny - 1]);
+        }
+        ctx.putImageData(imageData, 0, 0);
+      }
+
+      function hexToRgbaArray(hex, alpha) {
+        var clean = hex.replace("#", "");
+        if (clean.length === 3) {
+          clean = clean[0] + clean[0] + clean[1] + clean[1] + clean[2] + clean[2];
+        }
+        var r = parseInt(clean.slice(0, 2), 16);
+        var g = parseInt(clean.slice(2, 4), 16);
+        var b = parseInt(clean.slice(4, 6), 16);
+        return [r, g, b, Math.round(alpha * 255)];
+      }
+
+      function colorsMatch(a, b, tolerance) {
+        return (
+          Math.abs(a[0] - b[0]) <= tolerance &&
+          Math.abs(a[1] - b[1]) <= tolerance &&
+          Math.abs(a[2] - b[2]) <= tolerance &&
+          Math.abs(a[3] - b[3]) <= tolerance
+        );
+      }
+
+      function startCrop(point) {
+        state.crop = {
+          active: true,
+          startX: point.x,
+          startY: point.y,
+          endX: point.x,
+          endY: point.y
+        };
+        cropBox.style.display = "block";
+        applyCropBtn.disabled = true;
+        cancelCropBtn.disabled = false;
+        drawCropBox();
+      }
+
+      function updateCrop(point) {
+        if (!state.crop || !state.crop.active) {
+          return;
+        }
+        state.crop.endX = point.x;
+        state.crop.endY = point.y;
+        drawCropBox();
+      }
+
+      function drawCropBox() {
+        if (!state.crop) {
+          return;
+        }
+        var rect = getCropRect();
+        var cssScale = getCssScale();
+        cropBox.style.left = rect.x * cssScale + "px";
+        cropBox.style.top = rect.y * cssScale + "px";
+        cropBox.style.width = rect.w * cssScale + "px";
+        cropBox.style.height = rect.h * cssScale + "px";
+      }
+
+      function getCropRect() {
+        var x1 = state.crop.startX;
+        var y1 = state.crop.startY;
+        var x2 = state.crop.endX;
+        var y2 = state.crop.endY;
+        var x = Math.min(x1, x2);
+        var y = Math.min(y1, y2);
+        var w = Math.abs(x2 - x1);
+        var h = Math.abs(y2 - y1);
+        return { x: x, y: y, w: w, h: h };
+      }
+
+      function applyCrop() {
+        if (!state.crop) {
+          return;
+        }
+        var rect = getCropRect();
+        if (rect.w < 10 || rect.h < 10) {
+          return;
+        }
+        var imageData = ctx.getImageData(rect.x, rect.y, rect.w, rect.h);
+        canvas.width = rect.w;
+        canvas.height = rect.h;
+        state.width = rect.w;
+        state.height = rect.h;
+        ctx.putImageData(imageData, 0, 0);
+        state.crop = null;
+        cropBox.style.display = "none";
+        applyCropBtn.disabled = true;
+        cancelCropBtn.disabled = true;
+        canvasWidthInput.value = rect.w;
+        canvasHeightInput.value = rect.h;
+        updateCanvasWrap();
+        saveState();
+        updateStatus();
+      }
+
+      function cancelCrop() {
+        state.crop = null;
+        cropBox.style.display = "none";
+        applyCropBtn.disabled = true;
+        cancelCropBtn.disabled = true;
+      }
+
+      function openTextInput(point) {
+        textEntry.value = "";
+        textEntry.style.display = "block";
+        textEntry.dataset.x = point.x;
+        textEntry.dataset.y = point.y;
+        var cssScale = getCssScale();
+        textEntry.style.left = point.x * cssScale + "px";
+        textEntry.style.top = point.y * cssScale + "px";
+        textEntry.style.fontSize = state.textSize * cssScale + "px";
+        textEntry.style.fontFamily = state.textFont;
+        textEntry.focus();
+      }
+
+      function commitText() {
+        if (textEntry.style.display !== "block") {
+          return;
+        }
+        var text = textEntry.value.trim();
+        textEntry.style.display = "none";
+        if (!text) {
+          return;
+        }
+        var lines = text.split("\n");
+        var x = parseFloat(textEntry.dataset.x || 0);
+        var y = parseFloat(textEntry.dataset.y || 0);
+        ctx.save();
+        ctx.fillStyle = rgbaFromHex(state.stroke, state.opacity);
+        ctx.font = state.textSize + "px " + state.textFont;
+        ctx.textBaseline = "top";
+        var lineHeight = state.textSize * 1.3;
+        lines.forEach(function (line, idx) {
+          ctx.fillText(line, x, y + idx * lineHeight);
+        });
+        ctx.restore();
+        saveState();
+      }
+
+      function setupImagePlacement(img) {
+        state.imagePlacement = {
+          img: img,
+          baseWidth: img.width,
+          baseHeight: img.height,
+          width: img.width,
+          height: img.height,
+          scale: 1,
+          x: Math.max(0, (canvas.width - img.width) / 2),
+          y: Math.max(0, (canvas.height - img.height) / 2)
+        };
+        imageLayerImg.src = img.src;
+        imageLayer.style.display = "block";
+        imageScale.disabled = false;
+        imageScale.value = 100;
+        applyImage.disabled = false;
+        cancelImage.disabled = false;
+        updateImageLayer();
+      }
+
+      function updateImageLayer() {
+        if (!state.imagePlacement) {
+          return;
+        }
+        var placement = state.imagePlacement;
+        var cssScale = getCssScale();
+        var width = placement.width;
+        var height = placement.height;
+        imageLayer.style.left = placement.x * cssScale + "px";
+        imageLayer.style.top = placement.y * cssScale + "px";
+        imageLayer.style.width = width * cssScale + "px";
+        imageLayer.style.height = height * cssScale + "px";
+      }
+
+      function applyImagePlacement() {
+        if (!state.imagePlacement) {
+          return;
+        }
+        var placement = state.imagePlacement;
+        ctx.drawImage(placement.img, placement.x, placement.y, placement.width, placement.height);
+        state.imagePlacement = null;
+        imageLayer.style.display = "none";
+        imageScale.disabled = true;
+        applyImage.disabled = true;
+        cancelImage.disabled = true;
+        saveState();
+      }
+
+      function cancelImagePlacement() {
+        state.imagePlacement = null;
+        imageLayer.style.display = "none";
+        imageScale.disabled = true;
+        applyImage.disabled = true;
+        cancelImage.disabled = true;
+      }
+
+      function handleImageFile(file) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+          var img = new Image();
+          img.onload = function () {
+            setupImagePlacement(img);
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function updateCoords(evt) {
+        var point = getPoint(evt);
+        statusCoords.textContent = "x: " + Math.round(point.x) + ", y: " + Math.round(point.y);
+      }
+
+      function pickColor(point, isSecondary) {
+        var x = Math.floor(point.x);
+        var y = Math.floor(point.y);
+        if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) {
+          return;
+        }
+        var data = ctx.getImageData(x, y, 1, 1).data;
+        var hex = rgbToHex(data[0], data[1], data[2]);
+        if (isSecondary) {
+          setColor2(hex);
+        } else {
+          setColor1(hex);
+        }
+      }
+
+      toolButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          setTool(btn.dataset.tool);
+        });
+      });
+
+      sizeRange.addEventListener("input", function () {
+        state.lineWidth = parseInt(sizeRange.value, 10);
+      });
+
+      opacityRange.addEventListener("input", function () {
+        state.opacity = parseInt(opacityRange.value, 10) / 100;
+      });
+
+      outlineMode.addEventListener("change", function () {
+        state.outlineMode = outlineMode.value;
+      });
+
+      fillMode.addEventListener("change", function () {
+        state.fillMode = fillMode.value;
+      });
+
+      color1Btn.addEventListener("click", function () {
+        color1Input.click();
+      });
+
+      color2Btn.addEventListener("click", function () {
+        color2Input.click();
+      });
+
+      color1Input.addEventListener("input", function () {
+        setColor1(color1Input.value);
+      });
+
+      color2Input.addEventListener("input", function () {
+        setColor2(color2Input.value);
+      });
+
+      paletteGrid.addEventListener("click", function (evt) {
+        var target = evt.target;
+        if (target && target.dataset.color) {
+          setColor1(target.dataset.color);
+        }
+      });
+
+      paletteGrid.addEventListener("contextmenu", function (evt) {
+        var target = evt.target;
+        if (target && target.dataset.color) {
+          evt.preventDefault();
+          setColor2(target.dataset.color);
+        }
+      });
+
+      textSize.addEventListener("input", function () {
+        state.textSize = parseInt(textSize.value, 10);
+      });
+
+      textFont.addEventListener("change", function () {
+        state.textFont = textFont.value;
+      });
+
+      imageInput.addEventListener("change", function (evt) {
+        var file = evt.target.files && evt.target.files[0];
+        if (file) {
+          handleImageFile(file);
+        }
+        imageInput.value = "";
+      });
+
+      imageScale.addEventListener("input", function () {
+        if (!state.imagePlacement) {
+          return;
+        }
+        state.imagePlacement.scale = parseInt(imageScale.value, 10) / 100;
+        state.imagePlacement.width = state.imagePlacement.baseWidth * state.imagePlacement.scale;
+        state.imagePlacement.height = state.imagePlacement.baseHeight * state.imagePlacement.scale;
+        updateImageLayer();
+      });
+
+      applyImage.addEventListener("click", applyImagePlacement);
+      cancelImage.addEventListener("click", cancelImagePlacement);
+
+      pasteHelp.addEventListener("click", function () {
+        alert("Paste a screenshot or image using Cmd+V (Mac) or Ctrl+V (Windows). It will appear as a movable layer.");
+      });
+
+      resizeCanvasBtn.addEventListener("click", function () {
+        var newWidth = parseInt(canvasWidthInput.value, 10);
+        var newHeight = parseInt(canvasHeightInput.value, 10);
+        if (!newWidth || !newHeight) {
+          return;
+        }
+        setCanvasSize(newWidth, newHeight, scaleContent.checked, false);
+      });
+
+      applyCropBtn.addEventListener("click", applyCrop);
+      cancelCropBtn.addEventListener("click", cancelCrop);
+
+      newCanvasBtn.addEventListener("click", function () {
+        ctx.fillStyle = state.bg;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        saveState();
+      });
+
+      undoBtn.addEventListener("click", function () {
+        restoreState(state.historyIndex - 1);
+      });
+
+      redoBtn.addEventListener("click", function () {
+        restoreState(state.historyIndex + 1);
+      });
+
+      savePngBtn.addEventListener("click", function () {
+        var link = document.createElement("a");
+        link.download = "painter.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+
+      zoomRange.addEventListener("input", function () {
+        state.zoom = parseInt(zoomRange.value, 10) / 100;
+        zoomValue.textContent = Math.round(state.zoom * 100) + "%";
+        updateCanvasWrap();
+      });
+
+      canvas.addEventListener("contextmenu", function (evt) {
+        evt.preventDefault();
+      });
+
+      canvas.addEventListener("pointerdown", function (evt) {
+        if (state.imagePlacement) {
+          return;
+        }
+        if (textEntry.style.display === "block") {
+          commitText();
+        }
+        var point = getPoint(evt);
+        if (state.tool === "picker") {
+          pickColor(point, evt.button === 2 || evt.buttons === 2);
+          return;
+        }
+        if (state.tool === "text") {
+          openTextInput(point);
+          return;
+        }
+        if (state.tool === "fill") {
+          floodFill(point);
+          saveState();
+          return;
+        }
+        if (state.tool === "crop") {
+          startCrop(point);
+          state.isDrawing = true;
+          return;
+        }
+        state.isDrawing = true;
+        state.startX = point.x;
+        state.startY = point.y;
+        if (state.tool === "brush" || state.tool === "pencil" || state.tool === "eraser") {
+          beginStroke(point);
+        } else {
+          state.snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        }
+      });
+
+      canvas.addEventListener("pointermove", function (evt) {
+        updateCoords(evt);
+        if (!state.isDrawing) {
+          return;
+        }
+        var point = getPoint(evt);
+        if (state.tool === "brush" || state.tool === "pencil" || state.tool === "eraser") {
+          strokeTo(point);
+          return;
+        }
+        if (state.tool === "crop") {
+          updateCrop(point);
+          return;
+        }
+        drawShape(point);
+      });
+
+      canvas.addEventListener("pointerup", function () {
+        if (!state.isDrawing) {
+          return;
+        }
+        state.isDrawing = false;
+        if (state.tool === "crop") {
+          if (state.crop) {
+            applyCropBtn.disabled = false;
+          }
+          return;
+        }
+        if (state.tool === "brush" || state.tool === "pencil" || state.tool === "eraser" || state.tool === "line" || state.tool === "rect" || state.tool === "ellipse" || state.tool === "roundrect" || state.tool === "triangle") {
+          saveState();
+        }
+        state.snapshot = null;
+      });
+
+      canvas.addEventListener("pointerleave", function () {
+        if (state.isDrawing && (state.tool === "brush" || state.tool === "pencil" || state.tool === "eraser")) {
+          saveState();
+          state.isDrawing = false;
+        }
+      });
+
+      imageLayer.addEventListener("pointerdown", function (evt) {
+        if (!state.imagePlacement || (evt.target && evt.target.classList.contains("image-handle"))) {
+          return;
+        }
+        evt.preventDefault();
+        var point = getPoint(evt);
+        state.imageDrag = {
+          startX: point.x,
+          startY: point.y,
+          originX: state.imagePlacement.x,
+          originY: state.imagePlacement.y
+        };
+        imageLayer.setPointerCapture(evt.pointerId);
+      });
+
+      imageLayer.addEventListener("pointermove", function (evt) {
+        if (!state.imageDrag || !state.imagePlacement) {
+          return;
+        }
+        var point = getPoint(evt);
+        var dx = point.x - state.imageDrag.startX;
+        var dy = point.y - state.imageDrag.startY;
+        state.imagePlacement.x = state.imageDrag.originX + dx;
+        state.imagePlacement.y = state.imageDrag.originY + dy;
+        updateImageLayer();
+      });
+
+      imageLayer.addEventListener("pointerup", function () {
+        state.imageDrag = null;
+      });
+
+      imageHandles.forEach(function (handle) {
+        handle.addEventListener("pointerdown", function (evt) {
+          if (!state.imagePlacement) {
+            return;
+          }
+          evt.preventDefault();
+          evt.stopPropagation();
+          var point = getPoint(evt);
+          state.imageResize = {
+            handle: handle.dataset.handle,
+            startX: point.x,
+            startY: point.y,
+            originX: state.imagePlacement.x,
+            originY: state.imagePlacement.y,
+            originW: state.imagePlacement.width,
+            originH: state.imagePlacement.height
+          };
+          handle.setPointerCapture(evt.pointerId);
+        });
+
+        handle.addEventListener("pointermove", function (evt) {
+          if (!state.imageResize || !state.imagePlacement) {
+            return;
+          }
+          evt.preventDefault();
+          var resize = state.imageResize;
+          var point = getPoint(evt);
+          var dx = point.x - resize.startX;
+          var dy = point.y - resize.startY;
+          var minSize = 24;
+          var newX = resize.originX;
+          var newY = resize.originY;
+          var newW = resize.originW;
+          var newH = resize.originH;
+
+          switch (resize.handle) {
+            case "se":
+              newW = resize.originW + dx;
+              newH = resize.originH + dy;
+              break;
+            case "sw":
+              newW = resize.originW - dx;
+              newH = resize.originH + dy;
+              newX = resize.originX + dx;
+              break;
+            case "ne":
+              newW = resize.originW + dx;
+              newH = resize.originH - dy;
+              newY = resize.originY + dy;
+              break;
+            case "nw":
+              newW = resize.originW - dx;
+              newH = resize.originH - dy;
+              newX = resize.originX + dx;
+              newY = resize.originY + dy;
+              break;
+            case "e":
+              newW = resize.originW + dx;
+              break;
+            case "w":
+              newW = resize.originW - dx;
+              newX = resize.originX + dx;
+              break;
+            case "s":
+              newH = resize.originH + dy;
+              break;
+            case "n":
+              newH = resize.originH - dy;
+              newY = resize.originY + dy;
+              break;
+            default:
+              break;
+          }
+
+          if ((evt.shiftKey || resize.handle.length === 2) && resize.originW && resize.originH) {
+            var ratio = resize.originW / resize.originH;
+            if (newW / newH > ratio) {
+              newW = newH * ratio;
+            } else {
+              newH = newW / ratio;
+            }
+            if (resize.handle.indexOf("w") !== -1) {
+              newX = resize.originX + (resize.originW - newW);
+            }
+            if (resize.handle.indexOf("n") !== -1) {
+              newY = resize.originY + (resize.originH - newH);
+            }
+          }
+
+          if (newW < minSize) {
+            newW = minSize;
+            if (resize.handle.indexOf("w") !== -1) {
+              newX = resize.originX + (resize.originW - minSize);
+            }
+          }
+          if (newH < minSize) {
+            newH = minSize;
+            if (resize.handle.indexOf("n") !== -1) {
+              newY = resize.originY + (resize.originH - minSize);
+            }
+          }
+
+          state.imagePlacement.x = newX;
+          state.imagePlacement.y = newY;
+          state.imagePlacement.width = newW;
+          state.imagePlacement.height = newH;
+          state.imagePlacement.scale = newW / state.imagePlacement.baseWidth;
+          var sliderValue = Math.round(state.imagePlacement.scale * 100);
+          var sliderMin = parseInt(imageScale.min, 10);
+          var sliderMax = parseInt(imageScale.max, 10);
+          sliderValue = Math.max(sliderMin, Math.min(sliderMax, sliderValue));
+          imageScale.value = sliderValue;
+          updateImageLayer();
+        });
+
+        handle.addEventListener("pointerup", function () {
+          state.imageResize = null;
+        });
+      });
+
+      textEntry.addEventListener("keydown", function (evt) {
+        if (evt.key === "Enter" && !evt.shiftKey) {
+          evt.preventDefault();
+          commitText();
+        }
+        if (evt.key === "Escape") {
+          textEntry.style.display = "none";
+        }
+      });
+
+      textEntry.addEventListener("blur", commitText);
+
+      document.addEventListener("keydown", function (evt) {
+        var isModifier = evt.metaKey || evt.ctrlKey;
+        if (isModifier && evt.key.toLowerCase() === "z") {
+          evt.preventDefault();
+          if (evt.shiftKey) {
+            restoreState(state.historyIndex + 1);
+          } else {
+            restoreState(state.historyIndex - 1);
+          }
+        }
+      });
+
+      document.addEventListener("paste", function (evt) {
+        var items = evt.clipboardData && evt.clipboardData.items;
+        if (!items) {
+          return;
+        }
+        for (var i = 0; i < items.length; i += 1) {
+          var item = items[i];
+          if (item.type.indexOf("image") === 0) {
+            var file = item.getAsFile();
+            if (file) {
+              handleImageFile(file);
+              evt.preventDefault();
+              return;
+            }
+          }
+        }
+      });
+
+      canvasStage.addEventListener("dragover", function (evt) {
+        evt.preventDefault();
+      });
+
+      canvasStage.addEventListener("drop", function (evt) {
+        evt.preventDefault();
+        if (evt.dataTransfer && evt.dataTransfer.files && evt.dataTransfer.files[0]) {
+          handleImageFile(evt.dataTransfer.files[0]);
+        }
+      });
+
+      setColor1(state.stroke);
+      setColor2(state.fill);
+
+      window.setTimeout(function () {
+        var initialSize = getDefaultCanvasSize();
+        canvasWidthInput.value = initialSize.width;
+        canvasHeightInput.value = initialSize.height;
+        setCanvasSize(initialSize.width, initialSize.height, false, true);
+        saveState();
+        updateStatus();
+        updateCanvasWrap();
+      }, 0);
+    })();
+  </script>
+</body>
+</html>
