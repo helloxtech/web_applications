@@ -503,6 +503,8 @@ main {
 .site-footer {
   border-top: 1px solid var(--line);
   padding: 20px 0 30px;
+  background: rgba(245, 245, 247, 0.78);
+  backdrop-filter: saturate(180%) blur(18px);
 }
 
 .footer-row {
