@@ -1,7 +1,7 @@
 :root {
   --bg: #f4f6fb;
   --bg-soft: #f9faff;
-  --about-bg: #e9ebef;
+  --page-bg: #e9ebef;
   --surface: #ffffff;
   --text: #2f3338;
   --muted: #5d6b7b;
@@ -37,9 +37,6 @@ body {
   flex-direction: column;
 }
 
-.page-about {
-  background: var(--about-bg);
-}
 
 a {
   color: inherit;
@@ -113,6 +110,7 @@ a {
 main {
   padding: 56px 0 96px;
   flex: 1;
+  background: var(--page-bg);
 }
 
 .hero {
