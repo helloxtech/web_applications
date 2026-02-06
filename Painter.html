@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Painter app. Paste images, draw, crop, fill, and export quickly.">
+  <meta name="description" content="Painter app. Paste images, draw, crop, fill, rotate, and export quickly.">
   <title>Painter | HelloAI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,49 +12,69 @@
   <link rel="stylesheet" href="/painter.css">
 </head>
 <body class="paint-app">
+  <header class="site-header">
+    <div class="container nav-row">
+      <a class="brand" href="/index.html" aria-label="HelloAI home">
+        <img class="brand-logo" src="/media/HelloAI_logo_trim.png" alt="HelloAI logo">
+        <span class="brand-word">HelloAI</span>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="/index.html">Home</a>
+        <a class="active" href="/apps.html">Apps</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
   <main class="paint-main">
     <div class="paint-window">
       <div class="paint-titlebar">
-        <div class="paint-quickbar">
-          <button class="quick-btn" id="new-canvas" type="button">New</button>
-          <button class="quick-btn" id="undo" type="button">Undo</button>
-          <button class="quick-btn" id="redo" type="button">Redo</button>
-          <button class="quick-btn primary" id="save-png" type="button">Save</button>
-        </div>
-        <div class="paint-title">Untitled - Painter</div>
-      </div>
-
-      <div class="paint-tabs" role="tablist" aria-label="Paint ribbon tabs">
-        <button class="paint-tab" type="button">File</button>
-        <button class="paint-tab active" type="button">Home</button>
-        <button class="paint-tab" type="button">View</button>
+        <div class="paint-title">Untitled - Paint</div>
       </div>
 
       <div class="paint-ribbon" aria-label="Paint ribbon">
         <div class="ribbon-group ribbon-clipboard">
           <div class="ribbon-row">
-            <label class="ribbon-btn" for="image-input">Paste</label>
-            <input id="image-input" type="file" accept="image/*" hidden>
-            <button class="ribbon-btn" id="paste-help" type="button">Paste tip</button>
+            <button class="ribbon-btn ribbon-btn--quick" id="save-png" type="button">Save</button>
+            <button class="ribbon-btn ribbon-btn--quick" id="undo" type="button">Undo</button>
+            <button class="ribbon-btn ribbon-btn--quick" id="redo" type="button">Redo</button>
+          </div>
+          <div class="ribbon-row">
+            <button class="ribbon-btn ribbon-btn--big" id="paste-btn" type="button">Paste</button>
+          </div>
+          <div class="ribbon-row">
+            <button class="ribbon-btn" id="cut-btn" type="button">Cut</button>
+            <button class="ribbon-btn" id="copy-btn" type="button">Copy</button>
           </div>
           <div class="ribbon-title">Clipboard</div>
         </div>
 
         <div class="ribbon-group ribbon-image">
           <div class="ribbon-row">
-            <button class="ribbon-btn" data-tool="crop" type="button">Crop</button>
-            <button class="ribbon-btn" id="apply-crop" type="button" disabled>Apply crop</button>
-            <button class="ribbon-btn" id="cancel-crop" type="button" disabled>Cancel</button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="select" type="button" aria-label="Select" title="Select">
+              <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="4" y="4" width="16" height="16" stroke-dasharray="2.5 2.5"></rect>
+              </svg>
+            </button>
+            <button class="ribbon-btn tool-icon-btn" id="crop-btn" type="button" aria-label="Crop" title="Crop">
+              <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 3v11a3 3 0 0 0 3 3h11"></path>
+                <path d="M3 7h11a3 3 0 0 1 3 3v11"></path>
+              </svg>
+            </button>
           </div>
           <div class="ribbon-row">
             <label class="ribbon-label" for="canvas-width">Resize</label>
             <input class="ribbon-input" id="canvas-width" type="number" min="200" value="1200">
             <input class="ribbon-input" id="canvas-height" type="number" min="200" value="720">
-            <label class="ribbon-check">
-              <input id="scale-content" type="checkbox" checked>
-              Scale
-            </label>
             <button class="ribbon-btn" id="resize-canvas" type="button">Apply</button>
+          </div>
+          <div class="ribbon-row">
+            <label class="ribbon-label">Rotate</label>
+            <button class="ribbon-btn" id="rotate-left" type="button">Left</button>
+            <button class="ribbon-btn" id="rotate-right" type="button">Right</button>
+            <button class="ribbon-btn" id="flip-h" type="button">Flip H</button>
+            <button class="ribbon-btn" id="flip-v" type="button">Flip V</button>
           </div>
           <div class="ribbon-row">
             <label class="ribbon-label" for="image-scale">Image scale</label>
@@ -67,23 +87,93 @@
 
         <div class="ribbon-group ribbon-tools">
           <div class="ribbon-grid">
-            <button class="ribbon-btn tool-button active" data-tool="brush" type="button">Brush</button>
-            <button class="ribbon-btn tool-button" data-tool="pencil" type="button">Pencil</button>
-            <button class="ribbon-btn tool-button" data-tool="eraser" type="button">Eraser</button>
-            <button class="ribbon-btn tool-button" data-tool="fill" type="button">Fill</button>
-            <button class="ribbon-btn tool-button" data-tool="text" type="button">Text</button>
-            <button class="ribbon-btn tool-button" data-tool="picker" type="button">Picker</button>
+            <button class="ribbon-btn tool-button tool-icon-btn active" data-tool="brush" type="button" aria-label="Brush" title="Brush">
+              <svg class="tool-icon-color" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 16l-1 4 4-1 10-10-3-3L6 16z" fill="#f4a640" stroke="#c97b24" stroke-width="0.8" stroke-linejoin="round"></path>
+                <path d="M17 5l2 2 1-1-2-2z" fill="#f5d7b3" stroke="#c79a73" stroke-width="0.6" stroke-linejoin="round"></path>
+                <path d="M5.2 20.2l1.8-.5-1.3-1.3z" fill="#6b4a2b"></path>
+                <rect x="15.2" y="3.4" width="3.3" height="2.2" rx="0.4" transform="rotate(45 16.85 4.5)" fill="#f3a6b6" stroke="#c97a8b" stroke-width="0.6"></rect>
+              </svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="pencil" type="button" aria-label="Pencil" title="Pencil">
+              <svg class="tool-icon-color" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10" cy="10" r="5" fill="#e6eef8" stroke="#4c6fa3" stroke-width="1.4"></circle>
+                <circle cx="10" cy="10" r="2.5" fill="none" stroke="#9bb4d8" stroke-width="1"></circle>
+                <line x1="14" y1="14" x2="19" y2="19" stroke="#4c6fa3" stroke-width="2" stroke-linecap="round"></line>
+              </svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="eraser" type="button" aria-label="Eraser" title="Eraser">
+              <svg class="tool-icon-color" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 15l6-6 6 6-4 4H10z" fill="#f7a7b6" stroke="#c77a8a" stroke-width="0.8" stroke-linejoin="round"></path>
+                <path d="M14 19h6" stroke="#b18484" stroke-width="1.2" stroke-linecap="round"></path>
+                <path d="M9 17h6" stroke="#f1c3cc" stroke-width="1.6" stroke-linecap="round"></path>
+              </svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="fill" type="button" aria-label="Fill" title="Fill">
+              <svg class="tool-icon-color" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 11l6-5 5 5-6 6z" fill="#cfe2f5" stroke="#5c7ea7" stroke-width="0.8" stroke-linejoin="round"></path>
+                <path d="M10 8l4 4" stroke="#5c7ea7" stroke-width="1.2" stroke-linecap="round"></path>
+                <path d="M17.5 16.5c1.1 1.2 1.8 2.1 1.8 3a2 2 0 0 1-4 0c0-.9.7-1.8 2.2-3z" fill="#f4a640" stroke="#c97b24" stroke-width="0.6"></path>
+              </svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="text" type="button" aria-label="Text" title="Text">
+              <svg class="tool-icon-color" viewBox="0 0 24 24" aria-hidden="true">
+                <text x="6" y="18" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#2a4c7f">A</text>
+                <path d="M5 19h14" stroke="#2a4c7f" stroke-width="1" stroke-linecap="round"></path>
+              </svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="picker" type="button" aria-label="Color Picker" title="Color Picker">
+              <svg class="tool-icon-color" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 16l8-8 3 3-8 8H7z" fill="#cfd8e6" stroke="#5c6f8a" stroke-width="0.8" stroke-linejoin="round"></path>
+                <path d="M14 6l3 3" stroke="#5c6f8a" stroke-width="1.2" stroke-linecap="round"></path>
+                <circle cx="8.5" cy="17.5" r="2.1" fill="#4aa3df" stroke="#2d6fa4" stroke-width="0.8"></circle>
+              </svg>
+            </button>
           </div>
           <div class="ribbon-title">Tools</div>
         </div>
 
         <div class="ribbon-group ribbon-shapes">
-          <div class="ribbon-grid">
-            <button class="ribbon-btn tool-button" data-tool="line" type="button">Line</button>
-            <button class="ribbon-btn tool-button" data-tool="rect" type="button">Rectangle</button>
-            <button class="ribbon-btn tool-button" data-tool="roundrect" type="button">Rounded</button>
-            <button class="ribbon-btn tool-button" data-tool="ellipse" type="button">Ellipse</button>
-            <button class="ribbon-btn tool-button" data-tool="triangle" type="button">Triangle</button>
+          <div class="ribbon-grid shapes-grid">
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="line" type="button" aria-label="Line" title="Line">
+              <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19L19 5"></path></svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="rect" type="button" aria-label="Rectangle" title="Rectangle">
+              <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="6" width="14" height="12"></rect></svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="roundrect" type="button" aria-label="Rounded Rectangle" title="Rounded Rectangle">
+              <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="6" width="14" height="12" rx="3"></rect></svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="ellipse" type="button" aria-label="Ellipse" title="Ellipse">
+              <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="12" rx="7" ry="6"></ellipse></svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="triangle" type="button" aria-label="Triangle" title="Triangle">
+              <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6l7 12H5z"></path></svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="righttriangle" type="button" aria-label="Right Triangle" title="Right Triangle">
+              <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6v12h12z"></path></svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="diamond" type="button" aria-label="Diamond" title="Diamond">
+              <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 7-7 7-7-7z"></path></svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="pentagon" type="button" aria-label="Pentagon" title="Pentagon">
+              <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l7 5-3 9H8L5 9z"></path></svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="hexagon" type="button" aria-label="Hexagon" title="Hexagon">
+              <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h8l4 7-4 7H8l-4-7z"></path></svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="arrow" type="button" aria-label="Arrow" title="Arrow">
+              <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19L19 4"></path><path d="M12 4h7v7"></path></svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="double-arrow" type="button" aria-label="Double Arrow" title="Double Arrow">
+              <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16"></path><path d="M9 7l-5 5 5 5"></path><path d="M15 7l5 5-5 5"></path></svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="filled-arrow" type="button" aria-label="Filled Arrow" title="Filled Arrow">
+              <svg class="tool-icon tool-icon--filled" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h9V6l7 6-7 6v-4H4z"></path></svg>
+            </button>
+            <button class="ribbon-btn tool-button tool-icon-btn" data-tool="star" type="button" aria-label="Star" title="Star">
+              <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l2.3 5 5.4.4-4.2 3.6 1.3 5.4L12 15.6 7.2 18.4l1.3-5.4L4.3 9.4l5.4-.4z"></path></svg>
+            </button>
           </div>
           <div class="ribbon-row">
             <label class="ribbon-label" for="outline-mode">Outline</label>
@@ -96,14 +186,35 @@
               <option value="solid">Solid</option>
               <option value="none">None</option>
             </select>
+            <label class="ribbon-label" for="line-style">Line</label>
+            <select class="ribbon-select" id="line-style">
+              <option value="solid">Solid</option>
+              <option value="dashed">Dashed</option>
+              <option value="dotted">Dotted</option>
+              <option value="dashdot">Dash dot</option>
+            </select>
+          </div>
+          <div class="ribbon-row">
+            <label class="ribbon-label" for="arrow-head">Arrow head</label>
+            <select class="ribbon-select" id="arrow-head">
+              <option value="open">Open</option>
+              <option value="filled">Filled</option>
+              <option value="diamond">Diamond</option>
+            </select>
           </div>
           <div class="ribbon-title">Shapes</div>
         </div>
 
         <div class="ribbon-group ribbon-size">
           <div class="ribbon-row">
-            <label class="ribbon-label" for="size-range">Size</label>
-            <input class="ribbon-range" id="size-range" type="range" min="1" max="60" value="10">
+            <label class="ribbon-label">Size</label>
+            <div class="size-picker" id="size-picker">
+              <button class="size-btn" data-size="2" type="button"></button>
+              <button class="size-btn" data-size="4" type="button"></button>
+              <button class="size-btn" data-size="8" type="button"></button>
+              <button class="size-btn" data-size="12" type="button"></button>
+              <button class="size-btn" data-size="16" type="button"></button>
+            </div>
           </div>
           <div class="ribbon-row">
             <label class="ribbon-label" for="opacity-range">Opacity</label>
@@ -157,16 +268,28 @@
             <button class="color-chip" style="background:#7092be" data-color="#7092be" aria-label="Steel"></button>
             <button class="color-chip" style="background:#c8bfe7" data-color="#c8bfe7" aria-label="Lavender"></button>
           </div>
+          <button class="ribbon-btn" id="edit-colors" type="button">Edit colors</button>
           <div class="ribbon-title">Colors</div>
         </div>
       </div>
 
       <div class="paint-workspace">
-        <div class="canvas-stage" id="canvas-stage">
+        <div class="canvas-stage" id="canvas-stage" tabindex="0">
           <div class="canvas-wrap" id="canvas-wrap">
             <canvas id="paint-canvas" width="1200" height="720"></canvas>
             <div class="overlay-layer" id="overlay-layer">
-              <div class="crop-box" id="crop-box"></div>
+              <div class="selection-box" id="selection-box"></div>
+              <div class="selection-layer" id="selection-layer">
+                <canvas id="selection-canvas"></canvas>
+                <div class="selection-handle handle-nw" data-handle="nw"></div>
+                <div class="selection-handle handle-n" data-handle="n"></div>
+                <div class="selection-handle handle-ne" data-handle="ne"></div>
+                <div class="selection-handle handle-e" data-handle="e"></div>
+                <div class="selection-handle handle-se" data-handle="se"></div>
+                <div class="selection-handle handle-s" data-handle="s"></div>
+                <div class="selection-handle handle-sw" data-handle="sw"></div>
+                <div class="selection-handle handle-w" data-handle="w"></div>
+              </div>
               <div class="image-layer" id="image-layer">
                 <img id="image-layer-img" alt="Placed image">
                 <div class="image-handle handle-nw" data-handle="nw"></div>
@@ -182,20 +305,20 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="status-bar">
-          <div class="status-left">
-            <span id="status-tool">Tool: Brush</span>
-            <span id="status-coords">x: 0, y: 0</span>
-            <span id="status-size">Canvas: 1200 × 720</span>
-          </div>
-          <div class="status-right">
-            <label class="zoom-control" for="zoom-range">
-              <span>Zoom</span>
-              <input id="zoom-range" type="range" min="50" max="200" value="100">
-              <span class="zoom-pill" id="zoom-value">100%</span>
-            </label>
-          </div>
+      <div class="status-bar">
+        <div class="status-left">
+          <span id="status-tool">Tool: Brush</span>
+          <span id="status-coords">x: 0, y: 0</span>
+          <span id="status-size">Canvas: 1200 × 720</span>
+        </div>
+        <div class="status-right">
+          <label class="zoom-control" for="zoom-range">
+            <span>Zoom</span>
+            <input id="zoom-range" type="range" min="50" max="200" value="100">
+            <span class="zoom-pill" id="zoom-value">100%</span>
+          </label>
         </div>
       </div>
     </div>
@@ -208,36 +331,45 @@
       var canvasWrap = document.getElementById("canvas-wrap");
       var canvasStage = document.getElementById("canvas-stage");
       var overlayLayer = document.getElementById("overlay-layer");
-      var cropBox = document.getElementById("crop-box");
+      var selectionBox = document.getElementById("selection-box");
+      var selectionLayer = document.getElementById("selection-layer");
+      var selectionCanvas = document.getElementById("selection-canvas");
+      var selectionCtx = selectionCanvas.getContext("2d");
+      var selectionHandles = Array.prototype.slice.call(document.querySelectorAll(".selection-handle"));
       var imageLayer = document.getElementById("image-layer");
       var imageLayerImg = document.getElementById("image-layer-img");
       var imageHandles = Array.prototype.slice.call(document.querySelectorAll(".image-handle"));
       var textEntry = document.getElementById("text-entry");
 
       var toolButtons = Array.prototype.slice.call(document.querySelectorAll("[data-tool]"));
-      var sizeRange = document.getElementById("size-range");
-      var opacityRange = document.getElementById("opacity-range");
       var outlineMode = document.getElementById("outline-mode");
       var fillMode = document.getElementById("fill-mode");
+      var lineStyle = document.getElementById("line-style");
+      var arrowHead = document.getElementById("arrow-head");
+      var sizePicker = document.getElementById("size-picker");
+      var opacityRange = document.getElementById("opacity-range");
       var color1Btn = document.getElementById("color1-btn");
       var color2Btn = document.getElementById("color2-btn");
       var color1Input = document.getElementById("color1-input");
       var color2Input = document.getElementById("color2-input");
       var paletteGrid = document.getElementById("palette-grid");
+      var editColorsBtn = document.getElementById("edit-colors");
       var textSize = document.getElementById("text-size");
       var textFont = document.getElementById("text-font");
-      var imageInput = document.getElementById("image-input");
       var imageScale = document.getElementById("image-scale");
       var applyImage = document.getElementById("apply-image");
       var cancelImage = document.getElementById("cancel-image");
-      var pasteHelp = document.getElementById("paste-help");
       var canvasWidthInput = document.getElementById("canvas-width");
       var canvasHeightInput = document.getElementById("canvas-height");
-      var scaleContent = document.getElementById("scale-content");
       var resizeCanvasBtn = document.getElementById("resize-canvas");
-      var applyCropBtn = document.getElementById("apply-crop");
-      var cancelCropBtn = document.getElementById("cancel-crop");
-      var newCanvasBtn = document.getElementById("new-canvas");
+      var cropBtn = document.getElementById("crop-btn");
+      var rotateLeftBtn = document.getElementById("rotate-left");
+      var rotateRightBtn = document.getElementById("rotate-right");
+      var flipHBtn = document.getElementById("flip-h");
+      var flipVBtn = document.getElementById("flip-v");
+      var pasteBtn = document.getElementById("paste-btn");
+      var cutBtn = document.getElementById("cut-btn");
+      var copyBtn = document.getElementById("copy-btn");
       var undoBtn = document.getElementById("undo");
       var redoBtn = document.getElementById("redo");
       var savePngBtn = document.getElementById("save-png");
@@ -249,12 +381,14 @@
 
       var state = {
         tool: "brush",
-        lineWidth: 10,
+        lineWidth: 2,
         opacity: 1,
         stroke: "#1f2937",
         fill: "#f97316",
         outlineMode: "solid",
         fillMode: "solid",
+        lineStyle: "solid",
+        arrowHead: "open",
         textSize: 28,
         textFont: "Segoe UI",
         zoom: 1,
@@ -265,12 +399,16 @@
         startX: 0,
         startY: 0,
         snapshot: null,
-        crop: null,
         history: [],
         historyIndex: -1,
         imagePlacement: null,
         imageDrag: null,
-        imageResize: null
+        imageResize: null,
+        selection: null,
+        selectionResize: null,
+        clipboardImage: null,
+        cropMode: false,
+        textFocusToken: 0
       };
 
       function setCanvasSize(width, height, shouldScale, skipHistory) {
@@ -313,8 +451,8 @@
       }
 
       function updateOverlayPositions() {
-        if (state.crop && state.crop.active) {
-          drawCropBox();
+        if (state.selection) {
+          updateSelectionLayer();
         }
         if (state.imagePlacement) {
           updateImageLayer();
@@ -337,16 +475,27 @@
 
       function getDefaultCanvasSize() {
         var stageRect = canvasStage.getBoundingClientRect();
-        var availableWidth = Math.max(520, Math.floor(stageRect.width - 24));
-        var availableHeight = Math.max(360, Math.floor(stageRect.height - 24));
+        var availableWidth = Math.max(520, Math.floor(stageRect.width - 4));
+        var availableHeight = Math.max(360, Math.floor(stageRect.height - 4));
         return { width: availableWidth, height: availableHeight };
       }
 
       function setTool(tool) {
+        if (state.selection && state.tool === "select" && tool !== "select") {
+          commitSelection();
+        }
         state.tool = tool;
+        if (tool === "filled-arrow") {
+          state.arrowHead = "filled";
+          arrowHead.value = "filled";
+        }
+        if (tool !== "select") {
+          state.cropMode = false;
+        }
         toolButtons.forEach(function (btn) {
           btn.classList.toggle("active", btn.dataset.tool === tool);
         });
+        cropBtn.classList.toggle("active", state.cropMode);
         canvas.style.cursor = tool === "text" ? "text" : tool === "fill" ? "cell" : tool === "picker" ? "copy" : tool === "crop" ? "crosshair" : "crosshair";
         updateStatus();
       }
@@ -439,6 +588,7 @@
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
         ctx.lineWidth = state.tool === "pencil" ? 2 : state.lineWidth;
+        ctx.setLineDash([]);
         if (state.tool === "eraser") {
           ctx.strokeStyle = rgbaFromHex(state.bg, 1);
         } else {
@@ -446,6 +596,34 @@
         }
         ctx.lineTo(point.x, point.y);
         ctx.stroke();
+      }
+
+      function applyStrokeDash() {
+        if (state.lineStyle === "dashed") {
+          ctx.setLineDash([14, 8]);
+          return;
+        }
+        if (state.lineStyle === "dotted") {
+          ctx.setLineDash([2, 6]);
+          return;
+        }
+        if (state.lineStyle === "dashdot") {
+          ctx.setLineDash([14, 6, 2, 6]);
+          return;
+        }
+        ctx.setLineDash([]);
+      }
+
+      function strokePathWithStyle() {
+        applyStrokeDash();
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      function strokeRectWithStyle(x, y, w, h) {
+        applyStrokeDash();
+        ctx.strokeRect(x, y, w, h);
+        ctx.setLineDash([]);
       }
 
       function drawRoundRect(x, y, w, h, radius) {
@@ -461,6 +639,143 @@
         ctx.lineTo(x, y + r);
         ctx.quadraticCurveTo(x, y, x + r, y);
         ctx.closePath();
+      }
+
+      function drawPolygon(sides, x, y, w, h) {
+        var cx = x + w / 2;
+        var cy = y + h / 2;
+        var rx = w / 2;
+        var ry = h / 2;
+        ctx.beginPath();
+        for (var i = 0; i < sides; i += 1) {
+          var angle = (Math.PI * 2 * i) / sides - Math.PI / 2;
+          var px = cx + Math.cos(angle) * rx;
+          var py = cy + Math.sin(angle) * ry;
+          if (i === 0) {
+            ctx.moveTo(px, py);
+          } else {
+            ctx.lineTo(px, py);
+          }
+        }
+        ctx.closePath();
+      }
+
+      function drawStar(x, y, w, h) {
+        var cx = x + w / 2;
+        var cy = y + h / 2;
+        var outer = Math.min(w, h) / 2;
+        var inner = outer * 0.45;
+        ctx.beginPath();
+        for (var i = 0; i < 10; i += 1) {
+          var angle = (Math.PI / 5) * i - Math.PI / 2;
+          var r = i % 2 === 0 ? outer : inner;
+          var px = cx + Math.cos(angle) * r;
+          var py = cy + Math.sin(angle) * r;
+          if (i === 0) {
+            ctx.moveTo(px, py);
+          } else {
+            ctx.lineTo(px, py);
+          }
+        }
+        ctx.closePath();
+      }
+
+      function drawOpenArrowHead(tipX, tipY, dirX, dirY, headLength, headWidth) {
+        var baseX = tipX - dirX * headLength;
+        var baseY = tipY - dirY * headLength;
+        var perpX = -dirY;
+        var perpY = dirX;
+        var wingX = perpX * headWidth * 0.5;
+        var wingY = perpY * headWidth * 0.5;
+        ctx.beginPath();
+        ctx.moveTo(tipX, tipY);
+        ctx.lineTo(baseX + wingX, baseY + wingY);
+        ctx.moveTo(tipX, tipY);
+        ctx.lineTo(baseX - wingX, baseY - wingY);
+        strokePathWithStyle();
+      }
+
+      function drawFilledArrowHead(tipX, tipY, dirX, dirY, headLength, headWidth) {
+        var baseX = tipX - dirX * headLength;
+        var baseY = tipY - dirY * headLength;
+        var perpX = -dirY;
+        var perpY = dirX;
+        var wingX = perpX * headWidth * 0.5;
+        var wingY = perpY * headWidth * 0.5;
+        ctx.beginPath();
+        ctx.moveTo(tipX, tipY);
+        ctx.lineTo(baseX + wingX, baseY + wingY);
+        ctx.lineTo(baseX - wingX, baseY - wingY);
+        ctx.closePath();
+        if (state.fillMode === "solid") {
+          ctx.fill();
+        }
+        if (state.outlineMode !== "none") {
+          strokePathWithStyle();
+        }
+      }
+
+      function drawDiamondArrowHead(tipX, tipY, dirX, dirY, headLength, headWidth) {
+        var baseX = tipX - dirX * headLength;
+        var baseY = tipY - dirY * headLength;
+        var midX = (tipX + baseX) / 2;
+        var midY = (tipY + baseY) / 2;
+        var perpX = -dirY;
+        var perpY = dirX;
+        var wingX = perpX * headWidth * 0.5;
+        var wingY = perpY * headWidth * 0.5;
+        ctx.beginPath();
+        ctx.moveTo(tipX, tipY);
+        ctx.lineTo(midX + wingX, midY + wingY);
+        ctx.lineTo(baseX, baseY);
+        ctx.lineTo(midX - wingX, midY - wingY);
+        ctx.closePath();
+        if (state.fillMode === "solid") {
+          ctx.fill();
+        }
+        if (state.outlineMode !== "none") {
+          strokePathWithStyle();
+        }
+      }
+
+      function drawArrowHead(tipX, tipY, dirX, dirY, headLength, headWidth) {
+        if (state.arrowHead === "filled") {
+          drawFilledArrowHead(tipX, tipY, dirX, dirY, headLength, headWidth);
+          return;
+        }
+        if (state.arrowHead === "diamond") {
+          drawDiamondArrowHead(tipX, tipY, dirX, dirY, headLength, headWidth);
+          return;
+        }
+        drawOpenArrowHead(tipX, tipY, dirX, dirY, headLength, headWidth);
+      }
+
+      function drawDirectionalArrow(startX, startY, endX, endY, doubleHead) {
+        var dx = endX - startX;
+        var dy = endY - startY;
+        var len = Math.sqrt(dx * dx + dy * dy);
+        if (len < 1) {
+          return;
+        }
+        var dirX = dx / len;
+        var dirY = dy / len;
+        var headLength = Math.min(Math.max(12, state.lineWidth * 2.4), len * (doubleHead ? 0.33 : 0.48));
+        var headWidth = Math.max(10, state.lineWidth * 2.1);
+        var lineStartX = startX + (doubleHead ? dirX * headLength : 0);
+        var lineStartY = startY + (doubleHead ? dirY * headLength : 0);
+        var lineEndX = endX - dirX * headLength;
+        var lineEndY = endY - dirY * headLength;
+
+        ctx.lineWidth = Math.max(2, state.lineWidth * 0.8);
+        ctx.beginPath();
+        ctx.moveTo(lineStartX, lineStartY);
+        ctx.lineTo(lineEndX, lineEndY);
+        strokePathWithStyle();
+
+        drawArrowHead(endX, endY, dirX, dirY, headLength, headWidth);
+        if (doubleHead) {
+          drawArrowHead(startX, startY, -dirX, -dirY, headLength, headWidth);
+        }
       }
 
       function drawShape(point) {
@@ -481,7 +796,7 @@
           ctx.beginPath();
           ctx.moveTo(state.startX, state.startY);
           ctx.lineTo(point.x, point.y);
-          ctx.stroke();
+          strokePathWithStyle();
           return;
         }
 
@@ -495,7 +810,7 @@
             ctx.fillRect(x, y, w, h);
           }
           if (state.outlineMode !== "none") {
-            ctx.strokeRect(x, y, w, h);
+            strokeRectWithStyle(x, y, w, h);
           }
           return;
         }
@@ -506,7 +821,7 @@
             ctx.fill();
           }
           if (state.outlineMode !== "none") {
-            ctx.stroke();
+            strokePathWithStyle();
           }
           return;
         }
@@ -518,7 +833,7 @@
             ctx.fill();
           }
           if (state.outlineMode !== "none") {
-            ctx.stroke();
+            strokePathWithStyle();
           }
           return;
         }
@@ -533,7 +848,92 @@
             ctx.fill();
           }
           if (state.outlineMode !== "none") {
-            ctx.stroke();
+            strokePathWithStyle();
+          }
+          return;
+        }
+
+        if (state.tool === "righttriangle") {
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x + w, y + h);
+          ctx.lineTo(x, y + h);
+          ctx.closePath();
+          if (state.fillMode === "solid") {
+            ctx.fill();
+          }
+          if (state.outlineMode !== "none") {
+            strokePathWithStyle();
+          }
+          return;
+        }
+
+        if (state.tool === "diamond") {
+          ctx.beginPath();
+          ctx.moveTo(x + w / 2, y);
+          ctx.lineTo(x + w, y + h / 2);
+          ctx.lineTo(x + w / 2, y + h);
+          ctx.lineTo(x, y + h / 2);
+          ctx.closePath();
+          if (state.fillMode === "solid") {
+            ctx.fill();
+          }
+          if (state.outlineMode !== "none") {
+            strokePathWithStyle();
+          }
+          return;
+        }
+
+        if (state.tool === "pentagon") {
+          drawPolygon(5, x, y, w, h);
+          if (state.fillMode === "solid") {
+            ctx.fill();
+          }
+          if (state.outlineMode !== "none") {
+            strokePathWithStyle();
+          }
+          return;
+        }
+
+        if (state.tool === "hexagon") {
+          drawPolygon(6, x, y, w, h);
+          if (state.fillMode === "solid") {
+            ctx.fill();
+          }
+          if (state.outlineMode !== "none") {
+            strokePathWithStyle();
+          }
+          return;
+        }
+
+        if (state.tool === "arrow") {
+          if (state.outlineMode !== "none") {
+            drawDirectionalArrow(state.startX, state.startY, point.x, point.y, false);
+          }
+          return;
+        }
+
+        if (state.tool === "double-arrow") {
+          if (state.outlineMode !== "none") {
+            drawDirectionalArrow(state.startX, state.startY, point.x, point.y, true);
+          }
+          return;
+        }
+
+        if (state.tool === "filled-arrow") {
+          if (state.outlineMode !== "none") {
+            drawDirectionalArrow(state.startX, state.startY, point.x, point.y, false);
+          }
+          return;
+        }
+
+        if (state.tool === "star") {
+          drawStar(x, y, w, h);
+          if (state.fillMode === "solid") {
+            ctx.fill();
+          }
+          if (state.outlineMode !== "none") {
+            strokePathWithStyle();
           }
         }
       }
@@ -596,83 +996,32 @@
         );
       }
 
-      function startCrop(point) {
-        state.crop = {
-          active: true,
-          startX: point.x,
-          startY: point.y,
-          endX: point.x,
-          endY: point.y
-        };
-        cropBox.style.display = "block";
-        applyCropBtn.disabled = true;
-        cancelCropBtn.disabled = false;
-        drawCropBox();
-      }
-
-      function updateCrop(point) {
-        if (!state.crop || !state.crop.active) {
+      function applyCropToSelection() {
+        if (!state.selection) {
           return;
         }
-        state.crop.endX = point.x;
-        state.crop.endY = point.y;
-        drawCropBox();
-      }
-
-      function drawCropBox() {
-        if (!state.crop) {
+        var w = state.selection.w;
+        var h = state.selection.h;
+        if (w < 5 || h < 5) {
           return;
         }
-        var rect = getCropRect();
-        var cssScale = getCssScale();
-        cropBox.style.left = rect.x * cssScale + "px";
-        cropBox.style.top = rect.y * cssScale + "px";
-        cropBox.style.width = rect.w * cssScale + "px";
-        cropBox.style.height = rect.h * cssScale + "px";
-      }
-
-      function getCropRect() {
-        var x1 = state.crop.startX;
-        var y1 = state.crop.startY;
-        var x2 = state.crop.endX;
-        var y2 = state.crop.endY;
-        var x = Math.min(x1, x2);
-        var y = Math.min(y1, y2);
-        var w = Math.abs(x2 - x1);
-        var h = Math.abs(y2 - y1);
-        return { x: x, y: y, w: w, h: h };
-      }
-
-      function applyCrop() {
-        if (!state.crop) {
-          return;
-        }
-        var rect = getCropRect();
-        if (rect.w < 10 || rect.h < 10) {
-          return;
-        }
-        var imageData = ctx.getImageData(rect.x, rect.y, rect.w, rect.h);
-        canvas.width = rect.w;
-        canvas.height = rect.h;
-        state.width = rect.w;
-        state.height = rect.h;
-        ctx.putImageData(imageData, 0, 0);
-        state.crop = null;
-        cropBox.style.display = "none";
-        applyCropBtn.disabled = true;
-        cancelCropBtn.disabled = true;
-        canvasWidthInput.value = rect.w;
-        canvasHeightInput.value = rect.h;
+        var temp = document.createElement("canvas");
+        temp.width = w;
+        temp.height = h;
+        temp.getContext("2d").drawImage(selectionCanvas, 0, 0);
+        canvas.width = w;
+        canvas.height = h;
+        state.width = w;
+        state.height = h;
+        ctx.clearRect(0, 0, w, h);
+        ctx.drawImage(temp, 0, 0);
+        selectionLayer.style.display = "none";
+        state.selection = null;
+        canvasWidthInput.value = w;
+        canvasHeightInput.value = h;
         updateCanvasWrap();
         saveState();
         updateStatus();
-      }
-
-      function cancelCrop() {
-        state.crop = null;
-        cropBox.style.display = "none";
-        applyCropBtn.disabled = true;
-        cancelCropBtn.disabled = true;
       }
 
       function openTextInput(point) {
@@ -685,13 +1034,30 @@
         textEntry.style.top = point.y * cssScale + "px";
         textEntry.style.fontSize = state.textSize * cssScale + "px";
         textEntry.style.fontFamily = state.textFont;
-        textEntry.focus();
+        var token = Date.now();
+        state.textFocusToken = token;
+        window.requestAnimationFrame(function () {
+          if (state.textFocusToken !== token) {
+            return;
+          }
+          if (typeof textEntry.focus === "function") {
+            try {
+              textEntry.focus({ preventScroll: true });
+            } catch (err) {
+              textEntry.focus();
+            }
+          }
+          try {
+            textEntry.setSelectionRange(0, textEntry.value.length);
+          } catch (err) {}
+        });
       }
 
       function commitText() {
         if (textEntry.style.display !== "block") {
           return;
         }
+        state.textFocusToken = 0;
         var text = textEntry.value.trim();
         textEntry.style.display = "none";
         if (!text) {
@@ -712,7 +1078,147 @@
         saveState();
       }
 
+      function updateSelectionBox(rect) {
+        var cssScale = getCssScale();
+        selectionBox.style.left = rect.x * cssScale + "px";
+        selectionBox.style.top = rect.y * cssScale + "px";
+        selectionBox.style.width = rect.w * cssScale + "px";
+        selectionBox.style.height = rect.h * cssScale + "px";
+      }
+
+      function updateSelectionLayer() {
+        if (!state.selection) {
+          return;
+        }
+        var cssScale = getCssScale();
+        selectionLayer.style.left = state.selection.x * cssScale + "px";
+        selectionLayer.style.top = state.selection.y * cssScale + "px";
+        selectionLayer.style.width = state.selection.w * cssScale + "px";
+        selectionLayer.style.height = state.selection.h * cssScale + "px";
+      }
+
+      function dismissSelectionOverlay() {
+        selectionBox.style.display = "none";
+        selectionLayer.style.display = "none";
+        state.selection = null;
+        state.selectionResize = null;
+      }
+
+      function finalizeImagePlacementIfNeeded() {
+        if (state.imagePlacement) {
+          applyImagePlacement();
+        }
+      }
+
+      function startSelection(point) {
+        state.selection = {
+          active: true,
+          startX: point.x,
+          startY: point.y,
+          endX: point.x,
+          endY: point.y,
+          x: point.x,
+          y: point.y,
+          w: 0,
+          h: 0,
+          moved: false,
+          dragging: false
+        };
+        selectionBox.style.display = "block";
+      }
+
+      function updateSelection(point) {
+        if (!state.selection) {
+          return;
+        }
+        state.selection.endX = point.x;
+        state.selection.endY = point.y;
+        var rect = getSelectionRect();
+        updateSelectionBox(rect);
+      }
+
+      function finalizeSelection() {
+        if (!state.selection) {
+          return;
+        }
+        var rect = getSelectionRect();
+        if (rect.w < 5 || rect.h < 5) {
+          selectionBox.style.display = "none";
+          state.selection = null;
+          return;
+        }
+        state.selection.x = rect.x;
+        state.selection.y = rect.y;
+        state.selection.w = rect.w;
+        state.selection.h = rect.h;
+        selectionCanvas.width = rect.w;
+        selectionCanvas.height = rect.h;
+        selectionCtx.clearRect(0, 0, rect.w, rect.h);
+        var imageData = ctx.getImageData(rect.x, rect.y, rect.w, rect.h);
+        selectionCtx.putImageData(imageData, 0, 0);
+        selectionLayer.style.display = "block";
+        selectionBox.style.display = "none";
+        updateSelectionLayer();
+        if (state.cropMode) {
+          applyCropToSelection();
+          state.cropMode = false;
+          cropBtn.classList.remove("active");
+        }
+      }
+
+      function getSelectionRect() {
+        var x1 = state.selection.startX;
+        var y1 = state.selection.startY;
+        var x2 = state.selection.endX;
+        var y2 = state.selection.endY;
+        return {
+          x: Math.min(x1, x2),
+          y: Math.min(y1, y2),
+          w: Math.abs(x2 - x1),
+          h: Math.abs(y2 - y1)
+        };
+      }
+
+      function pointInSelection(point) {
+        if (!state.selection) {
+          return false;
+        }
+        return (
+          point.x >= state.selection.x &&
+          point.x <= state.selection.x + state.selection.w &&
+          point.y >= state.selection.y &&
+          point.y <= state.selection.y + state.selection.h
+        );
+      }
+
+      function commitSelection() {
+        if (!state.selection) {
+          return;
+        }
+        ctx.drawImage(selectionCanvas, state.selection.x, state.selection.y, state.selection.w, state.selection.h);
+        selectionLayer.style.display = "none";
+        state.selection = null;
+        state.selectionResize = null;
+        saveState();
+      }
+
+      function clearSelectionArea() {
+        if (!state.selection) {
+          return;
+        }
+        ctx.fillStyle = state.bg;
+        ctx.fillRect(state.selection.x, state.selection.y, state.selection.w, state.selection.h);
+      }
+
       function setupImagePlacement(img) {
+        if (state.selection) {
+          if (selectionLayer.style.display === "block") {
+            commitSelection();
+          } else {
+            dismissSelectionOverlay();
+          }
+        }
+        finalizeImagePlacementIfNeeded();
         state.imagePlacement = {
           img: img,
           baseWidth: img.width,
@@ -738,12 +1244,10 @@
         }
         var placement = state.imagePlacement;
         var cssScale = getCssScale();
-        var width = placement.width;
-        var height = placement.height;
         imageLayer.style.left = placement.x * cssScale + "px";
         imageLayer.style.top = placement.y * cssScale + "px";
-        imageLayer.style.width = width * cssScale + "px";
-        imageLayer.style.height = height * cssScale + "px";
+        imageLayer.style.width = placement.width * cssScale + "px";
+        imageLayer.style.height = placement.height * cssScale + "px";
       }
 
       function applyImagePlacement() {
@@ -771,13 +1275,17 @@
       function handleImageFile(file) {
         var reader = new FileReader();
         reader.onload = function (event) {
-          var img = new Image();
-          img.onload = function () {
-            setupImagePlacement(img);
-          };
-          img.src = event.target.result;
+          loadImageFromUrl(event.target.result);
         };
         reader.readAsDataURL(file);
+      }
+
+      function loadImageFromUrl(url) {
+        var img = new Image();
+        img.onload = function () {
+          setupImagePlacement(img);
+        };
+        img.src = url;
       }
 
       function updateCoords(evt) {
@@ -800,14 +1308,150 @@
         }
       }
 
+      function rotateCanvas(direction) {
+        var temp = document.createElement("canvas");
+        var tctx = temp.getContext("2d");
+        if (direction === "left" || direction === "right") {
+          temp.width = canvas.height;
+          temp.height = canvas.width;
+          tctx.translate(temp.width / 2, temp.height / 2);
+          tctx.rotate(direction === "right" ? Math.PI / 2 : -Math.PI / 2);
+          tctx.drawImage(canvas, -canvas.width / 2, -canvas.height / 2);
+        }
+        canvas.width = temp.width;
+        canvas.height = temp.height;
+        state.width = canvas.width;
+        state.height = canvas.height;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(temp, 0, 0);
+        canvasWidthInput.value = state.width;
+        canvasHeightInput.value = state.height;
+        updateCanvasWrap();
+        saveState();
+        updateStatus();
+      }
+
+      function flipCanvas(direction) {
+        var temp = document.createElement("canvas");
+        temp.width = canvas.width;
+        temp.height = canvas.height;
+        var tctx = temp.getContext("2d");
+        if (direction === "horizontal") {
+          tctx.translate(temp.width, 0);
+          tctx.scale(-1, 1);
+        } else {
+          tctx.translate(0, temp.height);
+          tctx.scale(1, -1);
+        }
+        tctx.drawImage(canvas, 0, 0);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(temp, 0, 0);
+        saveState();
+      }
+
+      function getSelectionDataUrl() {
+        if (state.selection) {
+          var temp = document.createElement("canvas");
+          temp.width = state.selection.w;
+          temp.height = state.selection.h;
+          var tctx = temp.getContext("2d");
+          tctx.drawImage(selectionCanvas, 0, 0);
+          return temp.toDataURL("image/png");
+        }
+        return canvas.toDataURL("image/png");
+      }
+
+      function handleCopy() {
+        finalizeImagePlacementIfNeeded();
+        var dataUrl = getSelectionDataUrl();
+        state.clipboardImage = dataUrl;
+        writeImageToClipboard(dataUrl);
+      }
+
+      function handleCut() {
+        finalizeImagePlacementIfNeeded();
+        if (state.selection) {
+          handleCopy();
+          clearSelectionArea();
+          selectionLayer.style.display = "none";
+          state.selection = null;
+          saveState();
+        } else {
+          handleCopy();
+          ctx.fillStyle = state.bg;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          saveState();
+        }
+      }
+
+      function writeImageToClipboard(dataUrl) {
+        if (!navigator.clipboard || !navigator.clipboard.write) {
+          return;
+        }
+        fetch(dataUrl)
+          .then(function (res) {
+            return res.blob();
+          })
+          .then(function (blob) {
+            var item = new ClipboardItem({ "image/png": blob });
+            return navigator.clipboard.write([item]);
+          })
+          .catch(function () {});
+      }
+
+      function handlePasteButton() {
+        finalizeImagePlacementIfNeeded();
+        if (navigator.clipboard && navigator.clipboard.read) {
+          navigator.clipboard
+            .read()
+            .then(function (items) {
+              for (var i = 0; i < items.length; i += 1) {
+                var item = items[i];
+                for (var j = 0; j < item.types.length; j += 1) {
+                  if (item.types[j].indexOf("image") === 0) {
+                    return item.getType(item.types[j]).then(function (blob) {
+                      var url = URL.createObjectURL(blob);
+                      loadImageFromUrl(url);
+                      return;
+                    });
+                  }
+                }
+              }
+              if (state.clipboardImage) {
+                loadImageFromUrl(state.clipboardImage);
+              } else {
+                alert("Paste an image with Cmd+V (Mac) or Ctrl+V (Windows). Clipboard access may be blocked by your browser.");
+              }
+            })
+            .catch(function () {
+              if (state.clipboardImage) {
+                loadImageFromUrl(state.clipboardImage);
+              } else {
+                alert("Paste an image with Cmd+V (Mac) or Ctrl+V (Windows). Clipboard access may be blocked by your browser.");
+              }
+            });
+        } else if (state.clipboardImage) {
+          loadImageFromUrl(state.clipboardImage);
+        } else {
+          alert("Paste an image with Cmd+V (Mac) or Ctrl+V (Windows). Clipboard access may be blocked by your browser.");
+        }
+      }
+
       toolButtons.forEach(function (btn) {
         btn.addEventListener("click", function () {
+          finalizeImagePlacementIfNeeded();
           setTool(btn.dataset.tool);
         });
       });
 
-      sizeRange.addEventListener("input", function () {
-        state.lineWidth = parseInt(sizeRange.value, 10);
+      sizePicker.addEventListener("click", function (evt) {
+        var target = evt.target;
+        if (target && target.dataset.size) {
+          state.lineWidth = parseInt(target.dataset.size, 10);
+          Array.prototype.slice.call(sizePicker.querySelectorAll(".size-btn")).forEach(function (btn) {
+            btn.classList.toggle("active", btn === target);
+          });
+        }
       });
 
       opacityRange.addEventListener("input", function () {
@@ -820,6 +1464,14 @@
 
       fillMode.addEventListener("change", function () {
         state.fillMode = fillMode.value;
+      });
+
+      lineStyle.addEventListener("change", function () {
+        state.lineStyle = lineStyle.value;
+      });
+
+      arrowHead.addEventListener("change", function () {
+        state.arrowHead = arrowHead.value;
       });
 
       color1Btn.addEventListener("click", function () {
@@ -853,20 +1505,16 @@
         }
       });
 
+      editColorsBtn.addEventListener("click", function () {
+        color1Input.click();
+      });
+
       textSize.addEventListener("input", function () {
         state.textSize = parseInt(textSize.value, 10);
       });
 
       textFont.addEventListener("change", function () {
         state.textFont = textFont.value;
-      });
-
-      imageInput.addEventListener("change", function (evt) {
-        var file = evt.target.files && evt.target.files[0];
-        if (file) {
-          handleImageFile(file);
-        }
-        imageInput.value = "";
       });
 
       imageScale.addEventListener("input", function () {
@@ -882,37 +1530,71 @@
       applyImage.addEventListener("click", applyImagePlacement);
       cancelImage.addEventListener("click", cancelImagePlacement);
 
-      pasteHelp.addEventListener("click", function () {
-        alert("Paste a screenshot or image using Cmd+V (Mac) or Ctrl+V (Windows). It will appear as a movable layer.");
-      });
-
       resizeCanvasBtn.addEventListener("click", function () {
+        finalizeImagePlacementIfNeeded();
         var newWidth = parseInt(canvasWidthInput.value, 10);
         var newHeight = parseInt(canvasHeightInput.value, 10);
         if (!newWidth || !newHeight) {
           return;
         }
-        setCanvasSize(newWidth, newHeight, scaleContent.checked, false);
+        setCanvasSize(newWidth, newHeight, true, false);
       });
 
-      applyCropBtn.addEventListener("click", applyCrop);
-      cancelCropBtn.addEventListener("click", cancelCrop);
+      function handleResizeKey(evt) {
+        if (evt.key === "Enter") {
+          resizeCanvasBtn.click();
+        }
+      }
 
-      newCanvasBtn.addEventListener("click", function () {
-        ctx.fillStyle = state.bg;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        saveState();
+      canvasWidthInput.addEventListener("keydown", handleResizeKey);
+      canvasHeightInput.addEventListener("keydown", handleResizeKey);
+
+      cropBtn.addEventListener("click", function () {
+        finalizeImagePlacementIfNeeded();
+        if (state.selection) {
+          applyCropToSelection();
+        } else {
+          state.cropMode = true;
+          setTool("select");
+        }
       });
+
+      rotateLeftBtn.addEventListener("click", function () {
+        finalizeImagePlacementIfNeeded();
+        rotateCanvas("left");
+      });
+
+      rotateRightBtn.addEventListener("click", function () {
+        finalizeImagePlacementIfNeeded();
+        rotateCanvas("right");
+      });
+
+      flipHBtn.addEventListener("click", function () {
+        finalizeImagePlacementIfNeeded();
+        flipCanvas("horizontal");
+      });
+
+      flipVBtn.addEventListener("click", function () {
+        finalizeImagePlacementIfNeeded();
+        flipCanvas("vertical");
+      });
+
+      pasteBtn.addEventListener("click", handlePasteButton);
+      copyBtn.addEventListener("click", handleCopy);
+      cutBtn.addEventListener("click", handleCut);
 
       undoBtn.addEventListener("click", function () {
+        finalizeImagePlacementIfNeeded();
         restoreState(state.historyIndex - 1);
       });
 
       redoBtn.addEventListener("click", function () {
+        finalizeImagePlacementIfNeeded();
         restoreState(state.historyIndex + 1);
       });
 
       savePngBtn.addEventListener("click", function () {
+        finalizeImagePlacementIfNeeded();
         var link = document.createElement("a");
         link.download = "painter.png";
         link.href = canvas.toDataURL("image/png");
@@ -931,12 +1613,23 @@
 
       canvas.addEventListener("pointerdown", function (evt) {
         if (state.imagePlacement) {
-          return;
+          finalizeImagePlacementIfNeeded();
         }
         if (textEntry.style.display === "block") {
           commitText();
         }
         var point = getPoint(evt);
+        if (state.tool === "select") {
+          if (state.selection && pointInSelection(point)) {
+            return;
+          }
+          if (state.selection) {
+            commitSelection();
+          }
+          startSelection(point);
+          state.isDrawing = true;
+          return;
+        }
         if (state.tool === "picker") {
           pickColor(point, evt.button === 2 || evt.buttons === 2);
           return;
@@ -948,11 +1641,6 @@
         if (state.tool === "fill") {
           floodFill(point);
           saveState();
-          return;
-        }
-        if (state.tool === "crop") {
-          startCrop(point);
-          state.isDrawing = true;
           return;
         }
         state.isDrawing = true;
@@ -971,12 +1659,12 @@
           return;
         }
         var point = getPoint(evt);
-        if (state.tool === "brush" || state.tool === "pencil" || state.tool === "eraser") {
-          strokeTo(point);
+        if (state.tool === "select") {
+          updateSelection(point);
           return;
         }
-        if (state.tool === "crop") {
-          updateCrop(point);
+        if (state.tool === "brush" || state.tool === "pencil" || state.tool === "eraser") {
+          strokeTo(point);
           return;
         }
         drawShape(point);
@@ -987,13 +1675,11 @@
           return;
         }
         state.isDrawing = false;
-        if (state.tool === "crop") {
-          if (state.crop) {
-            applyCropBtn.disabled = false;
-          }
+        if (state.tool === "select") {
+          finalizeSelection();
           return;
         }
-        if (state.tool === "brush" || state.tool === "pencil" || state.tool === "eraser" || state.tool === "line" || state.tool === "rect" || state.tool === "ellipse" || state.tool === "roundrect" || state.tool === "triangle") {
+        if (state.tool === "brush" || state.tool === "pencil" || state.tool === "eraser" || state.tool === "line" || state.tool === "rect" || state.tool === "ellipse" || state.tool === "roundrect" || state.tool === "triangle" || state.tool === "righttriangle" || state.tool === "diamond" || state.tool === "pentagon" || state.tool === "hexagon" || state.tool === "arrow" || state.tool === "double-arrow" || state.tool === "filled-arrow" || state.tool === "star") {
           saveState();
         }
         state.snapshot = null;
@@ -1004,6 +1690,179 @@
           saveState();
           state.isDrawing = false;
         }
+      });
+
+      selectionLayer.addEventListener("pointerdown", function (evt) {
+        if (!state.selection) {
+          return;
+        }
+        evt.preventDefault();
+        var point = getPoint(evt);
+        state.selection.dragging = true;
+        state.selection.dragOffsetX = point.x - state.selection.x;
+        state.selection.dragOffsetY = point.y - state.selection.y;
+        selectionLayer.setPointerCapture(evt.pointerId);
+      });
+
+      selectionLayer.addEventListener("pointermove", function (evt) {
+        if (!state.selection || !state.selection.dragging || state.selectionResize) {
+          return;
+        }
+        var point = getPoint(evt);
+        if (!state.selection.moved) {
+          clearSelectionArea();
+          state.selection.moved = true;
+        }
+        state.selection.x = point.x - state.selection.dragOffsetX;
+        state.selection.y = point.y - state.selection.dragOffsetY;
+        updateSelectionLayer();
+      });
+
+      selectionLayer.addEventListener("pointerup", function () {
+        if (state.selection) {
+          state.selection.dragging = false;
+        }
+      });
+
+      selectionHandles.forEach(function (handle) {
+        handle.addEventListener("pointerdown", function (evt) {
+          if (!state.selection) {
+            return;
+          }
+          evt.preventDefault();
+          evt.stopPropagation();
+          var point = getPoint(evt);
+          var snapshot = document.createElement("canvas");
+          snapshot.width = state.selection.w;
+          snapshot.height = state.selection.h;
+          snapshot.getContext("2d").drawImage(selectionCanvas, 0, 0);
+          state.selectionResize = {
+            handle: handle.dataset.handle,
+            startX: point.x,
+            startY: point.y,
+            originX: state.selection.x,
+            originY: state.selection.y,
+            originW: state.selection.w,
+            originH: state.selection.h,
+            snapshot: snapshot
+          };
+          handle.setPointerCapture(evt.pointerId);
+        });
+
+        handle.addEventListener("pointermove", function (evt) {
+          if (!state.selectionResize || !state.selection || state.selectionResize.handle !== handle.dataset.handle) {
+            return;
+          }
+          evt.preventDefault();
+          var resize = state.selectionResize;
+          var point = getPoint(evt);
+          var dx = point.x - resize.startX;
+          var dy = point.y - resize.startY;
+          var minSize = 12;
+          var newX = resize.originX;
+          var newY = resize.originY;
+          var newW = resize.originW;
+          var newH = resize.originH;
+
+          switch (resize.handle) {
+            case "se":
+              newW = resize.originW + dx;
+              newH = resize.originH + dy;
+              break;
+            case "sw":
+              newW = resize.originW - dx;
+              newH = resize.originH + dy;
+              newX = resize.originX + dx;
+              break;
+            case "ne":
+              newW = resize.originW + dx;
+              newH = resize.originH - dy;
+              newY = resize.originY + dy;
+              break;
+            case "nw":
+              newW = resize.originW - dx;
+              newH = resize.originH - dy;
+              newX = resize.originX + dx;
+              newY = resize.originY + dy;
+              break;
+            case "e":
+              newW = resize.originW + dx;
+              break;
+            case "w":
+              newW = resize.originW - dx;
+              newX = resize.originX + dx;
+              break;
+            case "s":
+              newH = resize.originH + dy;
+              break;
+            case "n":
+              newH = resize.originH - dy;
+              newY = resize.originY + dy;
+              break;
+            default:
+              break;
+          }
+
+          if (evt.shiftKey && resize.originW && resize.originH) {
+            var ratio = resize.originW / resize.originH;
+            if (newW / newH > ratio) {
+              newW = newH * ratio;
+            } else {
+              newH = newW / ratio;
+            }
+            if (resize.handle.indexOf("w") !== -1) {
+              newX = resize.originX + (resize.originW - newW);
+            }
+            if (resize.handle.indexOf("n") !== -1) {
+              newY = resize.originY + (resize.originH - newH);
+            }
+          }
+
+          if (newW < minSize) {
+            newW = minSize;
+            if (resize.handle.indexOf("w") !== -1) {
+              newX = resize.originX + (resize.originW - minSize);
+            }
+          }
+          if (newH < minSize) {
+            newH = minSize;
+            if (resize.handle.indexOf("n") !== -1) {
+              newY = resize.originY + (resize.originH - minSize);
+            }
+          }
+
+          if (!state.selection.moved) {
+            clearSelectionArea();
+            state.selection.moved = true;
+          }
+
+          state.selection.x = newX;
+          state.selection.y = newY;
+          state.selection.w = newW;
+          state.selection.h = newH;
+
+          selectionCanvas.width = Math.max(1, Math.round(newW));
+          selectionCanvas.height = Math.max(1, Math.round(newH));
+          selectionCtx.clearRect(0, 0, selectionCanvas.width, selectionCanvas.height);
+          selectionCtx.drawImage(
+            resize.snapshot,
+            0,
+            0,
+            resize.originW,
+            resize.originH,
+            0,
+            0,
+            selectionCanvas.width,
+            selectionCanvas.height
+          );
+          updateSelectionLayer();
+        });
+
+        handle.addEventListener("pointerup", function () {
+          if (state.selectionResize && state.selectionResize.handle === handle.dataset.handle) {
+            state.selectionResize = null;
+          }
+        });
       });
 
       imageLayer.addEventListener("pointerdown", function (evt) {
@@ -1167,7 +2026,21 @@
         }
       });
 
-      textEntry.addEventListener("blur", commitText);
+      textEntry.addEventListener("blur", function () {
+        window.setTimeout(function () {
+          if (textEntry.style.display === "block" && document.activeElement !== textEntry) {
+            commitText();
+          }
+        }, 0);
+      });
+
+      textEntry.addEventListener("pointerdown", function (evt) {
+        evt.stopPropagation();
+      });
+
+      textEntry.addEventListener("click", function (evt) {
+        evt.stopPropagation();
+      });
 
       document.addEventListener("keydown", function (evt) {
         var isModifier = evt.metaKey || evt.ctrlKey;
@@ -1182,6 +2055,7 @@
       });
 
       document.addEventListener("paste", function (evt) {
+        finalizeImagePlacementIfNeeded();
         var items = evt.clipboardData && evt.clipboardData.items;
         if (!items) {
           return;
@@ -1212,6 +2086,7 @@
 
       setColor1(state.stroke);
       setColor2(state.fill);
+      sizePicker.querySelector(".size-btn[data-size='2']").classList.add("active");
 
       window.setTimeout(function () {
         var initialSize = getDefaultCanvasSize();
