@@ -1,0 +1,26 @@
+{
+  "name": "web_applications",
+  "version": "1.0.0",
+  "description": "",
+  "main": "background-remover.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/helloxtech/web_applications.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/helloxtech/web_applications/issues"
+  },
+  "homepage": "https://github.com/helloxtech/web_applications#readme",
+  "dependencies": {
+    "@imgly/background-removal": "^1.4.1",
+    "@imgly/background-removal-data": "^1.4.5",
+    "esbuild": "^0.27.3"
+  }
+}
