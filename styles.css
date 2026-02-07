@@ -332,6 +332,12 @@ main {
   max-width: 70%;
 }
 
+.hub-card .app-logo.app-logo-icon {
+  width: 56px;
+  max-width: none;
+  height: 56px;
+}
+
 .hub-card .app-mark {
   width: 56px;
   height: 56px;
