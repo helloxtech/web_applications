@@ -1,0 +1,173 @@
+/* Background Remover Specific Styles */
+
+.tool-section {
+    margin-top: 42px;
+    min-height: 400px;
+}
+
+/* Upload Area */
+.upload-area {
+    border: 2px dashed #cfd8e6;
+    border-radius: var(--radius-lg);
+    background: #f8fafc;
+    padding: 64px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-area:hover,
+.upload-area.drag-over {
+    border-color: var(--accent);
+    background: rgba(47, 111, 227, 0.04);
+}
+
+.upload-content {
+    pointer-events: none;
+    /* Let clicks pass through to container */
+}
+
+.upload-icon {
+    width: 64px;
+    height: 64px;
+    background: #ffffff;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 24px;
+}
+
+.upload-area h3 {
+    margin: 0;
+    font-family: "SF Pro Display", "Sora", sans-serif;
+    font-size: 20px;
+    color: var(--text);
+}
+
+.upload-area p {
+    margin: 8px 0 0;
+    color: var(--muted);
+}
+
+/* Processing State */
+.processing-state {
+    text-align: center;
+    padding: 64px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 4px solid #e2e8f0;
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 24px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#statusText {
+    font-weight: 600;
+    font-size: 18px;
+    margin: 0;
+    color: var(--text);
+}
+
+.sub-status {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+/* Result Area */
+.result-area {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.canvas-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.image-wrapper {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--line);
+    aspect-ratio: 16/10;
+    /* Default aspect, will adjust */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkerboard-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background-image:
+        linear-gradient(45deg, #eee 25%, transparent 25%),
+        linear-gradient(-45deg, #eee 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #eee 75%),
+        linear-gradient(-45deg, transparent 75%, #eee 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+.image-wrapper img {
+    position: relative;
+    z-index: 1;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 10;
+    backdrop-filter: blur(4px);
+}
+
+.action-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .canvas-container {
+        grid-template-columns: 1fr;
+    }
+}

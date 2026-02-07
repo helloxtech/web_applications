@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Remove image backgrounds instantly and for free. Client-side processing.">
+    <title>Background Remover | HelloAI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Manrope:wght@500;600;700&family=Space+Grotesk:wght@600;700&family=Sora:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/background-remover.css">
+    <!-- Load @imgly/background-removal via CDN ES Module in background-remover.js -->
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container nav-row">
+            <a class="brand" href="/index.html" aria-label="HelloAI home">
+                <img class="brand-logo" src="/media/HelloAI_logo_trim.png" alt="HelloAI logo">
+                <span class="brand-word">HelloAI</span>
+            </a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/index.html">Home</a>
+                <a class="active" href="/apps.html">Apps</a>
+                <a href="/about.html">About</a>
+                <a href="/contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="page-hero fade">
+                <a href="/apps.html"
+                    style="color: var(--accent); font-weight: 600; font-size: 14px; margin-bottom: 12px; display: inline-block;">←
+                    Back to Apps</a>
+                <h1>Remove backgrounds <span class="accent">instantly</span>.</h1>
+                <p class="lead">Free, private, and 100% client-side. No images ever leave your device.</p>
+            </section>
+
+            <section class="tool-section fade delay-1">
+                <div class="upload-area" id="dropZone">
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                    <div class="upload-content">
+                        <div class="upload-icon">
+                            <!-- Upload Icon -->
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                style="color: var(--accent);">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                        </div>
+                        <h3>Click to upload or drag and drop</h3>
+                        <p>PNG, JPG, or WebP (Max 10MB)</p>
+                    </div>
+                </div>
+
+                <div class="processing-state hidden" id="processingState">
+                    <div class="loader"></div>
+                    <p id="statusText">Loading AI model...</p>
+                    <p class="sub-status">This happens once. Subsequent images will be instant.</p>
+                </div>
+
+                <div class="result-area hidden" id="resultArea">
+                    <div class="canvas-container">
+                        <div class="image-wrapper">
+                            <span class="label">Original</span>
+                            <img id="originalImage" src="" alt="Original">
+                        </div>
+                        <div class="image-wrapper">
+                            <span class="label">No Background</span>
+                            <img id="processedImage" src="" alt="Processed">
+                            <div class="checkerboard-bg"></div>
+                        </div>
+                    </div>
+
+                    <div class="action-row">
+                        <button class="button button-secondary" id="resetBtn" type="button">Start Over</button>
+                        <a class="button button-primary" id="downloadBtn" href="#" download>Download HD Image</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ / Info Section -->
+            <section class="info-grid fade delay-2" style="margin-top: 64px;">
+                <div class="info-card">
+                    <h2>Private & Secure</h2>
+                    <p>Processing happens entirely in your browser using WebGPU/Wasm technology. Your photos are never
+                        uploaded to any server.</p>
+                </div>
+                <div class="info-card">
+                    <h2>High Quality</h2>
+                    <p>Powered by advanced AI models to precisely detect subjects and handle complex edges like hair and
+                        fur.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-row">
+            <span>© 2026 HelloAI</span>
+            <span>Focused tools for daily work</span>
+        </div>
+    </footer>
+
+    <script type="module" src="/background-remover.js"></script>
+</body>
+
+</html>
