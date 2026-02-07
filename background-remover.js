@@ -1,39 +1,6 @@
-const IMGLY_MODULE_CANDIDATES = [
-    'https://esm.sh/@imgly/background-removal@1.4.1?bundle',
-    '/assets/vendor/imgly/background-remover.js'
-];
+import imglyRemoveBackground, { preload as imglyPreload } from '/assets/imgly-background-remover.js';
 
-let imglyModulePromise;
-
-const loadImglyModule = async () => {
-    if (imglyModulePromise) {
-        return imglyModulePromise;
-    }
-
-    imglyModulePromise = (async () => {
-        let lastError = null;
-
-        for (const moduleUrl of IMGLY_MODULE_CANDIDATES) {
-            try {
-                const module = await import(moduleUrl);
-                if (typeof module.default === 'function' && typeof module.preload === 'function') {
-                    return {
-                        removeBackground: module.default,
-                        preload: module.preload
-                    };
-                }
-                throw new Error(`Invalid module exports from ${moduleUrl}`);
-            } catch (error) {
-                lastError = error;
-                console.warn(`Failed to load background removal module from ${moduleUrl}`, error);
-            }
-        }
-
-        throw lastError || new Error('Unable to load background removal module');
-    })();
-
-    return imglyModulePromise;
-};
+const IMGLY_PUBLIC_PATH = 'https://staticimgly.com/@imgly/background-removal-data/@1.4.1/dist/';
 
 document.addEventListener('DOMContentLoaded', () => {
     const dropZone = document.getElementById('dropZone');
@@ -98,30 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const resolvePublicPath = async () => {
-        const candidates = [
-            new URL('./assets/vendor/imgly/', window.location.href).toString(),
-            new URL('/assets/vendor/imgly/', window.location.origin).toString()
-        ];
-
-        for (const base of candidates) {
-            try {
-                const res = await fetch(new URL('resources.json', base), { cache: 'no-store' });
-                if (res.ok) return base;
-            } catch (err) {
-                // Try the next candidate.
-            }
-        }
-
-        return null;
-    };
-
-    const buildConfig = async () => {
-        const publicPath = await resolvePublicPath();
-        return {
-            ...(publicPath ? { publicPath } : {}),
+    const buildConfig = () => ({
+            publicPath: IMGLY_PUBLIC_PATH,
             debug: false,
-            proxyToWorker: typeof Worker !== 'undefined',
+            // Worker proxy requires a cross-origin-isolated context in many browsers.
+            // Fall back to main-thread wasm when isolation headers are absent.
+            proxyToWorker: typeof Worker !== 'undefined' && window.crossOriginIsolated,
             model: 'medium',
             output: { format: 'image/png', quality: 0.9 },
             progress: (key, current, total) => {
@@ -141,8 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
-        };
-    };
+    });
 
     async function handleFile(file) {
         if (!file.type.startsWith('image/')) {
@@ -163,15 +111,14 @@ document.addEventListener('DOMContentLoaded', () => {
         originalImage.src = objectUrl;
 
         try {
-            const imgly = await withTimeout(loadImglyModule(), 15000);
-            const config = await buildConfig();
+            const config = buildConfig();
 
             // Preload assets to surface any path issues early.
             statusText.textContent = 'Loading AI model...';
-            await withTimeout(imgly.preload(config), INFERENCE_TIMEOUT_MS / 2);
+            await withTimeout(imglyPreload(config), INFERENCE_TIMEOUT_MS / 2);
 
             statusText.textContent = 'Analyzing image...';
-            const blob = await withTimeout(imgly.removeBackground(file, config), INFERENCE_TIMEOUT_MS);
+            const blob = await withTimeout(imglyRemoveBackground(file, config), INFERENCE_TIMEOUT_MS);
 
             // Success
             if (jobId !== activeJobId) {
