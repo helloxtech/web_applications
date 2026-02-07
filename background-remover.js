@@ -1,4 +1,4 @@
-import imglyRemoveBackground, { preload as imglyPreload } from "https://esm.sh/@imgly/background-removal@1.4.1?bundle";
+import imglyRemoveBackground, { preload as imglyPreload } from "/assets/vendor/imgly/background-remover.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     const dropZone = document.getElementById('dropZone');
@@ -63,29 +63,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const buildConfig = () => ({
-        debug: false,
-        proxyToWorker: typeof Worker !== 'undefined',
-        model: 'medium',
-        output: { format: 'image/png', quality: 0.9 },
-        progress: (key, current, total) => {
-            if (key === 'compute:inference') {
-                statusText.textContent = 'Removing background...';
-                return;
-            }
+    const resolvePublicPath = async () => {
+        const candidates = [
+            new URL('./assets/vendor/imgly/', window.location.href).toString(),
+            new URL('/assets/vendor/imgly/', window.location.origin).toString()
+        ];
 
-            if (key.startsWith('fetch:') && total) {
-                const percent = Math.round((current / total) * 100);
-                if (key.includes('/models/')) {
-                    statusText.textContent = `Downloading AI model... ${percent}%`;
-                } else if (key.includes('/onnxruntime-web/')) {
-                    statusText.textContent = `Preparing runtime... ${percent}%`;
-                } else {
-                    statusText.textContent = `Downloading assets... ${percent}%`;
-                }
+        for (const base of candidates) {
+            try {
+                const res = await fetch(new URL('resources.json', base), { cache: 'no-store' });
+                if (res.ok) return base;
+            } catch (err) {
+                // Try the next candidate.
             }
         }
-    });
+
+        return null;
+    };
+
+    const buildConfig = async () => {
+        const publicPath = await resolvePublicPath();
+        return {
+            ...(publicPath ? { publicPath } : {}),
+            debug: false,
+            proxyToWorker: typeof Worker !== 'undefined',
+            model: 'medium',
+            output: { format: 'image/png', quality: 0.9 },
+            progress: (key, current, total) => {
+                if (key === 'compute:inference') {
+                    statusText.textContent = 'Removing background...';
+                    return;
+                }
+
+                if (key.startsWith('fetch:') && total) {
+                    const percent = Math.round((current / total) * 100);
+                    if (key.includes('/models/')) {
+                        statusText.textContent = `Downloading AI model... ${percent}%`;
+                    } else if (key.includes('/onnxruntime-web/')) {
+                        statusText.textContent = `Preparing runtime... ${percent}%`;
+                    } else {
+                        statusText.textContent = `Downloading assets... ${percent}%`;
+                    }
+                }
+            }
+        };
+    };
 
     async function handleFile(file) {
         if (!file.type.startsWith('image/')) {
@@ -106,11 +128,13 @@ document.addEventListener('DOMContentLoaded', () => {
         originalImage.src = objectUrl;
 
         try {
-            const config = buildConfig();
+            const config = await buildConfig();
 
             // Preload assets to surface any path issues early.
-            statusText.textContent = 'Loading AI model...';
-            await withTimeout(imglyPreload(config), INFERENCE_TIMEOUT_MS / 2);
+            if (config.publicPath) {
+                statusText.textContent = 'Loading AI model...';
+                await withTimeout(imglyPreload(config), INFERENCE_TIMEOUT_MS / 2);
+            }
 
             statusText.textContent = 'Analyzing image...';
             const blob = await withTimeout(imglyRemoveBackground(file, config), INFERENCE_TIMEOUT_MS);
@@ -148,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error.message && error.message.includes('timeout')) {
                 errorMessage += 'Processing is taking too long. Try a smaller image or refresh and try again.';
             } else if (error.message && error.message.includes('Resource metadata')) {
-                errorMessage += 'Model files were not found. Check your network connection or CDN access.';
+                errorMessage += 'Model files were not found. Make sure /assets/vendor/imgly/ is accessible.';
             } else if (error.message && error.message.includes('fetch')) {
                 errorMessage += 'Could not download AI model files. Please check your internet connection.';
             } else if (error.message) {
