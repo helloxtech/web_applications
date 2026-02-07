@@ -1,4 +1,39 @@
-import imglyRemoveBackground, { preload as imglyPreload } from "/assets/vendor/imgly/background-remover.js";
+const IMGLY_MODULE_CANDIDATES = [
+    'https://esm.sh/@imgly/background-removal@1.4.1?bundle',
+    '/assets/vendor/imgly/background-remover.js'
+];
+
+let imglyModulePromise;
+
+const loadImglyModule = async () => {
+    if (imglyModulePromise) {
+        return imglyModulePromise;
+    }
+
+    imglyModulePromise = (async () => {
+        let lastError = null;
+
+        for (const moduleUrl of IMGLY_MODULE_CANDIDATES) {
+            try {
+                const module = await import(moduleUrl);
+                if (typeof module.default === 'function' && typeof module.preload === 'function') {
+                    return {
+                        removeBackground: module.default,
+                        preload: module.preload
+                    };
+                }
+                throw new Error(`Invalid module exports from ${moduleUrl}`);
+            } catch (error) {
+                lastError = error;
+                console.warn(`Failed to load background removal module from ${moduleUrl}`, error);
+            }
+        }
+
+        throw lastError || new Error('Unable to load background removal module');
+    })();
+
+    return imglyModulePromise;
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     const dropZone = document.getElementById('dropZone');
@@ -128,16 +163,15 @@ document.addEventListener('DOMContentLoaded', () => {
         originalImage.src = objectUrl;
 
         try {
+            const imgly = await withTimeout(loadImglyModule(), 15000);
             const config = await buildConfig();
 
             // Preload assets to surface any path issues early.
-            if (config.publicPath) {
-                statusText.textContent = 'Loading AI model...';
-                await withTimeout(imglyPreload(config), INFERENCE_TIMEOUT_MS / 2);
-            }
+            statusText.textContent = 'Loading AI model...';
+            await withTimeout(imgly.preload(config), INFERENCE_TIMEOUT_MS / 2);
 
             statusText.textContent = 'Analyzing image...';
-            const blob = await withTimeout(imglyRemoveBackground(file, config), INFERENCE_TIMEOUT_MS);
+            const blob = await withTimeout(imgly.removeBackground(file, config), INFERENCE_TIMEOUT_MS);
 
             // Success
             if (jobId !== activeJobId) {
@@ -172,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error.message && error.message.includes('timeout')) {
                 errorMessage += 'Processing is taking too long. Try a smaller image or refresh and try again.';
             } else if (error.message && error.message.includes('Resource metadata')) {
-                errorMessage += 'Model files were not found. Make sure /assets/vendor/imgly/ is accessible.';
+                errorMessage += 'Model files were not found. Check CDN/local asset availability and try again.';
             } else if (error.message && error.message.includes('fetch')) {
                 errorMessage += 'Could not download AI model files. Please check your internet connection.';
             } else if (error.message) {
