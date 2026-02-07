@@ -1,4 +1,4 @@
-import imglyRemoveBackground, { preload as imglyPreload } from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.1/dist/index.mjs";
+import imglyRemoveBackground, { preload as imglyPreload } from "https://esm.sh/@imgly/background-removal@1.4.1?bundle";
 
 document.addEventListener('DOMContentLoaded', () => {
     const dropZone = document.getElementById('dropZone');
