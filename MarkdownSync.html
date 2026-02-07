@@ -5,18 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Convert rich text to Markdown and Markdown to rich text with a fast bidirectional editor in your browser.">
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta name="theme-color" content="#f4f6fb">
+    <meta name="author" content="HelloAI">
     <link rel="canonical" href="https://helloai.ca/MarkdownSync.html">
+    <link rel="alternate" hreflang="en-CA" href="https://helloai.ca/MarkdownSync.html">
+    <link rel="alternate" hreflang="x-default" href="https://helloai.ca/MarkdownSync.html">
+    <link rel="icon" type="image/png" href="/media/HelloAI_mark.png">
+    <meta property="og:locale" content="en_CA">
     <meta property="og:site_name" content="HelloAI">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Markdown Sync | HelloAI">
+    <meta property="og:title" content="Free Markdown Converter | HelloAI">
     <meta property="og:description" content="Convert rich text to Markdown and Markdown to rich text with a fast bidirectional editor in your browser.">
     <meta property="og:url" content="https://helloai.ca/MarkdownSync.html">
     <meta property="og:image" content="https://helloai.ca/media/HelloAI_logo_trim.png">
+    <meta property="og:image:alt" content="HelloAI markdown converter">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Markdown Sync | HelloAI">
+    <meta name="twitter:title" content="Free Markdown Converter | HelloAI">
     <meta name="twitter:description" content="Convert rich text to Markdown and Markdown to rich text with a fast bidirectional editor in your browser.">
     <meta name="twitter:image" content="https://helloai.ca/media/HelloAI_logo_trim.png">
-    <title>Markdown Sync | HelloAI</title>
+    <meta name="twitter:image:alt" content="HelloAI markdown converter">
+    <title>Free Markdown Converter | HelloAI</title>
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -26,6 +34,18 @@
             "operatingSystem": "Web",
             "url": "https://helloai.ca/MarkdownSync.html",
             "description": "Convert rich text to Markdown and Markdown to rich text with a fast bidirectional editor in your browser.",
+            "inLanguage": "en-CA",
+            "isAccessibleForFree": true,
+            "featureList": [
+                "Bidirectional markdown conversion",
+                "Rich text editing",
+                "Copy-ready markdown and HTML output"
+            ],
+            "creator": {
+                "@type": "Organization",
+                "name": "HelloAI",
+                "url": "https://helloai.ca/"
+            },
             "offers": {
                 "@type": "Offer",
                 "price": "0",
@@ -33,6 +53,35 @@
             }
         }
     </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://helloai.ca/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Apps",
+                    "item": "https://helloai.ca/apps.html"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Markdown Sync",
+                    "item": "https://helloai.ca/MarkdownSync.html"
+                }
+            ]
+        }
+    </script>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -190,18 +239,21 @@
     <!-- Header -->
     <header class="site-header">
         <div class="nav-row max-w-[1600px] mx-auto w-full px-6">
-            <a class="brand" href="/index.html" aria-label="HelloAI home">
+            <a class="brand" href="/" aria-label="HelloAI home">
                 <img class="brand-logo" src="/media/HelloAI_logo_trim.png" alt="HelloAI logo">
                 <span class="brand-word">HelloAI</span>
             </a>
             <nav class="site-nav" aria-label="Main navigation">
-                <a href="/index.html">Home</a>
+                <a href="/">Home</a>
                 <a class="active" href="/apps.html">Apps</a>
                 <a href="/about.html">About</a>
                 <a href="/contact.html">Contact</a>
             </nav>
         </div>
     </header>
+    <noscript>
+        <p style="margin:12px 24px; color:#334155; font-size:14px;">This markdown converter requires JavaScript. You can browse other tools on the <a href="/apps.html">apps page</a>.</p>
+    </noscript>
 
     <section class="max-w-[1600px] mx-auto w-full px-6 pt-4 pb-2">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -211,7 +263,7 @@
                 </div>
                 <div>
                     <h1 class="font-bold text-xl leading-tight text-slate-700 tracking-tight">Markdown <span class="text-indigo-600">Sync</span></h1>
-                    <p class="text-xs text-slate-500 font-medium">Bidirectional Converter</p>
+                    <p class="text-xs text-slate-500 font-medium">Markdown to rich text converter</p>
                 </div>
             </div>
             <button onclick="resetAll()" class="text-slate-500 hover:text-red-600 text-sm font-medium transition-colors flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-200 hover:border-red-200 hover:bg-red-50">

@@ -3,20 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Learn about HelloAI and HelloX Tech. We build focused web tools that turn messy input into clean output.">
+  <meta name="description" content="Learn about HelloAI and HelloX Tech. We build focused, fast web apps for markdown conversion, color workflows, and image editing.">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta name="theme-color" content="#f4f6fb">
+  <meta name="author" content="HelloAI">
   <link rel="canonical" href="https://helloai.ca/about.html">
+  <link rel="alternate" hreflang="en-CA" href="https://helloai.ca/about.html">
+  <link rel="alternate" hreflang="x-default" href="https://helloai.ca/about.html">
+  <link rel="icon" type="image/png" href="/media/HelloAI_mark.png">
+  <meta property="og:locale" content="en_CA">
   <meta property="og:site_name" content="HelloAI">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="About | HelloAI">
-  <meta property="og:description" content="Learn about HelloAI and HelloX Tech. We build focused web tools that turn messy input into clean output.">
+  <meta property="og:title" content="About HelloAI | Focused Web Apps">
+  <meta property="og:description" content="Meet the team behind HelloAI and learn why we build focused browser tools for clear outcomes.">
   <meta property="og:url" content="https://helloai.ca/about.html">
   <meta property="og:image" content="https://helloai.ca/media/HelloAI_logo_trim.png">
+  <meta property="og:image:alt" content="HelloAI and HelloX Tech">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="About | HelloAI">
-  <meta name="twitter:description" content="Learn about HelloAI and HelloX Tech. We build focused web tools that turn messy input into clean output.">
+  <meta name="twitter:title" content="About HelloAI | Focused Web Apps">
+  <meta name="twitter:description" content="Meet the team behind HelloAI and learn why we build focused browser tools for clear outcomes.">
   <meta name="twitter:image" content="https://helloai.ca/media/HelloAI_logo_trim.png">
-  <title>About | HelloAI</title>
+  <meta name="twitter:image:alt" content="HelloAI and HelloX Tech">
+  <title>About HelloAI | Focused Web Apps</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Manrope:wght@500;600;700&family=Space+Grotesk:wght@600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
@@ -25,21 +33,47 @@
     {
       "@context": "https://schema.org",
       "@type": "AboutPage",
-      "name": "About | HelloAI",
+      "name": "About HelloAI | Focused Web Apps",
       "url": "https://helloai.ca/about.html",
-      "description": "Learn about HelloAI and HelloX Tech. We build focused web tools that turn messy input into clean output."
+      "description": "Meet the team behind HelloAI and learn why we build focused browser tools for clear outcomes.",
+      "inLanguage": "en-CA",
+      "mainEntity": {
+        "@type": "Organization",
+        "name": "HelloAI",
+        "url": "https://helloai.ca/"
+      }
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://helloai.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "About",
+          "item": "https://helloai.ca/about.html"
+        }
+      ]
     }
   </script>
 </head>
 <body>
   <header class="site-header">
     <div class="container nav-row">
-      <a class="brand" href="/index.html" aria-label="HelloAI home">
+      <a class="brand" href="/" aria-label="HelloAI home">
         <img class="brand-logo" src="/media/HelloAI_logo_trim.png" alt="HelloAI logo">
         <span class="brand-word">HelloAI</span>
       </a>
       <nav class="site-nav" aria-label="Main navigation">
-        <a href="/index.html">Home</a>
+        <a href="/">Home</a>
         <a href="/apps.html">Apps</a>
         <a class="active" href="/about.html">About</a>
         <a href="/contact.html">Contact</a>
@@ -92,7 +126,28 @@
           <p>Built by HelloX Tech.</p>
         </div>
         <img class="hellox-logo" src="/media/HelloX_logo.png" alt="HelloX Tech logo">
-        <a class="button button-secondary" href="https://www.hellox.ca/" target="_blank" rel="noreferrer">Visit HelloX Tech</a>
+        <a class="button button-secondary" href="https://www.hellox.ca/" target="_blank" rel="noopener noreferrer">Visit HelloX Tech</a>
+      </section>
+
+      <section class="section fade delay-2" aria-labelledby="about-products">
+        <div class="section-head">
+          <h2 id="about-products">What we build</h2>
+          <p>HelloAI focuses on practical online tools that remove repetitive steps from creative and technical workflows.</p>
+        </div>
+        <div class="info-grid">
+          <article class="info-card">
+            <h2>Docs and formatting</h2>
+            <p>Use <a class="text-link" href="/MarkdownSync.html">Markdown Sync</a> for structured markdown and rich text conversion.</p>
+          </article>
+          <article class="info-card">
+            <h2>Design and assets</h2>
+            <p>Use <a class="text-link" href="/ColorPicker.html">Color Picker</a> and <a class="text-link" href="/background-remover.html">Background Remover</a> for clean visual handoffs.</p>
+          </article>
+          <article class="info-card">
+            <h2>Image editing</h2>
+            <p>Use <a class="text-link" href="/Painter.html">Painter</a> to annotate, crop, and export images quickly in-browser.</p>
+          </article>
+        </div>
       </section>
     </div>
   </main>

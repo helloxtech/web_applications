@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /node_modules/
+Disallow: /package-lock.json
+Disallow: /package.json
+Disallow: /server.py
 
 Sitemap: https://helloai.ca/sitemap.xml
