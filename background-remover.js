@@ -1,4 +1,4 @@
-import imglyRemoveBackground, { preload as imglyPreload } from '/assets/imgly-background-remover.js';
+import imglyRemoveBackground, { preload as imglyPreload } from './assets/imgly-background-remover.js';
 
 const IMGLY_PUBLIC_PATH = 'https://staticimgly.com/@imgly/background-removal-data/@1.4.1/dist/';
 
