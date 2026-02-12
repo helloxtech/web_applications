@@ -281,6 +281,7 @@
             <label class="ribbon-label" for="fill-mode">Fill</label>
             <select class="ribbon-select" id="fill-mode">
               <option value="solid">Solid</option>
+              <option value="transparent" selected>Transparent</option>
               <option value="none">None</option>
             </select>
             <label class="ribbon-label" for="line-style">Line</label>
@@ -368,26 +369,27 @@
             </div>
             <div class="palette-column">
               <div class="palette-grid" id="palette-grid">
-              <button class="color-chip" style="background:#000000" data-color="#000000" aria-label="Black"></button>
-              <button class="color-chip" style="background:#7f7f7f" data-color="#7f7f7f" aria-label="Gray"></button>
-              <button class="color-chip" style="background:#880015" data-color="#880015" aria-label="Dark red"></button>
-              <button class="color-chip" style="background:#ed1c24" data-color="#ed1c24" aria-label="Red"></button>
-              <button class="color-chip" style="background:#ff7f27" data-color="#ff7f27" aria-label="Orange"></button>
-              <button class="color-chip" style="background:#fff200" data-color="#fff200" aria-label="Yellow"></button>
-              <button class="color-chip" style="background:#22b14c" data-color="#22b14c" aria-label="Green"></button>
-              <button class="color-chip" style="background:#00a2e8" data-color="#00a2e8" aria-label="Sky"></button>
-              <button class="color-chip" style="background:#3f48cc" data-color="#3f48cc" aria-label="Blue"></button>
-              <button class="color-chip" style="background:#a349a4" data-color="#a349a4" aria-label="Purple"></button>
-              <button class="color-chip" style="background:#ffffff" data-color="#ffffff" aria-label="White"></button>
-              <button class="color-chip" style="background:#c3c3c3" data-color="#c3c3c3" aria-label="Light gray"></button>
-              <button class="color-chip" style="background:#b97a57" data-color="#b97a57" aria-label="Brown"></button>
-              <button class="color-chip" style="background:#ffaec9" data-color="#ffaec9" aria-label="Pink"></button>
-              <button class="color-chip" style="background:#ffc90e" data-color="#ffc90e" aria-label="Gold"></button>
-              <button class="color-chip" style="background:#efe4b0" data-color="#efe4b0" aria-label="Beige"></button>
-              <button class="color-chip" style="background:#b5e61d" data-color="#b5e61d" aria-label="Lime"></button>
-              <button class="color-chip" style="background:#99d9ea" data-color="#99d9ea" aria-label="Light blue"></button>
-              <button class="color-chip" style="background:#7092be" data-color="#7092be" aria-label="Steel"></button>
-              <button class="color-chip" style="background:#c8bfe7" data-color="#c8bfe7" aria-label="Lavender"></button>
+                <button class="color-chip color-chip--transparent" data-color="transparent" aria-label="Transparent"></button>
+                <button class="color-chip" style="background:#000000" data-color="#000000" aria-label="Black"></button>
+                <button class="color-chip" style="background:#7f7f7f" data-color="#7f7f7f" aria-label="Gray"></button>
+                <button class="color-chip" style="background:#880015" data-color="#880015" aria-label="Dark red"></button>
+                <button class="color-chip" style="background:#ed1c24" data-color="#ed1c24" aria-label="Red"></button>
+                <button class="color-chip" style="background:#ff7f27" data-color="#ff7f27" aria-label="Orange"></button>
+                <button class="color-chip" style="background:#fff200" data-color="#fff200" aria-label="Yellow"></button>
+                <button class="color-chip" style="background:#22b14c" data-color="#22b14c" aria-label="Green"></button>
+                <button class="color-chip" style="background:#00a2e8" data-color="#00a2e8" aria-label="Sky"></button>
+                <button class="color-chip" style="background:#3f48cc" data-color="#3f48cc" aria-label="Blue"></button>
+                <button class="color-chip" style="background:#a349a4" data-color="#a349a4" aria-label="Purple"></button>
+                <button class="color-chip" style="background:#ffffff" data-color="#ffffff" aria-label="White"></button>
+                <button class="color-chip" style="background:#c3c3c3" data-color="#c3c3c3" aria-label="Light gray"></button>
+                <button class="color-chip" style="background:#b97a57" data-color="#b97a57" aria-label="Brown"></button>
+                <button class="color-chip" style="background:#ffaec9" data-color="#ffaec9" aria-label="Pink"></button>
+                <button class="color-chip" style="background:#ffc90e" data-color="#ffc90e" aria-label="Gold"></button>
+                <button class="color-chip" style="background:#efe4b0" data-color="#efe4b0" aria-label="Beige"></button>
+                <button class="color-chip" style="background:#b5e61d" data-color="#b5e61d" aria-label="Lime"></button>
+                <button class="color-chip" style="background:#99d9ea" data-color="#99d9ea" aria-label="Light blue"></button>
+                <button class="color-chip" style="background:#7092be" data-color="#7092be" aria-label="Steel"></button>
+                <button class="color-chip" style="background:#c8bfe7" data-color="#c8bfe7" aria-label="Lavender"></button>
               </div>
               <button class="ribbon-btn ribbon-btn--compact" id="edit-colors" type="button">Edit colors</button>
             </div>
@@ -511,9 +513,9 @@
         lineWidth: 2,
         opacity: 1,
         stroke: "#1f2937",
-        fill: "#f97316",
+        fill: "transparent",
         outlineMode: "solid",
-        fillMode: "solid",
+        fillMode: "transparent",
         lineStyle: "solid",
         arrowHead: "open",
         textSize: 28,
@@ -540,6 +542,7 @@
         cropMode: false,
         textFocusToken: 0
       };
+      var TRANSPARENT_COLOR = "transparent";
 
       function getDevicePixelRatio() {
         return window.devicePixelRatio || 1;
@@ -735,6 +738,9 @@
       }
 
       function rgbaFromHex(hex, alpha) {
+        if (!hex || hex.toLowerCase() === TRANSPARENT_COLOR) {
+          return "rgba(0, 0, 0, 0)";
+        }
         var clean = hex.replace("#", "");
         if (clean.length === 3) {
           clean = clean[0] + clean[0] + clean[1] + clean[1] + clean[2] + clean[2];
@@ -764,8 +770,15 @@
       }
 
       function setColor2(hex) {
+        if (!hex || hex.toLowerCase() === TRANSPARENT_COLOR) {
+          state.fill = TRANSPARENT_COLOR;
+          color2Btn.classList.add("is-transparent");
+          color2Btn.style.background = "";
+          return;
+        }
         state.fill = hex;
         color2Input.value = hex;
+        color2Btn.classList.remove("is-transparent");
         color2Btn.style.background = hex;
       }
 
@@ -1211,6 +1224,9 @@
       }
 
       function hexToRgbaArray(hex, alpha) {
+        if (!hex || hex.toLowerCase() === TRANSPARENT_COLOR) {
+          return [0, 0, 0, 0];
+        }
         var clean = hex.replace("#", "");
         if (clean.length === 3) {
           clean = clean[0] + clean[0] + clean[1] + clean[1] + clean[2] + clean[2];
@@ -1517,6 +1533,8 @@
       }
 
       function setupImagePlacement(img, options) {
+        var sourceWidth = img.naturalWidth || img.width;
+        var sourceHeight = img.naturalHeight || img.height;
         if (state.selection) {
           if (selectionLayer.style.display === "block") {
             commitSelection();
@@ -1526,21 +1544,21 @@
         }
         finalizeImagePlacementIfNeeded();
         if (options && options.preserveSize) {
-          var nextWidth = Math.max(state.width, img.width);
-          var nextHeight = Math.max(state.height, img.height);
+          var nextWidth = Math.max(state.width, sourceWidth);
+          var nextHeight = Math.max(state.height, sourceHeight);
           if (nextWidth !== state.width || nextHeight !== state.height) {
             setCanvasSize(nextWidth, nextHeight, false, false);
           }
         }
         state.imagePlacement = {
           img: img,
-          baseWidth: img.width,
-          baseHeight: img.height,
-          width: img.width,
-          height: img.height,
+          baseWidth: sourceWidth,
+          baseHeight: sourceHeight,
+          width: sourceWidth,
+          height: sourceHeight,
           scale: 1,
-          x: Math.max(0, (state.width - img.width) / 2),
-          y: Math.max(0, (state.height - img.height) / 2)
+          x: Math.max(0, (state.width - sourceWidth) / 2),
+          y: Math.max(0, (state.height - sourceHeight) / 2)
         };
         imageLayerImg.src = img.src;
         imageLayer.style.display = "block";
@@ -1826,6 +1844,10 @@
       paletteGrid.addEventListener("click", function (evt) {
         var target = evt.target;
         if (target && target.dataset.color) {
+          if (target.dataset.color === TRANSPARENT_COLOR) {
+            setColor2(TRANSPARENT_COLOR);
+            return;
+          }
           setColor1(target.dataset.color);
         }
       });
