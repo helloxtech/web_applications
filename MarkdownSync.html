@@ -79,11 +79,11 @@
             ]
         }
     </script>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="preconnect" href="https://unpkg.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/assets/tailwindcss-3.4.17.js"></script>
     <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/turndown-plugin-gfm/dist/turndown-plugin-gfm.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@600;700&display=swap');
@@ -218,6 +218,27 @@
             border-radius: 0.375rem;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
+        }
+
+        #rich-input table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.75rem 0;
+            table-layout: fixed;
+        }
+
+        #rich-input th,
+        #rich-input td {
+            border: 1px solid #cbd5e1;
+            padding: 0.45rem 0.6rem;
+            vertical-align: top;
+            word-break: break-word;
+        }
+
+        #rich-input th {
+            background: #f8fafc;
+            font-weight: 600;
+            text-align: left;
         }
 
         /* Focus styles for panels */
@@ -441,10 +462,14 @@ function greet(name) {
             emDelimiter: '*' 
         });
 
+        if (window.turndownPluginGfm?.gfm) {
+            turndownService.use(turndownPluginGfm.gfm);
+        }
+
         // Add strikethrough support to Turndown
         turndownService.addRule('strikethrough', {
             filter: ['del', 's', 'strike'],
-            replacement: content => '~' + content + '~'
+            replacement: content => '~~' + content + '~~'
         });
 
         // Configure Marked (Markdown to HTML)
@@ -522,6 +547,46 @@ function greet(name) {
             syncToMarkdown();
         }
 
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        function sanitizePastedHtml(html) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            doc.querySelectorAll('script,style,meta,link,title,colgroup,col').forEach((node) => node.remove());
+            doc.querySelectorAll('*').forEach((node) => {
+                node.removeAttribute('style');
+                node.removeAttribute('class');
+                node.removeAttribute('id');
+            });
+            return doc.body.innerHTML.trim();
+        }
+
+        function plainTextTableToHtml(text) {
+            const rows = text
+                .trim()
+                .split(/\r?\n/)
+                .map((row) => row.split('\t'));
+
+            const hasTableShape = rows.length > 1 && rows.some((row) => row.length > 1);
+            if (!hasTableShape) return '';
+
+            const normalizedRows = rows.filter((row) => row.some((cell) => cell.trim() !== ''));
+            if (normalizedRows.length === 0) return '';
+
+            return `<table><tbody>${
+                normalizedRows.map((cells, rowIndex) => {
+                    const tag = rowIndex === 0 ? 'th' : 'td';
+                    const rowHtml = cells.map((cell) => `<${tag}>${escapeHtml(cell.trim())}</${tag}>`).join('');
+                    return `<tr>${rowHtml}</tr>`;
+                }).join('')
+            }</tbody></table><p><br></p>`;
+        }
+
         /**
          * Visual Feedback (Focus handling)
          */
@@ -558,9 +623,28 @@ function greet(name) {
         richInput.addEventListener('input', syncToMarkdown);
         markdownInput.addEventListener('input', syncToRichText);
 
-        // Paste handling (Clean HTML for Rich Text)
+        // Paste handling with table preservation for spreadsheet sources
         richInput.addEventListener('paste', (e) => {
-            // Allow default paste, but trigger sync immediately after
+            const clipboard = e.clipboardData || window.clipboardData;
+            const pastedHtml = clipboard?.getData('text/html') || '';
+            const pastedText = clipboard?.getData('text/plain') || '';
+
+            if (pastedHtml) {
+                e.preventDefault();
+                const safeHtml = sanitizePastedHtml(pastedHtml);
+                document.execCommand('insertHTML', false, safeHtml || `<p>${escapeHtml(pastedText)}</p>`);
+                syncToMarkdown();
+                return;
+            }
+
+            const tableHtml = plainTextTableToHtml(pastedText);
+            if (tableHtml) {
+                e.preventDefault();
+                document.execCommand('insertHTML', false, tableHtml);
+                syncToMarkdown();
+                return;
+            }
+
             setTimeout(syncToMarkdown, 0);
         });
 
